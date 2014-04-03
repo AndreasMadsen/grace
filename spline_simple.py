@@ -1,0 +1,57 @@
+
+import grace
+import grace.times
+import grace.ols
+import numpy as np
+import matplotlib.pyplot as plt
+
+initial = (24, 134)
+
+# get x values (in days)
+days = grace.ols.time_vector()
+all_days = np.linspace(np.min(days), np.max(days), np.max(days) - np.min(days))
+
+# Get the ewh values for this position
+Y = np.asmatrix(grace.grids[initial[0], initial[1], :]).T
+X_all = grace.ols.design_matrix(all_days, frequencies = 3, splines = True)
+Theta = grace.ols.theta_vector(Y, frequencies = 3, splines = True)
+
+print Theta
+
+## Plot y and y.hat
+plt.figure()
+plt.plot(days, Y.A.ravel(), 'ro',label='Observations')
+plt.plot(all_days, (X_all * Theta).A.ravel(),'k-',label='Estimation')
+
+date_ticks = np.linspace(np.min(days), np.max(days), 6).astype('int')
+plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
+plt.xlim(np.min(days), np.max(days))
+plt.ylim(np.min(Y), np.max(Y))
+
+plt.ylabel('EWH [m]')
+plt.xlabel('date')
+
+# How may splines (the years parameter calculated internally in module.ols)
+splines = 9
+
+# Plot theta values
+plt.figure()
+plt.subplot(4,1,1)
+plt.plot(all_days, X_all[:,0].A.ravel())
+
+plt.subplot(4,1,2)
+for i in range(0,splines + 1):
+	plt.plot(all_days, X_all[:,1 + i*2].A.ravel())
+
+# Plot theta values
+plt.subplot(4,1,3)
+for i in range(0,splines + 1):
+	plt.plot(all_days, X_all[:,2 + i*2].A.ravel())
+
+
+plt.subplot(4,1,4)
+for i in range(0,splines + 1):
+	plt.plot(all_days, X_all[:,splines * 2 + 3 + i*2].A.ravel())
+	plt.plot(all_days, X_all[:,splines * 2 + 4 + i*2].A.ravel())
+
+plt.show()
