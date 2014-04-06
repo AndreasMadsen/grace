@@ -26,7 +26,7 @@ m.drawcoastlines(linewidth=.5)
 m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
 m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
 
-im = m.imshow(phase[::-1], vmin=-np.pi, vmax=np.pi)
+im = m.imshow(phase[::-1, :], vmin=-np.pi, vmax=np.pi)
 im.set_cmap('hsv')
 
 # There is 12 month, split up [-pi, pi] intro 13 steps,
