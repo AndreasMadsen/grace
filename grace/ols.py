@@ -8,22 +8,45 @@ EARTH_OMEGA = 365.242
 
 def splines_producer(X, t, factory, use_splines):
 	if (use_splines):
-		# Figure how many years there are 
+		# Figure how many years there are
 		t_year = times.days_to_date(t).astype('datetime64[Y]')
-		#print np.max(t_year), np.min(t_year)
-		years = np.max(t_year) - np.min(t_year) 
+
+		# The -1 exists so the no spines are created for the last year,
+		# this is because there aren't enogth observations to fit those
+		# splines correctly.
+		years = np.max(t_year) - np.min(t_year) - 1
 
 		t_min = np.min(t)
 
-		for s in range(0, years): #notice that this intentionally removes 1 year (off by 1 - i.e the "fence" problem)
+		for s in range(0, years + 1):
 			t_shift = t - EARTH_OMEGA * s
 			t_transform = np.asarray(factory(t_shift)).T
 			t_transform[t_shift < t_min, :] = 0
+
 			X = np.column_stack( (X , t_transform) )
 	else:
-		X = np.column_stack( (X, factory(t)) )	
-	
+		X = np.column_stack( (X, np.asarray(factory(t)).T ) )
+
 	return X
+
+def splines_description(names, factory, use_splines):
+	if (use_splines):
+		# Figure how many years there are
+		t_year = times.days_to_date(time_vector()).astype('datetime64[Y]')
+
+		# The -1 exists so the no spines are created for the last year,
+		# this is because there aren't enogth observations to fit those
+		# splines correctly.
+		years = np.max(t_year) - np.min(t_year) - 1
+
+		print years
+
+		for s in range(0, years + 1):
+			names += factory('t - 365.2 * ' + str(s))
+	else:
+		names += factory('t')
+
+	return names
 
 def time_vector():
 	"""
@@ -62,25 +85,34 @@ def design_matrix(t=None, frequencies=18, splines=False):
 	# The matrix will symbolize a 37 dimentional space with 341 values
 	return np.asmatrix(X)
 
-def theta_description(frequencies=18):
+def theta_description(frequencies=18, splines=False):
 	"""
 	Construct a simple array containg a description for all the
 	theta values as strings.
 	"""
 
-	names = ["intercept (1)", "slope (t)", "acc. (0.5 * t^2)"]
+	names = ["intercept (1)"]
+
+	names = splines_description(names, lambda t: [
+		"slope (" + t + ")",
+		"acc. (0.5 * (" + t + ")^2)"
+	], use_splines = splines)
+
 	omega = 365.242
 	for i in range(1,frequencies + 1):
-		names.append(u"cos(2π/" + str(round(omega/i, 1)) +  " * t)")
-		names.append(u"sin(2π/" + str(round(omega/i, 1)) +  " * t)")
+		names = splines_description(names, lambda t: [
+			u"cos(2π/" + str(round(omega/i, 1)) +  " * (" + t + "))",
+			u"sin(2π/" + str(round(omega/i, 1)) +  " * (" + t + "))"
+		], use_splines = splines)
+
 	return names
 
-def theta_matrix(frequencies=None):
+def theta_matrix(frequencies=18, splines=False):
 	"""
 	Construct a theta matrix (180, 360, p) containg all the theta vector
 	for each world position
 	"""
-	X = design_matrix(frequencies=frequencies)
+	X = design_matrix(frequencies=frequencies, splines=splines)
 
 	# SVD factorize the X matrix, allowing for numerical stable calculation of
 	# the hat matrix (H)
@@ -102,12 +134,12 @@ def theta_matrix(frequencies=None):
 	# All done
 	return Theta
 
-def theta_vector(y, frequencies=None, splines=False):
+def theta_vector(y, frequencies=18, splines=False):
 	"""
 	Contstruct a theta vector (p,) containg all the theta values for a
 	a single given y vector
 	"""
-	X = design_matrix(frequencies=frequencies, splines=splines)
+	X = design_matrix(frequencies=18, splines=splines)
 
 	# SVD factorize the X matrix, allowing for numerical stable calculation of
 	# the hat matrix (H)
@@ -120,11 +152,11 @@ def theta_vector(y, frequencies=None, splines=False):
 
 	return Theta
 
-def hat_matrix(X=None, interpolate=False, frequencies=None):
+def hat_matrix(X=None, interpolate=False, frequencies=18, splines=False):
 	"""
 	Construct the hat matrix, there transforms y intro \hat{y}
 	"""
-	X_source = design_matrix(frequencies=frequencies)
+	X_source = design_matrix(frequencies=18, splines=splines)
 	if (X is None): X = X_source
 	if (interpolate is True): X_source = X
 
