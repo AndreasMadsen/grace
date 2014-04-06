@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import mpl_toolkits.basemap as maps
 import matplotlib.gridspec as gridspec
 
-H = grace.ols.hat_matrix()
+H = grace.ols.hat_matrix(frequencies = 3, splines = True)
 
 # Get the ewh values for all positions as a matrix. This matrix
 # will have the diffrent positons as collums and days on the rows

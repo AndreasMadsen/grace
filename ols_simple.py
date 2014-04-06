@@ -31,10 +31,10 @@ plt.ylabel('EWH [m]')
 plt.xlabel('date')
 
 # Plot theta values
-plt.subplot(2,1,2)
+plt.subplot(4,1,3)
 plt.bar((np.arange(0, Theta.size) + 0.5).ravel(), Theta.A.ravel())
 plt.xlim(0, Theta.size + 1)
 plt.xticks(np.arange(1, Theta.size + 1), description)
-plt.setp(plt.xticks()[1], rotation=-80)
+plt.setp(plt.xticks()[1], rotation=-90, fontsize = 10)
 
 plt.show()
