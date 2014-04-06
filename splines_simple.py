@@ -5,6 +5,7 @@ import grace.ols
 import numpy as np
 import matplotlib.pyplot as plt
 
+# (41, 77) and (89, 186) is not completly continues
 initial = (24, 134)
 
 # get x values (in days)
