@@ -9,6 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mpl_toolkits.basemap as maps
 
+initial = (26, 130)
+
 #
 # Generate a world figure
 #
@@ -24,7 +26,8 @@ m.drawmeridians(np.arange(0.,420.,60.),labels=[0,0,0,1])
 im = m.imshow(grace.grids[::-1,:,date])
 im.set_cmap('binary_r')
 
-m.colorbar()
+cbar = m.colorbar()
+cbar.set_label('EMH [m]', rotation=270, labelpad=20)
 
 plt.title("EWH [m] - " + str(grace.dates[date,0]))
 
@@ -35,7 +38,6 @@ fig.savefig(figure_path("data-example-world.eps"))
 #
 fig = plt.figure(figsize=(10, 4))
 
-initial = (24, 134)
 Y = np.asmatrix(grace.grids[initial[0], initial[1], :]).T
 days = grace.ols.time_vector()
 
