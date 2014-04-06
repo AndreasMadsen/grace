@@ -6,6 +6,9 @@ import load
 
 EARTH_OMEGA = 365.242
 
+def diag_pow(M, p):
+	return np.diag(np.diag(M) ** p)
+
 def splines_producer(X, t, factory, use_splines):
 	if (use_splines):
 		# Figure how many years there are
@@ -124,7 +127,7 @@ def theta_matrix(frequencies=18, splines=False):
 
 	# This will be a matrix of thetas as collums for each position.
 	# The rows will be the theta parameters
-	Theta = (V * np.linalg.inv(S) * U.T) * Y
+	Theta = (V * diag_pow(S, -1) * U.T) * Y
 
 	# Now reshape theta intro a (lat, lon, param) ndarray
 	Theta = np.asarray(Theta).reshape(X.shape[1], shape[0], shape[1]).transpose([1,2,0])
@@ -146,7 +149,7 @@ def theta_vector(y, frequencies=18, splines=False):
 
 	# This will be a matrix of thetas as collums for each position.
 	# The rows will be the theta parameters
-	Theta = (V * np.linalg.inv(S) * U.T) * np.asmatrix(y.ravel()).T
+	Theta = (V * diag_pow(S, -1) * U.T) * np.asmatrix(y.ravel()).T
 
 	return Theta
 
@@ -164,7 +167,7 @@ def hat_matrix(X=None, interpolate=False, frequencies=18, splines=False):
 	U,S,V = (U, np.diag(S), V.T)
 
 	# Calculate hat matrix
-	H = X * V * np.linalg.inv(S) * U.T
+	H = X * V * diag_pow(S, -1) * U.T
 
 	# All done
 	return H
