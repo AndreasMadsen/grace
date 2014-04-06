@@ -39,8 +39,6 @@ def splines_description(names, factory, use_splines):
 		# splines correctly.
 		years = np.max(t_year) - np.min(t_year) - 1
 
-		print years
-
 		for s in range(0, years + 1):
 			names += factory('t - 365.2 * ' + str(s))
 	else:
@@ -139,7 +137,7 @@ def theta_vector(y, frequencies=18, splines=False):
 	Contstruct a theta vector (p,) containg all the theta values for a
 	a single given y vector
 	"""
-	X = design_matrix(frequencies=18, splines=splines)
+	X = design_matrix(frequencies=frequencies, splines=splines)
 
 	# SVD factorize the X matrix, allowing for numerical stable calculation of
 	# the hat matrix (H)
@@ -156,7 +154,7 @@ def hat_matrix(X=None, interpolate=False, frequencies=18, splines=False):
 	"""
 	Construct the hat matrix, there transforms y intro \hat{y}
 	"""
-	X_source = design_matrix(frequencies=18, splines=splines)
+	X_source = design_matrix(frequencies=frequencies, splines=splines)
 	if (X is None): X = X_source
 	if (interpolate is True): X_source = X
 
