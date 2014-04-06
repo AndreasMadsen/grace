@@ -18,8 +18,6 @@ X_all = grace.ols.design_matrix(all_days, frequencies = 3, splines = True)
 Theta = grace.ols.theta_vector(Y, frequencies = 3, splines = True)
 description = grace.ols.theta_description(frequencies = 3, splines = True)
 
-print description
-
 ## Plot y and y.hat
 plt.figure()
 plt.subplot(2,1,1)
