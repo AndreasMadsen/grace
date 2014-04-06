@@ -30,9 +30,10 @@ U_grid = np.asarray(U.T).reshape(shape[2], shape[0], shape[1]).transpose([1,2,0]
 dayIndex = 0
 
 fig = plt.figure(figsize=(12, 9))
-gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1]) 
 
-plt.subplot(gs[0])
+gs = gridspec.GridSpec(3, 3)
+
+plt.subplot(gs[:-1, :])
 m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
 m.drawcoastlines(linewidth=.5)
 m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
@@ -45,10 +46,10 @@ m.colorbar()
 
 plt.title("index: " + str(dayIndex))
 
-plt.subplot(gs[1])
+plt.subplot(gs[-1, :-1])
 
 S_diag = np.diag(S)
-rho = (S_diag*S_diag) / (S_diag*S_diag).sum()
+rho = (S_diag**2) / (S_diag**2).sum()
 
 bars = plt.bar(range(0, rho.shape[0]), rho * 100, color='SteelBlue')
 bars[dayIndex].set_color('IndianRed')
@@ -57,13 +58,11 @@ plt.xlim(0, rho.shape[0] / 3)
 plt.title('Variance explained by principal components')
 plt.xlabel('Principal component')
 plt.ylabel('%')
-plt.subplots_adjust(bottom=0.20)
 
+plt.subplot(gs[-1, -1])
 
-plt.tight_layout()
-
-plt.figure()
-plt.plot(range(0, V.shape[0]), V[:, dayIndex].A.ravel())
+plt.plot(range(0, V.shape[0]), V[:, dayIndex].A.ravel(), color="SteelBlue")
+plt.xlim(0, V.shape[0])
 
 plt.show()
 
