@@ -15,11 +15,13 @@ all_days = np.linspace(np.min(days), np.max(days), np.max(days) - np.min(days))
 Y = np.asmatrix(grace.grids[initial[0], initial[1], :]).T
 X_all = grace.ols.design_matrix(all_days, frequencies = 3, splines = True)
 Theta = grace.ols.theta_vector(Y, frequencies = 3, splines = True)
+description = grace.ols.theta_description(frequencies = 3, splines = True)
 
-print Theta
+print description
 
 ## Plot y and y.hat
 plt.figure()
+plt.subplot(2,1,1)
 plt.plot(days, Y.A.ravel(), 'ro',label='Observations')
 plt.plot(all_days, (X_all * Theta).A.ravel(),'k-',label='Estimation')
 
@@ -30,6 +32,13 @@ plt.ylim(np.min(Y), np.max(Y))
 
 plt.ylabel('EWH [m]')
 plt.xlabel('date')
+
+# Plot theta values
+plt.subplot(4,1,3)
+plt.bar((np.arange(0, Theta.size) + 0.5).ravel(), Theta.A.ravel())
+plt.xlim(0, Theta.size + 1)
+plt.xticks(np.arange(1, Theta.size + 1), description)
+plt.setp(plt.xticks()[1], rotation=-90, fontsize = 10)
 
 # How may splines (the years parameter calculated internally in module.ols)
 splines = 9
