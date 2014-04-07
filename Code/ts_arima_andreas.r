@@ -24,7 +24,7 @@ acfdiag = function (m, skip=0) {
 
 ljungboxplot = function (m, gof.lag = 10, skip = 0) {
   dat = ts(m$residuals[(1 + skip):length(m$residuals)], frequency = frequency(m$residuals))
-  
+
   pval <- numeric(gof.lag)
   for (i in (length(m$coef)+1):gof.lag) {
     pval[i] <- Box.test(dat, i, type = "Ljung-Box", fitdf=length(m$coef))$p.value

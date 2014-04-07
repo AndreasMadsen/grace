@@ -1,98 +1,89 @@
 %!TEX root=report.tex
 
-\subsection{Tidsrækkeanalyse - SARIMA-model}
+\subsection{time series analysis - ARIMA}
 
-Da man for GRACE datasætte har mulighed for at se på et enkelt punkt og observere ændringerne i tyndekraften som en tidsserie,
-virker det åbenlyst at forsøge at benytte en tidsrækkeanalyse model til at analysere dataen.
-Det har dog vist sig ikke at være muligt, ihvertfald for de simple modeller brugt her.
+To get an indication if its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) have been selected.
 
-Som udgangspunkt blev et punkt på Grøndlands kyst \todo{hvilket punkt} valg til at udforske mulighederne for en tidsrækkeanalyse.
-
-Fælles for ARIMA modellerne er at den tidsrække man søger at modellere skal have equidistante tidsskridt,
-ellers kan Yule-Walker ligningerne \cite[s.~122]{time-series-analysis} ikke løses.
-I det oprindelige GRACE data er der manglende værdier - derfor anvendes splines \todo{kan ikke se hvordan splines, kan benyttes til interpolation her /A}
-til at interpolere hen over de manglende observationer. Derefter tilsidesættes de sidste 12 observation som test data, til en krydsvalidering,
-den resten del af tidsrækken er det som model bygges på.
+To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated. Also in order to get an indication of the model performance, the last 36 observations (a year) have been separated for cross validation testing.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=4cm]{figures/yTrain}
-\caption{GRACE data, hvor manglende data er udfyldt ved interpolation}
-\label{fig:ts-y-train-raw}
+\includegraphics[height=5cm]{figures/ts-initial-split}
+\caption{GRACE data at 63.5 N 49.5 W, where missing values are interpolated. Blue is the training data and green is the  test data.}
+\label{fig:ts-initial-split}
 \end{figure}
+
+The time series in Figure \ref{fig:ts-initial-split} is clearly not stationary, thus it is necessary to consider the time series difference.
+\begin{figure}[H]
+\centering
+\includegraphics[height=5cm]{figures/ts-residual-i1s0}
+\caption{The ARIMA$(0,1,0) \times (0,0,0)_{36}$ residuals.}
+\label{fig:ts-residual-i1s0}
+\end{figure}
+On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean and variance isn't the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=4cm]{figures/differenceYTrain}
-\caption{GRACE data, hvor manglende data er udfyldt ved interpolation}
-\label{fig:ts-y-train-diff}
+\includegraphics[height=5cm]{figures/ts-residual-i1s1}
+\caption{The ARIMA$(0,1,0) \times (0,1,0)_{36}$ residuals.}
+\label{fig:ts-residual-i1s1}
 \end{figure}
-Tidsrækken som ses i figur \ref{fig:ts-y-train-raw} ser periodisk ud men er ikke stationær.
-Derfor undersøges differencen på serien, som er stationær (figur \ref{fig:ts-y-train-diff}).
-Når man ser på differencen bliver det dog også tydeligt at tidsrække ikke er så pænt periodisk som man umiddelbart kunne have håbet på.
+On Figure \ref{fig:ts-residual-i1s1} its seen that the first 37 observations acts strange, this is because there aren't enough past observations to estimate the EWH correctly, thus they should be excluded from further analysis.
 
-Her følger Auto korrelations funktionen og den partielle auto korrelations funktionen:
+To determine the AR and MA terms in the ARIMA mode, the ACF and PACF should be estimated using the residuals from Figure \ref{fig:ts-residual-i1s1}.
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{figures/acf}
-		\caption{ACF til 5 års lag}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{figures/pacf}
-		\caption{PACF til 5 års lag}
-	\end{subfigure}
-	\caption{Viser kollerationen imellem residualerne på en \texttt{ARIMA(0,1,0)} model}
-	\label{fig:ts-acf-pacf}
+	\includegraphics[width=\textwidth]{figures/ts-acf-ar0s0}
+	\caption{ACF and PACF for ARIMA$(0,1,0) \times (0,1,0)_{36}$ residuals}
+	\label{fig:ts-acf-ar0s0}
 \end{figure}
 
-I figur \ref{fig:ts-acf-pacf} ses at der ikke er specielt store korrelationer,
-samtidig er de også rimelig konstante og derudover ligner det at afstanden mellem 2 toppe ikke er konstant
-\todo{Jeg syntes den er pænt konstant i ACF, det at den er svær at se i PACF, indikere måske at der intet \texttt{SAR} led er. /A}
-(der er ikke en klar sæson længde); alle disse faktorer  er indikatorer på at en ARIMA-model er et dårligt model valg.
-Men hvis man skulle gøre et forsøg på at konstruere en model så siger teorien \cite[s.~155]{time-series-analysis} at:
+Using the PACF in Figure \ref{fig:ts-acf-ar0s0} and the rules for the AR term \cite[Table~6.1]{time-series-analysis} \texttt{AR(2)}, seams like a good guess for the non-seasonal AR term.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ts-acf-ar2s0}
+	\caption{ACF and PACF for ARIMA$(2,1,0) \times (0,1,0)_{36}$ residuals}
+	\label{fig:ts-acf-ar2s0}
+\end{figure}
 
-\begin{itemize}
-\item Ud fra ACF'en kan aflæses MA-led. Der er en peak på 3. lag, mens 4. og 5. lag er meget tæt på at være under signifikans grænsen -  dette kunne indikere op til MA(3)-led.
-Ligeledes hvis man antager at funktionen er periodisk med svigninger per år, så kan man aflæse fra ACF'en at processen har op til SMA(4)-led.
+This clearly fitted the non-seasonal trend. From Figure \ref{fig:ts-acf-ar0s0} it might have looked like there was a \texttt{AR(3)} or \texttt{MA(2)} term, but the \texttt{AR(2)} is the simplest of those and fit the trend just fine. The seasonal part is now extremely apparent in Figure \ref{fig:ts-acf-ar2s0}, where it looks like either an \texttt{SAR(2)}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ts-acf-ar2s2}
+	\caption{ACF and PACF for ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals}
+	\label{fig:ts-acf-ar2s2}
+\end{figure}
 
-\item Fra PACF-plottet kan AR-ledet aflæses. Med helt samme analoge metoder som ovenfor aflæses AR(3) og SAR(1) led.
-Men igen, korrelationerne er endnu lavere i PACF'en end i ACF'en. 
-\end{itemize}
+From just looking at the estimated ACF and PACF in Figure \ref{fig:ts-acf-ar2s2}, ARIMA$(2,1,0) \times (2,1,0)_{36}$ seams like a good choice. To finally validate the model, a good start is to look at the residuals.
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=5cm]{figures/ts-final-residual}
+	\caption{ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals. The first 111 residuals have been skipped since they can't be estimated correctly.}
+	\label{fig:ts-final-residual}
+\end{figure}
 
-Ud fra ovenstående estimeres en SARIMA model i R (Appendix \ref{first-R}) .
-Mange af parametrene var dog ikke statistisk signifikant forskellige fra 0, de mindst vigtige parametre blev derfor iterativt fjernet, tilbage er følgende parametre:
-\begin{lstlisting}
-ARIMA(3,1,2)(0,1,1)[36]                    
+Figure \ref{fig:ts-final-residual} looks stationary, there are no outliers nor seasonal trends. To validate the model further the Ljung-Box test can be used. This however requires the residuals to be normally distributed, a QQ-plot (Figure \ref{fig:ts-final-qq}) shows that this is the case:
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=5cm]{figures/ts-final-qq}
+	\caption{QQ-plot for the ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals.}
+	\label{fig:ts-final-qq}
+\end{figure}
 
-Coefficients:
-         ar1     ar2     ar3      ma1      ma2     sma1
-      0.1292  0.4092  0.1346  -0.3020  -0.5008  -0.7601
-s.e.  0.3551  0.2545  0.0653   0.3562   0.2860   0.0641
-\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=5cm]{figures/ts-final-ljungbox}
+	\caption{Ljung-Box test for the ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals.}
+	\label{fig:ts-final-ljungbox}
+\end{figure}
+
+From the Ljung-Box test (Figure \ref{fig:ts-final-ljungbox}) the p-value for the first many lags looks good, however after 25 it can be with 95\% confidence statically significant concluded that the residuals are correlated. In terms of pure time series analysis is makes the model quite useless, however it is still valuable to do the cross validation.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/tsDiagnostics}
-\caption{Diagnose af residualerne på en SARIMA $(3,1,2) \times (0,1,1)_{36}$ model.}
-\label{fig:ts-tsdiag}
-\end{figure}
-Som det ses i figur \ref{fig:ts-tsdiag} er residualerne ikke specielt imponerende.
-Selvom ACF, og QQ-plottet ser fornuftigt ud så kan man i Ljung-Box plottet se at det for mange lags kan statistisk afvises at residualerne er hvid støj.
-Dette indikerer stærk at der er ydeligere mønstre, som ikke er er fanget af denne SARIMA model.
-Dermed er det lidt misvise at prøve at predikter eller fortolke på modellen,
-men for komplethedens skyld skyld udregnes 12-step ahead prædiktioner og disse sammenlignes med test dataen:
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=6cm]{figures/tsPredictions}
-\caption{Trænings data i sort, predictions i rød, 95\%-konfidens interval i blå og test data i grøn.}
-\label{fig:ts-crossvalidate}
+\centerline{\includegraphics[height=5cm]{figures/ts-final-forecast}}
+\caption{Forecast on Cross Validation. Blue is the training data, green is the test data. Red is then the predicted test values with its 95\% confidence interval marked with gray lines.}
+\label{fig:ts-final-forecast}
 \end{figure}
 
-Af figur \ref{fig:ts-crossvalidate} ses det at test observationerne rent faktisk holder sig inden for 95\% konfidensintervallet,
-men det ses samtidig at mønstret/bevægelsen er meget anderledes fra den predikterede bevægelse.
-
-Man kan konkludere at modellen ikke er praktisk anvendelig.
-Hvis man ville bruge mere tid på det forventer vi dog at man kunne opnå bedre resultater med exogene variabler så som regnmængde
-\todo{men det er jo bl.a. det vi prøver at udtale os om, så anden data giver ikke mening. /A} og temperatur,altså en SARIMAX model.
+From Figure \ref{fig:ts-final-forecast} it quite clear that the test data is consistently bellow the expectation line (red). While it is still inside the 95\% confidence interval, this high correlation in the error between lags indicates that the model isn't particular useful. 
