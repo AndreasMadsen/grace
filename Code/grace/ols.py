@@ -3,6 +3,7 @@
 import numpy as np
 import times
 import load
+import pandas
 
 EARTH_OMEGA = 365.242
 
@@ -171,3 +172,27 @@ def hat_matrix(X=None, interpolate=False, frequencies=18, splines=False):
 
 	# All done
 	return H
+
+def interpolate(latIndex, lonIndex):
+	"""
+	Interpolate the ewh and time values for some latIndex and lonIndex
+	"""
+	x = load.dates[:,0].ravel()
+	y = load.grids[latIndex, lonIndex, :].ravel()
+
+	# Bind the EWH data to the raw time values
+	df = pandas.Series(y, index=x)
+
+	# Generate time values from the start date (0,0)
+	# to the end date(0,-1) with 10 days interval
+	period = load.dates[0,0] + np.arange(0, (load.dates[-1,0] - load.dates[0,0]) + 10, 10, dtype='timedelta64[D]')
+
+	# Reindex the time series, so it uses the interpolated dates,
+	# there should now be quite a few missing values
+	df = df.reindex(period)
+
+	# Interpolate all missing values
+	df = df.interpolate()
+
+	# Return interpolated GLM constructs
+	return (np.asarray(df), period)
