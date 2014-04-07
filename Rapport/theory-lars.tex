@@ -1,0 +1,18 @@
+%!TEX root=report.tex
+\subsection{Least angular regression and shrinkage (LARS)}
+We'll here briefly discuss the LARS model.
+It's almost equivalent to the linear regression, except that instead of only minimizing the sum of squares, a L1-norm penalty as added on the $\beta$-vectors coefficients.
+\begin{equation}
+MIN: (Y-\hat{Y}).T (Y-\hat{Y}) | \{||\beta||_1<s\}
+\end{equation}
+
+The LARS algorithm \footnote{source:statweb.stanford.edu/~tibs/lasso/simple.html} solves this problem by initially letting all the $\beta$ coeffients be zero.
+It then finds the attribute,$b_1$ with the highest absolute correlation with y and increases (or decreases depending on the sign of the correlation)
+until it reaches a point where another attribute $b_2$ has as much  correlation with the residuals $R=Y-\hat{Y}$ as  $b_i$ has.
+At this point the algorithm then increases both $b_1$ and $b_2$ in their join direction until another attribute $b_i$ has the highest residual correlation.
+This process can then be continued until there is no benefit in increasing any of the $b_i$s - that is the full LARS solution is equivalent to the linear regression.
+It should also be noted that if a coefficient crosses 0 in a iteration (step),
+that the coefficient should be set to 0, and the regression direction should subsequently be recomputed.
+
+So why might one use LARS instead of for example LASSO model with a specific $alpha$?
+Well in the LARS model you actually get the full solution path which means that you can find all the lasso solutions.

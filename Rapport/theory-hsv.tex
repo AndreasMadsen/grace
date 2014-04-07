@@ -1,0 +1,31 @@
+%!TEX root=report.tex
+\subsection{Phase and Amplitude}
+
+The $\mathbf{\beta}$ parameters in the OLS problem are linear combinations of $\cos(\omega_i t)$ and $\sin(\omega_i t)$ function pairs.
+However from a physics perspective having both $\cos(\omega_i t)$ and $\sin(\omega_i t)$ for the same $\omega_i$ have no meaning.
+Instead one should convert the $\beta$ parameters for the trigonomic functions intro amplitude and phase for a single periodic function $A_i \cos(\omega_i t + \phi_i)$.
+This is done by using Ptolemy's theorem
+\begin{equation}
+A_i \cos(\omega_i t + \phi_i) = A_i \cos(\phi_i) \cos(\omega_i t) - A_i \sin(\phi_i) \sin(\omega_i t).
+\end{equation}
+
+Comparing with the linear combination from OLS
+\begin{align}
+\hat{Y} = \cdots + \beta_{c,i} \cos(\omega) + \beta_{s,i} \sin(\omega) + \cdots
+\end{align}
+it's see that
+\begin{align}
+\beta_{c,i} = A \cos(\phi_i) && \text{ and } && \beta_{s,i} = A \sin(\phi_i).
+\end{align}
+
+By dividing these two equations with each other, $\phi_i$ can be calculated as \todo{This is not the one used in the code. (Sign diffrence)} 
+\begin{equation}
+\frac{- A_i \sin(\phi_i)}{A_i \cos(\phi_i)} = \frac{\beta_{s,i}}{\beta_{c,i}} \Rightarrow \phi_i = \arctan\left(-\frac{\beta_{s,i}}{\beta_{c,i}}\right).
+\end{equation}
+
+To isolate $A_i$, square both equations and add them together:
+\begin{equation}
+A_i^2 \cos(\phi_i)^2 + A_i^2 \sin(\phi_i)^2 = \beta_{c,i}^2 + \beta_{s,i}^2 \Rightarrow A_i = \sqrt{\beta_{c,i}^2 + \beta_{s,i}^2}.
+\end{equation}
+
+The result can be plotted with a circular color scale for the $\phi_i$ and $A$ is then the intensity of the color.

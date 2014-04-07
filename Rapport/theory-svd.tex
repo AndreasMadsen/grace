@@ -1,0 +1,39 @@
+%!TEX root=report.tex
+\subsection{SVD}
+Singular Value Decomposition (SVD) is a useful method for factorizing matrixes. According to the SVD theorem a $X$ can be expressed as
+\begin{equation}
+X=U \Sigma V^{T}.
+\label{eq:theory-svd}
+\end{equation}
+
+If the matrix $X$ have the size $m \times n$, the factorized components are \cite{introduction-to-data-mining}:
+\begin{itemize}
+\item The columns in $U$ are the eigenvectors of $X X^T$, with the size $m \times m$.
+\item The columns in $V$ are the eigenvectors of $X^T X$, with the size $n \times n$.
+\item $\Sigma$ is a diagonal matrix, consisting of the square root of the corresponding eigenvalues to the eigenvectors in $U$ and $V$.
+It has the size $m \times n$. The eigenvalues are also called ``singular values''.
+\end{itemize}
+
+In the case where $X$ has have many more rows than columns, the $U$ matrix will contain more eigenvectors than what is useful and the $\Sigma$ matrix will have lots of zero-rows.
+A so called \textit{economy-size} is therefore often used.
+The difference being all the redundant eigenvectors in $U$ are removed, so it has the size $m \times n$ and the zero-rows from $\Sigma$ are also removed, so its size becomes $n \times n$.
+
+An important property of SVD is that the $V$ matrix contains all eigenvectors and is therefore an orthogonal matrix, for which it known that
+\begin{align}
+Q^T = Q^{-1} && Q Q^T = I && Q^T Q = I && \text{, where Q is an orthogonal matrix.}
+\end{align}
+
+In the normal SVD (not \textit{economy-size}) $U$ is also a complete orthogonal matrix.
+However in \textit{economy-size} some of the columns have been removed, so its only known that $U^T U = I$.
+
+In statistics its normal to rearrange the matrices in $U \Sigma V^T$, so the largest values in $\Sigma$ appears first in the diagonal.
+The reason being that $V$ is a basis matrix from the original space to another orthogonal space.
+Here the first axis have the largest variance, the second axis have the second highest variance and so on.
+The variance described by each axis, is given by the diagonal elements in $\Sigma^2$.
+Typically this is calculated as a percentage called ``variance explained by principal components'' using
+\begin{equation}
+\rho_{jj} = \frac{\Sigma^2_{jj}}{\sum_{i=1}^n \Sigma^2_{ii}}.
+\end{equation}
+
+It's often seen that most of the variance can be described using very few components, thus one can reduce the dimensionality of a dataset.
+These methods are called ``Principal Component Analysis (PCA)'', where a ``principal component'' should be understood as the axes in the transformed space.

@@ -1,0 +1,36 @@
+%!TEX root=report.tex
+\subsection{Design matricen $X$}
+Design matricen er $X$ matrix i OLS regression, hvis kolonner indgå i en linear kombination til at beskrive $Y$.
+I tilfældet for GRACE data er de eneste ``$x$'' værdier tiden ($\mathbf{t}$), og som udgangspunkt vil $X$ derfor have formatet:
+\begin{equation}
+X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} \end{matrix}\right].
+\end{equation} 
+Dette vil betyde at $\hat{Y}$ skal beskrives som $\beta_1 + \beta_2 t$, hvor $\beta_1$ vil være startværdien (uinteressant) og $\beta_2$ vil være hastigheden i udviklingen.
+Det fremkommer således naturligt at også have accelerationen i udviklingen med:
+\begin{equation}
+X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} & \frac{1}{2} \mathbf{t}^2 \end{matrix}\right]
+\end{equation} 
+
+Fra Fourier analyse vides det, at funktioner kan anproximeres en uendelige sum af sinus og cosinus funktioner.
+Disse trigonometriske funktioner er periodiske og kan således indeholde periodiske signaler, der måtte forkomme i den funktion, man ønsker at approximere.
+
+I GRACE datasættet er der dog ikke en uendelig lille afstand (i tiden) imellem målingerne, en uendelig række af sinus og cosinus funktioner benyttes derfor ikke.
+I stedet antages det, at den største forekommende svingning er en årssvingning ($365.242$ dage).
+Den mindste svingning(frekvens) som man kan observere når man sampler et signal er Nyquist frekvensen.
+I GRACE tilfældet er der 10 dage imellem hver måling, Nyquist frekvensen bliver så $\frac{1}{2 \cdot 10} = \sfrac{1}{20}$ dage.
+Dette svarer ca til 18 svingninger pr. år da $\sfrac{365.242}{18} \approx 20.29$. Således fås den endelige design matrix
+\begin{equation*}
+\resizebox{\textwidth}{!}{$
+X = \left[\begin{matrix}
+	\mathbf{1} &
+	\mathbf{t} &
+	\frac{1}{2} \mathbf{t}^2 &
+	\cos\left( \frac{2 \pi}{\frac{365.242}{1}} \mathbf{t} \right) &
+	\sin\left( \frac{2 \pi}{\frac{365.242}{1}} \mathbf{t} \right) &
+	\cdots &
+	\cos\left( \frac{2 \pi}{\frac{365.242}{18}} \mathbf{t} \right) &
+	\sin\left( \frac{2 \pi}{\frac{365.242}{18}} \mathbf{t} \right)
+\end{matrix}\right].
+$}
+\end{equation*}
+
