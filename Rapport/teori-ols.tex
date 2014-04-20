@@ -1,0 +1,118 @@
+%!TEX root=report.tex
+\subsection{OLS}
+I OLS (Ordinary Least Squares regression) er man interesseret i at finde sammenhængen mellem én eller flere variable ($X$) og middelniveauet af én afhængig variabel ($Y$).
+Idet at man med $\beta$ vektoren forsøger at udtrykke $Y$ som en lineær funktion af $X$, fås det lineær udtryk
+\begin{align}
+Y=X \beta +\epsilon && \text{, hvor } \mathrm{E}[\epsilon] = 0 \text{ og } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
+\end{align}
+
+I ovenstående ligning er $\beta$-vektoren den ukendte parameter, der skal bestemmes, mens $\epsilon$ er en vektor der indeholder residualerne.
+Ofte vil man bruge $\beta$ til at forudsige $Y$ værdier, men i tilfældet med GRACE data er det selve $\beta$ værdierne, som er interessante.
+
+\subsubsection{Løsning til OLS problemet}
+I OLS leder man efter den $\beta$ vektor der minimerer summen af $\epsilon$ elementernes kvadrater (deraf navnet ``least squares''), dvs $\epsilon^T \epsilon$.
+Det vides at $\epsilon = Y - X \beta$, hvoraf et udtryk for $\epsilon^T \epsilon$ kan opstilles
+\begin{equation}
+\begin{split}
+\epsilon^T\epsilon&=(Y-X\beta)^T (Y-X\beta)\\
+&=(Y^T-\beta^T X^T) (Y-X\beta) \\
+&=Y^T Y-\beta^T X^T Y-Y^T X \beta + \beta^T X^T X \beta \\
+&=Y^T Y- 2\beta^T X^T Y+ \beta^T X^T X \beta
+\end{split}
+\end{equation}
+
+Der differentieres nu med hensyn til $\beta$:
+\begin{equation}
+\begin{split}
+\frac{\partial \epsilon^T\epsilon}{\partial \beta}&=-2 X^T Y+2X^T X \beta=2(-X^T Y+X^T X \beta).
+\end{split}
+\end{equation}
+
+Nu kan $\epsilon^T \epsilon$'s minimum findes ved at løse for $\frac{\partial \epsilon^T\epsilon}{\partial \beta} = 0$
+\begin{equation}
+\begin{split}
+\frac{\partial \epsilon^T\epsilon}{\partial \beta} = 0 \Rightarrow 2(-X^T Y+X^T X \hat{\beta}) &= 0 \\
+X^T X \hat{\beta}&=X^T Y \\
+\hat{\beta}&=(X^T X)^{-1} X^T Y.
+\end{split}
+\end{equation}
+
+Ovenfor står den formelle løsning på OLS problemet \cite[s.~12]{statistical-learning}, men hvis $X$ er dårligt konditioneret er det ikke sikkert at $(X^T X)^{-1}$ numerisk stabilit.
+Dette vil typisk være tilfældet hvis kolonnerne i $X$ har en høj korrelation (altså at $X$ er tæt på singulær). \todo{kilde, husker det er enten Henrik eller Allan}
+For at undgå dette problem faktoriseres $X$; i denne rapport er det konsekvent gjort med SVD
+\begin{equation}
+\begin{split}
+\hat{\beta} &= (X^T X)^{-1} X^T Y \\
+&= \left( \left(U \Sigma V^T\right)^T \left(U \Sigma V^T\right) \right)^{-1} \left(U \Sigma V^T \right)^T Y \\
+&= \left( V \Sigma^2 V^T \right)^{-1} \left(U \Sigma V^T \right)^T Y \\
+&= V \Sigma^{-1} U^T Y.
+\end{split}
+\end{equation}
+
+Det bør her bemærkes, at når flere $\beta$ vektorer skal udregnes, (i GRACE data har hver position en $\beta$ vektor) kan dette gøres ``smart'' ved have $Y$ som en matrix,
+med positionerne som kolonner, således vil $\beta$ også være en matrix som indeholder de estimerede parameter for alle positioner.
+
+\subsubsection{Hat-matricen}
+I tilfældet med at analysere GRACE data, ønsker man at estimere EWH forskellige steder.
+Fordi $X$ matricen (som indholder tidsafledte værdier) ikke ændrer sig afhængig af positionen, er det en fordel at benytte ``hat-matricen'' til estimering af $Y$ værdierne.
+Idéen er at hat-matricen udelukkende afhænger af $X$ og når ganget med $Y$ givet den estimatet $\hat{Y}$ ($H$ sætter hatten på $Y$):
+\begin{equation}
+\begin{split}
+\hat{Y} &= X \hat{\beta} \Rightarrow \hat{Y} = X V \Sigma^{-1} U^T Y \\
+\hat{Y} &= H X \quad \text{, hvor } H = X V \Sigma^{-1} U^T.
+\end{split}
+\end{equation}
+
+Igen kan $\hat{Y}$ udregnes for flere $Y$'er simultant, ved at lade $Y$ være en matrix.
+
+En vigtig egenskab ved $H$ matricen er at den er idempotent, hvilket betyder at $H^2 = H$.
+Grunden til dette kan geometrisk forstås som at $H$ projektere Y ned på $\hat{Y}$.
+Hvis man så gange med $H^2$ er det $\hat{Y}$ som projekters ned på $\hat{Y}$ og der er således ingen ændring sket.
+
+\subsubsection{Root Mean Squared Error}
+
+``Root Mean Squared Residuals'' (RMSE) er et mål for hvor godt ens estimat af $Y$ værdierne er.
+Det udregnes som
+\begin{equation}
+\hat{\sigma} = \sqrt{\frac{\left(Y - \hat{Y}\right)^T \left(Y - \hat{Y}\right)}{N-p}},
+\end{equation}
+
+hvor $p$ er antallet af parametre (elementer i $\beta$) og $N$ er antallet af observationer (elementer i $Y$).
+RMSE er et estimat for standard afvigelsen på $Y$ \cite[theorem~3.4]{time-series-analysis} deraf symbolet $\hat{\sigma}$.
+
+\subsubsection{Variansen på $\hat{Y}$}
+
+Dispensationen på $\hat{Y}$ udregnes som:
+\begin{equation}
+\mathrm{D}[\hat{Y}] = \mathrm{D}[H Y] = H \mathrm{D}[Y] H^T = \sigma^2 H^2 = \sigma^2 H
+\end{equation}
+
+Variansen på $\hat{Y_i}$ er diagonalelementet i $\mathrm{D}[\hat{Y}]$:
+\begin{equation}
+\mathrm{Var}[\hat{Y_i}] = \sigma^2 diag(H_{ii})
+\end{equation}
+
+Fordi $\sigma^2$ er en skalar, er diagonalen på $H$ vigtig at undersøge, da den vil afsløre eventuelle tidspunkter (i GRACE sammenhænge) som har høj varians.
+
+\subsubsection{Dispension på $\hat{\beta}$}
+
+Dispension på $\hat{\beta}$ udregnes som \cite[theorem~3.2]{time-series-analysis}:
+\begin{equation}
+\mathrm{D}[\hat{\beta}] = \sigma^2 (X^T X)^{-1} = \sigma^2 V \Sigma^{-2} V^T
+\end{equation}
+
+Idet $\sigma^2$ er en skalar og afhænger af $Y$, kan udtrykket gøres positionsuafhængigt (i GRACE sammenhænge) ved udelukkende at se på $V \Sigma^{-2} V^T$.
+
+\subsubsection{p-værdier for $\hat{\beta}$}
+
+p-værdier for OLS parametre udregnes ved først at udregne t-værdien \cite{t-value-ols}:
+\begin{align}
+\mathrm{t} = \frac{\beta_i}{\mathrm{SD}[\beta_i]} && \text{hvor: } \mathrm{SD}[\beta_i] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }
+\end{align}
+
+Selve p-værdien udregnes så ved at bruge ``student's t cumulative distribution function'' ($\Phi_t$) på t-værdien, med $N - p$ frihedsgrader:
+\begin{equation}
+p = \Phi_t\left(\mathrm{t}, N-p\right)
+\end{equation}
+
+Her er nulhypotesen at $\beta_i = 0$ og den alternative hypotese er at $\beta_i \not = 0$.

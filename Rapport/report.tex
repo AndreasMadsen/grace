@@ -1,0 +1,80 @@
+
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}	% Flere sprog tegnsæt (fx æøå)
+\usepackage[english]{babel}	% Engelsk orddeling og caption tekst
+\usepackage[T1]{fontenc}		% Brug 8-bit front
+\usepackage{lmodern}		% Vektor front
+
+\usepackage{graphicx}	% Kompatibilitet til visning af pixel billeder (.png, .jpg, .gif)
+\usepackage{epstopdf}	% Kompatibilitet til visning af vector billeder (.eps)
+\usepackage{float}		% TIllader H som positions parameter
+\usepackage{mathtools}	% Det meste matematik (indeholder ams­math og rettelser)
+\usepackage{amssymb}	% Flere matematiske symboler
+\usepackage{xfrac}		% Flere fracs (\sfrac{}{})
+\usepackage{qtree}		% Tableau træ
+\usepackage{listings}	% Indsæt code
+\usepackage{fancyhdr}	% Side hoved og sidefod
+\usepackage{todonotes}	% Cool todo notes, [disable] skjuler todos
+\usepackage{parskip}	% Tillader paragraph vertical margin
+\usepackage{url}		% Tillader \url formatering
+\usepackage{subcaption}	% Tilader subfigure og subtable samt captions i dem
+\usepackage{csquotes}	% Anbefalet package for BibLaTeX
+\usepackage[backend=bibtex,style=ieee]{biblatex}				% Benyt BibLaTeX til formatering
+\usepackage[bookmarks,bookmarksnumbered,hidelinks]{hyperref} % clickable pdf (til sidst)
+
+%listing settings, æøå support, font config, line number, left lines
+\lstset{
+    breakatwhitespace=false, breaklines=true,
+    inputencoding=utf8, extendedchars=true,
+    literate={å}{{\aa}}1 {æ}{{\ae}}1 {ø}{{\o}}1 {Å}{{\AA}}1 {Æ}{{\AE}}1 {Ø}{{\O}}1,
+    keepspaces=true, basicstyle=\small\ttfamily,
+    frame=L, numbers=left, numberstyle=\scriptsize\color{gray},
+} 
+
+% Referencer bliver i to trin, #section.#count
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\addbibresource{sources.bib}					% Tilføjer sources.bib som reference katalog
+\setlength{\marginparwidth}{80pt} 				% Mere brede på margin notes og todos
+\setlength{\parindent}{15pt}					% Giver lidt luft imellem afsnitene
+\setlength{\parindent}{0cm}   					% Deaktiver afsnit indrykning
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.gif}	% ændre til .png, .jpg for hurtig visning
+\pagestyle{fancy}
+
+\begin{document}
+
+\title{Analyse af globale GRACE-data}
+\author{Andreas Madsen – s123598\\Frederik Wolgast Rørbech - s123956}
+\date{Afleveringstidspunkt skal aftales med vejlederen $\approx$ Juni 2014 ?}
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+\pagebreak
+
+\input{problemformulering}
+
+\input{data}
+
+\pagebreak
+\section{Theory}
+\input{theory-svd}
+\input{teori-ols}
+\input{teori-design}
+\input{theory-hsv}
+\input{theory-lars}
+
+\section{Resultater}
+\input{resultat-ts}
+\input{resultat-lars}
+
+\pagebreak
+\input{appendix}
+
+\pagebreak
+\printbibliography
+
+\end{document}
