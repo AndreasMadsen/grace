@@ -1,17 +1,20 @@
 %!TEX root=report.tex
 \subsection{OLS}
-I OLS (Ordinary Least Squares regression) er man interesseret i at finde sammenhængen mellem én eller flere variable ($X$) og middelniveauet af én afhængig variabel ($Y$).
-Idet at man med $\beta$ vektoren forsøger at udtrykke $Y$ som en lineær funktion af $X$, fås det lineær udtryk
+OLS (Ordinary Least Squares regression) is used for finding the best linear transformations of one or more variables independent $X$ which on average predicts the dependent variable $Y$.
+This is done by a matrix-vector product between a $\beta$ vector and $X$.
+Since $X$ can be custom tailored for various purposes it is often referred to as the design matrix.
+
 \begin{align}
-Y=X \beta +\epsilon && \text{, hvor } \mathrm{E}[\epsilon] = 0 \text{ og } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
+Y=X \beta +\epsilon && \text{, where } \mathrm{E}[\epsilon] = 0 \text{ and } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
 \end{align}
 
-I ovenstående ligning er $\beta$-vektoren den ukendte parameter, der skal bestemmes, mens $\epsilon$ er en vektor der indeholder residualerne.
-Ofte vil man bruge $\beta$ til at forudsige $Y$ værdier, men i tilfældet med GRACE data er det selve $\beta$ værdierne, som er interessante.
+In the equation above the $\beta$-vector is the unkown parameter which needs to be determined while  $\epsilon$ is a vector containing the variance which the model can't account for (residuals).
+Often the purpose of $\beta$ is to propagate predictions of $Y$ for yet unknown $X$-rows, but in this case we want to analyse the individual $\beta_i$ elements.
 
-\subsubsection{Løsning til OLS problemet}
-I OLS leder man efter den $\beta$ vektor der minimerer summen af $\epsilon$ elementernes kvadrater (deraf navnet ``least squares''), dvs $\epsilon^T \epsilon$.
-Det vides at $\epsilon = Y - X \beta$, hvoraf et udtryk for $\epsilon^T \epsilon$ kan opstilles
+\subsubsection{The solution to the OLS problem}
+As the name eludes, the OLS method minimises the sum of squared residuals ($arg_\beta min \epsilon^T \epsilon$).
+It is seen directly that $\epsilon = Y - X \beta$ and thus the following is obtained.
+
 \begin{equation}
 \begin{split}
 \epsilon^T\epsilon&=(Y-X\beta)^T (Y-X\beta)\\
@@ -21,14 +24,14 @@ Det vides at $\epsilon = Y - X \beta$, hvoraf et udtryk for $\epsilon^T \epsilon
 \end{split}
 \end{equation}
 
-Der differentieres nu med hensyn til $\beta$:
+One can now differentiate with respect to the $\beta$ vector.
 \begin{equation}
 \begin{split}
 \frac{\partial \epsilon^T\epsilon}{\partial \beta}&=-2 X^T Y+2X^T X \beta=2(-X^T Y+X^T X \beta).
 \end{split}
 \end{equation}
 
-Nu kan $\epsilon^T \epsilon$'s minimum findes ved at løse for $\frac{\partial \epsilon^T\epsilon}{\partial \beta} = 0$
+Now  $\epsilon^T \epsilon$'s minimum is given by solving for $\frac{\partial \epsilon^T\epsilon}{\partial \beta} = 0$
 \begin{equation}
 \begin{split}
 \frac{\partial \epsilon^T\epsilon}{\partial \beta} = 0 \Rightarrow 2(-X^T Y+X^T X \hat{\beta}) &= 0 \\
@@ -37,9 +40,8 @@ X^T X \hat{\beta}&=X^T Y \\
 \end{split}
 \end{equation}
 
-Ovenfor står den formelle løsning på OLS problemet \cite[s.~12]{statistical-learning}, men hvis $X$ er dårligt konditioneret er det ikke sikkert at $(X^T X)^{-1}$ numerisk stabilit.
-Dette vil typisk være tilfældet hvis kolonnerne i $X$ har en høj korrelation (altså at $X$ er tæt på singulær). \todo{kilde, husker det er enten Henrik eller Allan}
-For at undgå dette problem faktoriseres $X$; i denne rapport er det konsekvent gjort med SVD
+The solution above is formally correct \cite[s.~12]{statistical-learning}, but if $X$ is badly conditioned $(X^T X)^{-1}$ might not be numerically stable (i.e. if the columns in $X$ are highly correlated leading to a near singular $X$).\todo{kilde, husker det er enten Henrik eller Allan}
+To avoid this problem $X$ should be factorised and the solution reformulated; in this report we will exclusively do this using SVD.
 \begin{equation}
 \begin{split}
 \hat{\beta} &= (X^T X)^{-1} X^T Y \\
@@ -49,13 +51,11 @@ For at undgå dette problem faktoriseres $X$; i denne rapport er det konsekvent 
 \end{split}
 \end{equation}
 
-Det bør her bemærkes, at når flere $\beta$ vektorer skal udregnes, (i GRACE data har hver position en $\beta$ vektor) kan dette gøres ``smart'' ved have $Y$ som en matrix,
-med positionerne som kolonner, således vil $\beta$ også være en matrix som indeholder de estimerede parameter for alle positioner.
+It should be noted, that when multiple $\beta$ vector needs to be calculated (one vector for each spatial location on the surface) further optimizations are possible.
+By arranging $Y$ as a matrix with each column corresponding to a location, $\beta$ will be a matrix containing all solutions instead of a vector containing only one solution.
 
-\subsubsection{Hat-matricen}
-I tilfældet med at analysere GRACE data, ønsker man at estimere EWH forskellige steder.
-Fordi $X$ matricen (som indholder tidsafledte værdier) ikke ændrer sig afhængig af positionen, er det en fordel at benytte ``hat-matricen'' til estimering af $Y$ værdierne.
-Idéen er at hat-matricen udelukkende afhænger af $X$ og når ganget med $Y$ givet den estimatet $\hat{Y}$ ($H$ sætter hatten på $Y$):
+\subsubsection{The ``Hat" matrix}
+In the special case of the GRACE data, the $X$ matrix (containing the time of measurements and transformations of the time) is identical for every position. This can be exploited by constructing a hat matrix$H$ which only depends on $X$ and projects $Y$ onto $\hat{Y}$ (puts the hat on $Y$).
 \begin{equation}
 \begin{split}
 \hat{Y} &= X \hat{\beta} \Rightarrow \hat{Y} = X V \Sigma^{-1} U^T Y \\
@@ -63,56 +63,59 @@ Idéen er at hat-matricen udelukkende afhænger af $X$ og når ganget med $Y$ gi
 \end{split}
 \end{equation}
 
-Igen kan $\hat{Y}$ udregnes for flere $Y$'er simultant, ved at lade $Y$ være en matrix.
+As earlier with $\beta$, the hat matrix can be calculated for all $Y$ vectors by horizontally stacking $Y$s to form a matrix.
 
-En vigtig egenskab ved $H$ matricen er at den er idempotent, hvilket betyder at $H^2 = H$.
-Grunden til dette kan geometrisk forstås som at $H$ projektere Y ned på $\hat{Y}$.
-Hvis man så gange med $H^2$ er det $\hat{Y}$ som projekters ned på $\hat{Y}$ og der er således ingen ændring sket.
+An important propoerty of the $H$ matrix is that it is idempotent ($H^2 = H$).
+Remember that $H$ was a projection matrix which projected $Y$ onto $\hat{Y}$.
+So if one were to project $Y$ onto $\hat{Y}$ and then project again, of course nothing happens because one is already in the $\hat{Y}$-plane.
 
 \subsubsection{Root Mean Squared Error}
 
-``Root Mean Squared Residuals'' (RMSE) er et mål for hvor godt ens estimat af $Y$ værdierne er.
-Det udregnes som
+``Root Mean Squared Residuals'' (RMSE) is an indicator of how good an $Y$ estimate is.
+It can be calculated as
 \begin{equation}
 \hat{\sigma} = \sqrt{\frac{\left(Y - \hat{Y}\right)^T \left(Y - \hat{Y}\right)}{N-p}},
 \end{equation}
 
-hvor $p$ er antallet af parametre (elementer i $\beta$) og $N$ er antallet af observationer (elementer i $Y$).
-RMSE er et estimat for standard afvigelsen på $Y$ \cite[theorem~3.4]{time-series-analysis} deraf symbolet $\hat{\sigma}$.
+where $p$ is the number of parameters (elements in $\beta$) and $N$ is the number of observations (elements in $Y$).
+RMSE is an estimate for the standard deviation of $Y$ \cite[theorem~3.4]{time-series-analysis} thus the symbol $\hat{\sigma}$.
 
-\subsubsection{Variansen på $\hat{Y}$}
 
-Dispensationen på $\hat{Y}$ udregnes som:
+\subsubsection{The variance of $\hat{Y}$}
+
+The dispersion (variance-covariance) of $\hat{Y}$ can be calculated as
 \begin{equation}
 \mathrm{D}[\hat{Y}] = \mathrm{D}[H Y] = H \mathrm{D}[Y] H^T = \sigma^2 H^2 = \sigma^2 H
 \end{equation}
 
-Variansen på $\hat{Y_i}$ er diagonalelementet i $\mathrm{D}[\hat{Y}]$:
+The variance of $\hat{Y_i}$ is given by the diagonal elements ini $\mathrm{D}[\hat{Y}]$:
 \begin{equation}
 \mathrm{Var}[\hat{Y_i}] = \sigma^2 diag(H_{ii})
 \end{equation}
 
-Fordi $\sigma^2$ er en skalar, er diagonalen på $H$ vigtig at undersøge, da den vil afsløre eventuelle tidspunkter (i GRACE sammenhænge) som har høj varians.
+Because $\sigma^2$ is a scalar, the diagonal in $H$ is important to examine, since it can reveal potentiel elements (in our case points of time) with high variance in the predictions.
 
-\subsubsection{Dispension på $\hat{\beta}$}
+\subsubsection{The dispersion of $\hat{\beta}$}
 
-Dispension på $\hat{\beta}$ udregnes som \cite[theorem~3.2]{time-series-analysis}:
+The dispersion of $\hat{\beta}$ is calculated as \cite[theorem~3.2]{time-series-analysis}:
 \begin{equation}
 \mathrm{D}[\hat{\beta}] = \sigma^2 (X^T X)^{-1} = \sigma^2 V \Sigma^{-2} V^T
 \end{equation}
 
-Idet $\sigma^2$ er en skalar og afhænger af $Y$, kan udtrykket gøres positionsuafhængigt (i GRACE sammenhænge) ved udelukkende at se på $V \Sigma^{-2} V^T$.
+Seeing as $\sigma^2$ is a scalar and dependent of $Y$, the expression can be made independent of position (because of identical $X$ matrices) by looking exclusively at $V \Sigma^{-2} V^T$.
 
-\subsubsection{p-værdier for $\hat{\beta}$}
 
-p-værdier for OLS parametre udregnes ved først at udregne t-værdien \cite{t-value-ols}:
+\subsubsection{P-values for $\hat{\beta}$}
+
+To calculate p-values for OLS parameters we assume that they follow the student's t-distribution and thus firstly need to calculate the t-value \cite{t-value-ols}:
 \begin{align}
 \mathrm{t} = \frac{\beta_i}{\mathrm{SD}[\beta_i]} && \text{hvor: } \mathrm{SD}[\beta_i] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }
 \end{align}
 
-Selve p-værdien udregnes så ved at bruge ``student's t cumulative distribution function'' ($\Phi_t$) på t-værdien, med $N - p$ frihedsgrader:
+Now by plucking the t-value into the CDF ``student's t cumulative distribution function'' ($\Phi_t$) , and adjusting the degrees of freedom to $N - p$ we get
 \begin{equation}
 p = \Phi_t\left(\mathrm{t}, N-p\right)
 \end{equation}
 
-Her er nulhypotesen at $\beta_i = 0$ og den alternative hypotese er at $\beta_i \not = 0$.
+The null-hypothesis is that $\beta_i = 0$ and the alternate hypothesis is $\beta_i \not = 0$.
+

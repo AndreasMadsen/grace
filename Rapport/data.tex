@@ -2,9 +2,9 @@
 \section{Data}
 
 The GRACE dataset can be downloaded from GRGS \cite{GRACE-data-source}.
-In this analysis it is the EWH dataset from release 2 in the GRGS format with a 10-day interval.
+This report is based on the Equivalent Water Height (from here on denoted EWH)  dataset  from release 2 in the GRGS format with a 10-day interval.
 
-This dataset contains a quite a few text files, each contain information in its filename and its content.
+This dataset contains quite a few text files, each containing information in both its filename and its content.
 The filenames have the format:
 
 \begin{lstlisting}
@@ -13,13 +13,14 @@ grid.water.10day_model_minus_RL02MF.19212_19221.txt
 ...
 \end{lstlisting}
 
-In the filename, it is the last two numbers (e.q. \texttt{19202\_19211}) there are important.
+In the filename, the last two numbers (e. g. \texttt{19202\_19211}) there are important.
 These numbers contains the start and end date for the file content.
-Both numbers are the amount of days since ``1950-01-01'', where the first number is the start date and the last number is the end date. \cite{GRACE-data-format-dates}
+Both numbers are the amount of days since ``1950-01-01'', where the first number denotes the start date and the last number the end date of the period for which the measurements are valid. \cite{GRACE-data-format-dates}
 
 The actual content of each text file should be read as a ``Space Separated Values'' format.
-When this is done one will have a $6480 \times 10$ matrix, this should then be \texttt{reshape}'ed row-wise intro a $180 \times 360$ matrix.
-The result are a matrix with decreasing latitude on the rows and increasing longitude on the columns. \cite{GRACE-data-format-grids}
+When this is done one will have a $6480 \times 10$ matrix. 
+This matrix can then be \texttt{reshape}'ed row-wise intro a $180 \times 360$ matrix.
+The result is a matrix with decreasing latitude on the rows and increasing longitude on the columns. \cite{GRACE-data-format-grids}
 
 \subsection{Data example}
 
@@ -38,5 +39,5 @@ The result are a matrix with decreasing latitude on the rows and increasing long
 \end{figure}
 
 From Figure \ref{fig:data-example-world} a local mass loss at Greenland and the South Pole is seen, this is likely caused by the ice melting.
-A mass increment at South America can also been seen, this is likely caused by the rainy season.
+A mass increment in South America can also been seen, this is likely caused by the rain season.
 On Figure \ref{fig:data-example-scatter}, mass loss with a yearly periodic trend is seen.
