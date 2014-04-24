@@ -2,7 +2,7 @@
 \section{Data}
 
 The GRACE dataset can be downloaded from GRGS \cite{GRACE-data-source}.
-This report is based on the Equivalent Water Height (from here on denoted EWH)  dataset  from release 2 in the GRGS format with a 10-day interval.
+This report is based on the Equivalent Water Height (denoted EWH) dataset from release 2 in the GRGS format with a 10-day interval.
 
 This dataset contains quite a few text files, each containing information in both its filename and its content.
 The filenames have the format:
@@ -13,9 +13,9 @@ grid.water.10day_model_minus_RL02MF.19212_19221.txt
 ...
 \end{lstlisting}
 
-In the filename, the last two numbers (e. g. \texttt{19202\_19211}) there are important.
+In the filename, the last two numbers (e.g. \texttt{19202\_19211}) there are important.
 These numbers contains the start and end date for the file content.
-Both numbers are the amount of days since ``1950-01-01'', where the first number denotes the start date and the last number the end date of the period for which the measurements are valid. \cite{GRACE-data-format-dates}
+Both numbers are the amount of days since ``1950-01-01'', where the first number denotes the start date and the last number the end date of the period for the measurements. \cite{GRACE-data-format-dates}
 
 The actual content of each text file should be read as a ``Space Separated Values'' format.
 When this is done one will have a $6480 \times 10$ matrix. 

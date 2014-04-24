@@ -3,18 +3,16 @@
 OLS (Ordinary Least Squares regression) is used for finding the best linear transformations of one or more variables independent $X$ which on average predicts the dependent variable $Y$.
 This is done by a matrix-vector product between a $\beta$ vector and $X$.
 Since $X$ can be custom tailored for various purposes it is often referred to as the design matrix.
-
 \begin{align}
 Y=X \beta +\epsilon && \text{, where } \mathrm{E}[\epsilon] = 0 \text{ and } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
 \end{align}
 
 In the equation above the $\beta$-vector is the unkown parameter which needs to be determined while  $\epsilon$ is a vector containing the variance which the model can't account for (residuals).
-Often the purpose of $\beta$ is to propagate predictions of $Y$ for yet unknown $X$-rows, but in this case we want to analyse the individual $\beta_i$ elements.
+Often the purpose of $\beta$ is to predict $Y$, but in this case we want to analyse the individual $\beta_i$ elements.
 
 \subsubsection{The solution to the OLS problem}
-As the name eludes, the OLS method minimises the sum of squared residuals ($arg_\beta min \epsilon^T \epsilon$).
+As the name sugest, the OLS method minimizes the sum of squared residuals ($\epsilon^T \epsilon$).
 It is seen directly that $\epsilon = Y - X \beta$ and thus the following is obtained.
-
 \begin{equation}
 \begin{split}
 \epsilon^T\epsilon&=(Y-X\beta)^T (Y-X\beta)\\
@@ -24,7 +22,7 @@ It is seen directly that $\epsilon = Y - X \beta$ and thus the following is obta
 \end{split}
 \end{equation}
 
-One can now differentiate with respect to the $\beta$ vector.
+One can now differentiate with respect to the $\beta$ vector
 \begin{equation}
 \begin{split}
 \frac{\partial \epsilon^T\epsilon}{\partial \beta}&=-2 X^T Y+2X^T X \beta=2(-X^T Y+X^T X \beta).
@@ -40,7 +38,7 @@ X^T X \hat{\beta}&=X^T Y \\
 \end{split}
 \end{equation}
 
-The solution above is formally correct \cite[s.~12]{statistical-learning}, but if $X$ is badly conditioned $(X^T X)^{-1}$ might not be numerically stable (i.e. if the columns in $X$ are highly correlated leading to a near singular $X$).\todo{kilde, husker det er enten Henrik eller Allan}
+The solution above is formally correct \cite[s.~12]{statistical-learning}, but if $X$ is badly conditioned $(X^T X)^{-1}$ might not be numerically stable (i.e. if the columns in $X$ are highly correlated leading to a near singular $X^T X$). \todo{kilde, husker det er enten Henrik eller Allan}
 To avoid this problem $X$ should be factorised and the solution reformulated; in this report we will exclusively do this using SVD.
 \begin{equation}
 \begin{split}
@@ -51,21 +49,21 @@ To avoid this problem $X$ should be factorised and the solution reformulated; in
 \end{split}
 \end{equation}
 
-It should be noted, that when multiple $\beta$ vector needs to be calculated (one vector for each spatial location on the surface) further optimizations are possible.
+It should be noted, that when multiple $\beta$ vectors needs to be calculated (one vector for each spatial location on the surface) further optimizations are possible.
 By arranging $Y$ as a matrix with each column corresponding to a location, $\beta$ will be a matrix containing all solutions instead of a vector containing only one solution.
 
 \subsubsection{The ``Hat" matrix}
-In the special case of the GRACE data, the $X$ matrix (containing the time of measurements and transformations of the time) is identical for every position. This can be exploited by constructing a hat matrix$H$ which only depends on $X$ and projects $Y$ onto $\hat{Y}$ (puts the hat on $Y$).
+In the special case of the GRACE data, the $X$ matrix (containing the time of measurements and transformations of the time) is identical for every position. This can be exploited by constructing a hat matrix $H$ which only depends on $X$ and projects $Y$ onto $\hat{Y}$ (puts the hat on $Y$).
 \begin{equation}
 \begin{split}
 \hat{Y} &= X \hat{\beta} \Rightarrow \hat{Y} = X V \Sigma^{-1} U^T Y \\
-\hat{Y} &= H X \quad \text{, hvor } H = X V \Sigma^{-1} U^T.
+\hat{Y} &= H X \quad \text{, where } H = X V \Sigma^{-1} U^T.
 \end{split}
 \end{equation}
 
-As earlier with $\beta$, the hat matrix can be calculated for all $Y$ vectors by horizontally stacking $Y$s to form a matrix.
+As earlier with $\beta$, the hat matrix can be calculated for all $Y$ vectors by horizontally stacking $Y$ to form a matrix.
 
-An important propoerty of the $H$ matrix is that it is idempotent ($H^2 = H$).
+An important property of the $H$ matrix is that it is idempotent ($H^2 = H$).
 Remember that $H$ was a projection matrix which projected $Y$ onto $\hat{Y}$.
 So if one were to project $Y$ onto $\hat{Y}$ and then project again, of course nothing happens because one is already in the $\hat{Y}$-plane.
 
@@ -88,12 +86,12 @@ The dispersion (variance-covariance) of $\hat{Y}$ can be calculated as
 \mathrm{D}[\hat{Y}] = \mathrm{D}[H Y] = H \mathrm{D}[Y] H^T = \sigma^2 H^2 = \sigma^2 H
 \end{equation}
 
-The variance of $\hat{Y_i}$ is given by the diagonal elements ini $\mathrm{D}[\hat{Y}]$:
+The variance of $\hat{Y_i}$ is given by the diagonal elements in $\mathrm{D}[\hat{Y}]$:
 \begin{equation}
 \mathrm{Var}[\hat{Y_i}] = \sigma^2 diag(H_{ii})
 \end{equation}
 
-Because $\sigma^2$ is a scalar, the diagonal in $H$ is important to examine, since it can reveal potentiel elements (in our case points of time) with high variance in the predictions.
+Because $\sigma^2$ is a scalar, the diagonal in $H$ is important to examine, since it can reveal potential elements (in our case points of time) with high variance in the predictions.
 
 \subsubsection{The dispersion of $\hat{\beta}$}
 
@@ -104,18 +102,16 @@ The dispersion of $\hat{\beta}$ is calculated as \cite[theorem~3.2]{time-series-
 
 Seeing as $\sigma^2$ is a scalar and dependent of $Y$, the expression can be made independent of position (because of identical $X$ matrices) by looking exclusively at $V \Sigma^{-2} V^T$.
 
+\subsubsection{p-values for $\hat{\beta}$}
 
-\subsubsection{P-values for $\hat{\beta}$}
-
-To calculate p-values for OLS parameters we assume that they follow the student's t-distribution and thus firstly need to calculate the t-value \cite{t-value-ols}:
+To calculate p-values for OLS parameters the student's t-distribution is used, with the t-score \cite{t-value-ols}
 \begin{align}
-\mathrm{t} = \frac{\beta_i}{\mathrm{SD}[\beta_i]} && \text{hvor: } \mathrm{SD}[\beta_i] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }
+\mathrm{t} = \frac{\beta_i}{\mathrm{SD}[\beta_i]} && \text{where: } \mathrm{SD}[\beta_i] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }.
 \end{align}
 
-Now by plucking the t-value into the CDF ``student's t cumulative distribution function'' ($\Phi_t$) , and adjusting the degrees of freedom to $N - p$ we get
+Now by plucking the t-score into the CDF ``student's t cumulative distribution function'' ($\Phi_t$) with $N - p$ degrees of freedom, we get
 \begin{equation}
-p = \Phi_t\left(\mathrm{t}, N-p\right)
+p = 2 \cdot \min( \Phi_t\left(\mathrm{t}, N-p\right), 1 - \Phi_t\left(\mathrm{t}, N-p\right) ).
 \end{equation}
 
 The null-hypothesis is that $\beta_i = 0$ and the alternate hypothesis is $\beta_i \not = 0$.
-
