@@ -1,24 +1,25 @@
 %!TEX root=report.tex
-\subsection{Design matricen $X$}
-Design matricen er $X$ matrix i OLS regression, hvis kolonner indgå i en linear kombination til at beskrive $Y$.
-I tilfældet for GRACE data er de eneste ``$x$'' værdier tiden ($\mathbf{t}$), og som udgangspunkt vil $X$ derfor have formatet:
+\subsection{The design matrix}
+In OLS regression, a linear combination of the columns in the design matrix,$X$,  is used to predict $Y$.
+As a starting point, the only values in $X$ are a column of ones (so as to fit in intercept) and a column containing the observed time $t$:
+
 \begin{equation}
 X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} \end{matrix}\right].
-\end{equation} 
-Dette vil betyde at $\hat{Y}$ skal beskrives som $\beta_1 + \beta_2 t$, hvor $\beta_1$ vil være startværdien (uinteressant) og $\beta_2$ vil være hastigheden i udviklingen.
-Det fremkommer således naturligt at også have accelerationen i udviklingen med:
+\end{equation}
+In the above case one would end up predicting $\hat{Y}$ as  $\beta_1 + \beta_2 t$ where $\beta_1$ will correspond to the intercept (uninteresting) and $\beta_2$ will correspond to the speed of mass loss/gain.
+From this it follows naturally to include the acceleration by adding a column:
+
 \begin{equation}
 X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} & \frac{1}{2} \mathbf{t}^2 \end{matrix}\right]
 \end{equation} 
+From Fourier analysis it is know that functions can be approximated by infinite sums of the trigonometric functions; sine and cosine.
+Trigonometric functions are periodic in their behaviour and thus are able to model periodic signals in the function that one wishes to approximate.
 
-Fra Fourier analyse vides det, at funktioner kan anproximeres en uendelige sum af sinus og cosinus funktioner.
-Disse trigonometriske funktioner er periodiske og kan således indeholde periodiske signaler, der måtte forkomme i den funktion, man ønsker at approximere.
+In the GRACE dataset, however, the measurements are recorded with a frequency of $\frac{1}{10}$ days.
+The Nyquist-Shannon sampling theorem states that one cannot find periodic signals below the Nyquist frequency which is is given as half of the sample frequency. 
+Therefore an infinite sum is not suited for approximating the function. 
+Instead it will be assumed that the maximal frequency in the data has a period of a year ($365.242$ days) while the minimal frequency will have 18 periods per year since  $\sfrac{365.242}{18} \approx 20.29$. Hence it follows that the final design matrix will be given as
 
-I GRACE datasættet er der dog ikke en uendelig lille afstand (i tiden) imellem målingerne, en uendelig række af sinus og cosinus funktioner benyttes derfor ikke.
-I stedet antages det, at den største forekommende svingning er en årssvingning ($365.242$ dage).
-Den mindste svingning(frekvens) som man kan observere når man sampler et signal er Nyquist frekvensen.
-I GRACE tilfældet er der 10 dage imellem hver måling, Nyquist frekvensen bliver så $\frac{1}{2 \cdot 10} = \sfrac{1}{20}$ dage.
-Dette svarer ca til 18 svingninger pr. år da $\sfrac{365.242}{18} \approx 20.29$. Således fås den endelige design matrix
 \begin{equation*}
 \resizebox{\textwidth}{!}{$
 X = \left[\begin{matrix}
