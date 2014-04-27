@@ -4,8 +4,8 @@ import grace.ols
 import numpy as np
 import matplotlib.pyplot as plt
 
-X = grace.ols.design_matrix(frequencies = 1, splines = True)
-description = grace.ols.theta_description(frequencies = 1, splines = True)
+X = grace.ols.design_matrix(frequencies = 2, splines = True)
+description = grace.ols.theta_description(frequencies = 2, splines = True)
 
 # SVD factorize the X matrix, allowing for numerical stable calculation of
 # the hat matrix (H)

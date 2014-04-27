@@ -42,24 +42,24 @@ plt.setp(plt.xticks()[1], rotation=-90, fontsize = 10)
 # How may splines (the years parameter calculated internally in module.ols)
 splines = 9
 
-# Plot theta values
 plt.figure()
+
+# Intercept
 plt.subplot(4,1,1)
 plt.plot(all_days, X_all[:,0].A.ravel())
 
+# Slope
 plt.subplot(4,1,2)
-for i in range(0,splines + 1):
-	plt.plot(all_days, X_all[:,1 + i*2].A.ravel())
+plt.plot(all_days, X_all[:,1].A.ravel())
 
-# Plot theta values
+# Acceleration
 plt.subplot(4,1,3)
-for i in range(0,splines + 1):
-	plt.plot(all_days, X_all[:,2 + i*2].A.ravel())
+plt.plot(all_days, X_all[:,2].A.ravel())
 
-
+# Full Year
 plt.subplot(4,1,4)
 for i in range(0,splines + 1):
-	plt.plot(all_days, X_all[:,splines * 2 + 3 + i*2].A.ravel())
-	plt.plot(all_days, X_all[:,splines * 2 + 4 + i*2].A.ravel())
+	plt.plot(all_days, X_all[:,i * 2 + 3].A.ravel())
+	plt.plot(all_days, X_all[:,i * 2 + 4].A.ravel())
 
 plt.show()

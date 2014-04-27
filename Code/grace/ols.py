@@ -74,7 +74,7 @@ def design_matrix(t=None, frequencies=18, splines=False):
 	X = np.ones((t.size, 1))
 
 	# X = [t, 0.5 * t^2]
-	X = splines_producer(X, t, lambda t: [t, 0.5 * (t**2)], use_splines=splines)
+	X = splines_producer(X, t, lambda t: [t, 0.5 * (t**2)], use_splines=False)
 
 	# X = [X, cos, sin, ...]
 	# Max frequency is omega = 365.242 days per year. Samples come
@@ -98,7 +98,7 @@ def theta_description(frequencies=18, splines=False):
 	names = splines_description(names, lambda t: [
 		"slope (" + t + ")",
 		"acc. (0.5 * (" + t + ")^2)"
-	], use_splines = splines)
+	], use_splines = False)
 
 	omega = 365.242
 	for i in range(1,frequencies + 1):
