@@ -37,18 +37,15 @@ ljungboxplot = function (m, gof.lag = 10, skip = 0) {
   abline(h = 0.05, lty = 2, col = "blue")
 }
 
-findiag = function (m, gof.lag = 10, skip = 0) {
+rsplot = function (m, skip = 0) {
   dat = ts(
     m$residuals[(1 + skip):length(m$residuals)],
     frequency = frequency(m$residuals),
     start=c(start(m$residuals)[1], start(m$residuals)[2] + skip)
   )
   
-  op <- par(pty="m", mfrow=c(2,1), mai=c(1.1,1.1,0.6,0.2))
-  ts.plot(dat, ylab="Residuals", col="SteelBlue", main="Residuals")
+  ts.plot(dat, ylab="Residuals [m]", col="SteelBlue")
   abline(c(0,0), col="Gray")
-  ljungboxplot(m, gof.lag = gof.lag, skip = skip)
-  par(op)
 }
 
 qqdiag = function (m, skip=0) {
@@ -82,6 +79,12 @@ signtest = function (m, skip=0) {
   
   print(binom.test(sc, length(dat) - 1, p=0.5))
 }
+
+savefig = function (name, width=NULL, height=NULL) {
+  dev.copy(pdf, paste0('../Rapport/figures/', name, '.pdf'), width = width, height = height)
+  dev.off()
+}
+
 # Load data
 y = read.table('ts_greenland.csv',sep=',')$V1
 y.train = ts(y[1:(length(y)-36)], start=1)
@@ -94,6 +97,7 @@ ts.plot(y.train, col="SteelBlue",
         ylab="EWH [m]"
 )
 lines(y.test, col="#4F8913")
+savefig("ts-initial-split", width=12, height=5)
 
 method = "CSS"
 
@@ -101,27 +105,38 @@ method = "CSS"
 # Stationarity
 #
 m = arima(y.train, order=c(0,1,0), method=method, include.mean=FALSE)
-ts.plot(m$residuals, col="SteelBlue")
+ts.plot(m$residuals, col="SteelBlue", ylab="Residuals [m]")
+savefig("ts-residual-i1s0", width=12, height=5)
 
 m = arima(y.train, order=c(0,1,0), seasonal = list( order=c(0,1,0), period=36.5 ), method=method, include.mean=FALSE)
-ts.plot(m$residuals, col="SteelBlue")
+ts.plot(m$residuals, col="SteelBlue", ylab="Residuals [m]")
+savefig("ts-residual-i1s1", width=12, height=5)
 
 #
 # Model order
 #
 acfdiag(m, skip=37)
+savefig("ts-acf-ar0s0", width=12, height=8)
 cat("Step 1\n")
 
 m = arima(y.train, order=c(2,1,0), seasonal = list( order=c(0,1,0), period=36.5 ), method=method, include.mean=FALSE)
 acfdiag(m, skip=39)
+savefig("ts-acf-ar2s0", width=12, height=8)
 cat("Step 2\n")
 
 m = arima(y.train, order=c(2,1,0), seasonal = list( order=c(2,1,0), period=36.5 ), method=method, include.mean=FALSE)
 acfdiag(m, skip=111)
+savefig("ts-acf-ar2s2", width=12, height=8)
 cat("Step 3\n")
 
+rsplot(m, skip=111)
+savefig("ts-final-residual", width=12, height=5)
+
 qqdiag(m, skip=111)
-findiag(m, gof.lag=75, skip=111)
+savefig("ts-final-qq", width=12, height=5)
+
+ljungboxplot(m, gof.lag = 75, skip = 111)
+savefig("ts-final-ljungbox", width=12, height=5)
 
 signtest(m)
 
@@ -147,3 +162,4 @@ lines(y.test, col="#4F8913")
 lines(f$mean, col="IndianRed", lwd=2)
 lines(ts(f$lower, start=start(y.test)), col="LightGray")
 lines(ts(f$upper, start=start(y.test)), col="LightGray")
+savefig("ts-final-forecast", width=15, height=5)

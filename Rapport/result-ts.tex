@@ -2,7 +2,7 @@
 
 \subsection{Time series analysis - ARIMA}
 
-To get an indication if its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) have been selected.
+To get an indication if its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) has been selected.
 
 To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated. Also in order to get an indication of the model performance, the last 36 observations (a year) have been separated for cross validation testing.
 
@@ -20,7 +20,7 @@ The time series in Figure \ref{fig:ts-initial-split} is clearly not stationary, 
 \caption{The ARIMA$(0,1,0) \times (0,0,0)_{36}$ residuals.}
 \label{fig:ts-residual-i1s0}
 \end{figure}
-On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean and variance isn't the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
+On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean and variance aren't the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
 
 \begin{figure}[H]
 \centering
@@ -28,7 +28,7 @@ On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean 
 \caption{The ARIMA$(0,1,0) \times (0,1,0)_{36}$ residuals.}
 \label{fig:ts-residual-i1s1}
 \end{figure}
-On Figure \ref{fig:ts-residual-i1s1} its seen that the first 37 observations acts strange, this is because there aren't enough past observations to estimate the EWH correctly, thus they should be excluded from further analysis.
+On Figure \ref{fig:ts-residual-i1s1} its seen that the first 37 observations act strange, this is because there aren't enough past observations to estimate the EWH correctly, thus they should be excluded from further analysis.
 
 To determine the AR and MA terms in the ARIMA mode, the ACF and PACF should be estimated using the residuals from Figure \ref{fig:ts-residual-i1s1}.
 \begin{figure}[H]
@@ -81,7 +81,7 @@ From the Ljung-Box test (Figure \ref{fig:ts-final-ljungbox}) the p-value for the
 
 \begin{figure}[H]
 \centering
-\centerline{\includegraphics[height=5cm]{figures/ts-final-forecast}}
+\centerline{\includegraphics[height=6cm]{figures/ts-final-forecast}}
 \caption{Forecast on Cross Validation. Blue is the training data, green is the test data. Red is then the predicted test values with its 95\% confidence interval marked with gray lines.}
 \label{fig:ts-final-forecast}
 \end{figure}
