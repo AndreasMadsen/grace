@@ -1,6 +1,6 @@
 %!TEX root=report.tex
 \pagebreak
-\subsection{LARS}
+\subsection{LAR}
 
 Below the full solution path of all the 39 coefficients is shown.
 \begin{figure}[H]
@@ -8,7 +8,7 @@ Below the full solution path of all the 39 coefficients is shown.
 \includegraphics[width=10cm]{figures/lasso_path.png}
 \caption{The above plot illustrates the coefficient path, for the solution corresponding to a point on the west coast of Greenland (coordinates [24,134]).}
 \end{figure}
-In the above plot it appears that after iteration 7 the coefficients doesn't really change that much. However since the lines are a bit to entangled to inspect visually, one can also plot the coefficent value divided by the final coefficient value, on the y axis:
+In the above plot it appears that after iteration 7 the coefficients doesn't really change that much. However since the lines are a bit to entangled to inspect visually, one can also plot the coefficient value divided by the final coefficient value, on the y axis:
 \begin{figure}[H]
 \center
 \includegraphics[width=8cm]{figures/lasso_path_scaled.png}
@@ -31,4 +31,4 @@ Using these 7 coefficients we get the following results:
 
 \subsubsection{How many frequencies are actually needed}
 
-Ofcourse since this was only done for 1 point on the globe, if one were to apply this to other points one might get different lasso-paths and perhaps also a slight variance in the amount of coefficients needed. For example for modelling the ocean one wouldn't need as many coefficients, while potentially at places with heavy rain season, such as South America you might need more frequencies.
+Of course this was  done for one point only on the globe. If one were to apply this to other points one might get different lasso-paths and perhaps also a slight variation in the number of coefficients needed. For example for modelling the ocean one wouldn't need as many coefficients, while potentially at places with heavy rain season, such as South America you might need more frequencies.
