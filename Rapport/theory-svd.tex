@@ -1,6 +1,6 @@
 %!TEX root=report.tex
 \subsection{SVD}
-Singular Value Decomposition (SVD) is a useful method for factorizing matrices. According to the SVD-theorem a $X$ matrix can be expressed as
+Singular Value Decomposition (SVD) is a useful method for factorizing matrices. According to the SVD-theorem an $X$ matrix can be expressed as
 \begin{equation}
 X=U \Sigma V^{T}.
 \label{eq:theory-svd}
@@ -11,10 +11,10 @@ If the matrix $X$ has the size $m \times n$, the factorized components have the 
 \item The columns in $U$ are the eigenvectors of $X X^T$, with the size $m \times m$.
 \item The columns in $V$ are the eigenvectors of $X^T X$, with the size $n \times n$.
 \item $\Sigma$ is a diagonal matrix, consisting of the square root of the corresponding eigenvalues to the eigenvectors in $U$ and $V$.
-It has the size $m \times n$. The eigenvalues are also called ``singular values''.
+It has the size $m \times n$. The square root eigenvalues are also called ``singular values''.
 \end{itemize}
 
-In the case where $X$ has many more rows than columns, the $U$ matrix will contain more eigenvectors than what is strictly needed to reconstruct $X$ and the $\Sigma$ matrix will have lots of zero-rows.
+In the case where $X$ has many more rows than columns, the $U$ matrix will contain more eigenvectors than are strictly needed to reconstruct $X$ and the $\Sigma$ matrix will have lots of zero-rows.
 A so called \textit{economy-size} SVD is therefore often used.
 The difference being that all the redundant eigenvectors in $U$ are removed, so it has the size $m \times n$ and the zero-rows from $\Sigma$ are also removed, so its size becomes $n \times n$.
 
@@ -28,12 +28,12 @@ However in \textit{economy-size} some of the columns have been removed, so its o
 
 In statistics its normal to rearrange the matrices in $U \Sigma V^T$, so the largest values in $\Sigma$ appears first in the diagonal.
 The reason being that $V$ is a change of basis matrix -- it transforms elements in the original space to a new orthogonal space.
-Here the first axis has the largest variance, the second axis has the second highest variance and so on and so forth.
+Here the first axis has the largest variance, the second axis has the second highest variance and so on.
 The variance described by each axis, is given by the diagonal elements in $\Sigma^2$.
 Typically one calculates a percentage called ``variance explained by principal components'' using
 \begin{equation}
 \rho_{jj} = \frac{\Sigma^2_{jj}}{\sum_{i=1}^n \Sigma^2_{ii}}.
 \end{equation}
 
-It's often seen that most of the variance in $X$ can be described using very few eigenvectors, thus one can reduce the dimensionality of a dataset to the most ``principal" components.
-All of the above mentioned methods go under the umbrella term ``Principal Component Analysis (PCA)'', where a ``principal component'' should be understood as the axes in the transformed space (i.e. the eigenvectors).
+It's often seen that most of the variance in $X$ can be described using very few eigenvectors, thus one can reduce the dimensionality of a dataset to the most ``principal'' components.
+The above mentioned analysis go under the umbrella term ``Principal Component Analysis (PCA)'', where a ``principal component'' should be understood as the axes in the transformed space (i.e. the eigenvectors).

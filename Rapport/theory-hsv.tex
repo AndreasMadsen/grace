@@ -1,31 +1,31 @@
 %!TEX root=report.tex
 \subsection{Phase and Amplitude}
 
-The $\mathbf{\beta}$ parameters in the OLS problem are linear combinations of $\cos(\omega_i t)$ and $\sin(\omega_i t)$ function pairs.
+The $\hat{\beta}$ parameters in the OLS problem are coefficients in a linear combinations of $\cos(\omega_i t)$ and $\sin(\omega_i t)$ function pairs.
 However, using domain knowledge from physics, having both $\cos(\omega_i t)$ and $\sin(\omega_i t)$ for the same $\omega_i$ has no meaning.
 Instead one should convert the $\beta$ parameters for the trigonometric functions into amplitudes and phases corresponding to each pair of periodic functions such only a cosine  $A_i \cos(\omega_i t + \phi_i)$ is needed.
 This is done by using Ptolemy's theorem
 \begin{equation}
-A_i \cos(\omega_i t + \phi_i) = A_i \cos(\phi_i) \cos(\omega_i t) - A_i \sin(\phi_i) \sin(\omega_i t).
+A_i \cos(\omega_i t - \phi_i) = A_i \cos(\phi_i) \cos(\omega_i t) + A_i \sin(\phi_i) \sin(\omega_i t).
 \end{equation}
 
 Comparing with the linear combination from OLS
 \begin{align}
-\hat{Y} = \cdots + \beta_{c,i} \cos(\omega) + \beta_{s,i} \sin(\omega) + \cdots
+\hat{Y} = \cdots + \beta_{c,i} \cos(\omega_i t) + \beta_{s,i} \sin(\omega_i t) + \cdots
 \end{align}
 It is seen that
 \begin{align}
-\beta_{c,i} = A \cos(\phi_i) && \text{ and } && \beta_{s,i} = A \sin(\phi_i).
+\beta_{c,i} = A_i \cos(\phi_i) && \text{ and } && \beta_{s,i} = A_i \sin(\phi_i).
 \end{align}
 
-By dividing these two equations with each other, $\phi_i$ can be calculated as \todo{This is not the one used in the code. (Sign difference)} 
+By dividing these two equations with each other, $\phi_i$ can be calculated as 
 \begin{equation}
-\frac{- A_i \sin(\phi_i)}{A_i \cos(\phi_i)} = \frac{\beta_{s,i}}{\beta_{c,i}} \Rightarrow \phi_i = \arctan\left(-\frac{\beta_{s,i}}{\beta_{c,i}}\right).
+\frac{A_i \sin(\phi_i)}{A_i \cos(\phi_i)} = \frac{\beta_{s,i}}{\beta_{c,i}} \Rightarrow \phi_i = \arctan\left(\frac{\beta_{s,i}}{\beta_{c,i}}\right).
 \end{equation}
 
-To isolate $A_i$, square both equations and add them together:
+To isolate $A_i$, square both equations and add them together
 \begin{equation}
 A_i^2 \cos(\phi_i)^2 + A_i^2 \sin(\phi_i)^2 = \beta_{c,i}^2 + \beta_{s,i}^2 \Rightarrow A_i = \sqrt{\beta_{c,i}^2 + \beta_{s,i}^2}.
 \end{equation}
 
-The result can be plotted with a circular color scale for the $\phi_i$ (The hue) and $A$ is as the intensity of the color.
+The result can be plotted with a circular color scale, using $\phi_i$ (the hue) and $A_i$ (the intensity).

@@ -1,25 +1,24 @@
 %!TEX root=report.tex
 \subsection{The design matrix}
-In OLS regression, a linear combination of the columns in the design matrix,$X$,  is used to predict $Y$.
-As a starting point, the only values in $X$ are a column of ones (so as to fit in intercept) and a column containing the observed time $t$:
+In OLS regression, a linear combination of the columns in the design matrix $X$, is used to predict $Y$.
+As a starting point, the only values in $X$ are a column of ones (to fit an intercept) and a column containing the observed time $t$
 
 \begin{equation}
 X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} \end{matrix}\right].
 \end{equation}
-In the above case one would end up predicting $\hat{Y}$ as  $\beta_1 + \beta_2 t$ where $\beta_1$ will correspond to the intercept (uninteresting) and $\beta_2$ will correspond to the speed of mass loss/gain.
-From this it follows naturally to include the acceleration by adding a column:
+In the above case one would predict $\hat{Y}$ as $\beta_1 + \beta_2 t$ where $\beta_1$ will correspond to the intercept (uninteresting) and $\beta_2$ will correspond to the speed of mass gain.
+From this it follows naturally to include the acceleration by adding a column
 
 \begin{equation}
 X = \left[\begin{matrix} \mathbf{1} & \mathbf{t} & \frac{1}{2} \mathbf{t}^2 \end{matrix}\right]
 \end{equation} 
-From Fourier analysis it is know that functions can be approximated by infinite sums of the trigonometric functions; sine and cosine.
-Trigonometric functions are periodic in their behaviour and thus are able to model periodic signals in the function that one wishes to approximate.
+From Fourier analysis it is know that functions can be approximated by infinite sums of the trigonometric functions sines and cosines.
+Trigonometric functions are periodic in their behavior and thus are able to model periodic signals in the function that one wishes to approximate.
 
 In the GRACE dataset, however, the measurements are recorded with a frequency of $\frac{1}{10}$ days.
 The Nyquist-Shannon sampling theorem states that one cannot find periodic signals below the Nyquist frequency which is is given as half of the sample frequency. 
 Therefore an infinite sum is not suited for approximating the function. 
 Instead it will be assumed that the maximal frequency in the data has a period of a year ($365.242$ days) while the minimal frequency will have 18 periods per year since  $\sfrac{365.242}{18} \approx 20.29$. Hence it follows that the final design matrix will be given as
-
 \begin{equation*}
 \resizebox{\textwidth}{!}{$
 X = \left[\begin{matrix}
@@ -35,3 +34,4 @@ X = \left[\begin{matrix}
 $}
 \end{equation*}
 
+From this it's seen that the angular frequency is $\omega_i =  \frac{2 \pi}{\frac{365.242}{i}}$
