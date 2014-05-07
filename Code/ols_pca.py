@@ -27,7 +27,7 @@ U_grid = np.asarray(U.T).reshape(shape[2], shape[0], shape[1]).transpose([1,2,0]
 #
 # Plot Theta parameter for all positions
 #
-dayIndex = 0
+dayIndex = 3
 
 fig = plt.figure(figsize=(12, 9))
 

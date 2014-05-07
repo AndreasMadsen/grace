@@ -4,6 +4,7 @@ import numpy as np
 import times
 import load
 import pandas
+import scipy.stats
 
 EARTH_OMEGA = 365.242
 
@@ -136,6 +137,41 @@ def theta_matrix(frequencies=18, splines=False):
 	# All done
 	return Theta
 
+def pvalue_matrix(frequencies=18, splines=False):
+	Theta = theta_matrix(frequencies=frequencies, splines=splines)
+	H = hat_matrix(frequencies=frequencies, splines=splines)
+	X = design_matrix(frequencies=frequencies, splines=splines)
+	(n, p) = X.shape
+
+	# SVD factorize the X matrix, allowing for numerical stable calculation of
+	# the hat matrix (H)
+	U,S,V = np.linalg.svd(X, full_matrices=False)
+	U,S,V = (U, np.diag(S), V.T)
+
+	# Get the ewh values for all positions as a matrix. This matrix
+	# will have the diffrent positons as collums and days on the rows
+	shape = load.grids.shape
+	Y = np.asmatrix(load.grids.reshape(shape[0] * shape[1], shape[2])).T
+
+	# Compute RMSR (sigma.hat)
+	sigma = np.sqrt(np.sum(np.power(Y - H * Y, 2), 0) / (n - p))
+
+	# Compute cov matrix without sigma^2 (makes it meaning full for all positions)
+	S2inv = diag_pow(S, -2)
+	cov_diag = np.asmatrix(np.diag(V * S2inv * V.T))
+
+	# Compute a matrix of size(lat * lon, p) with sd(beta) values
+	sd = np.sqrt(cov_diag.T) * sigma
+	# Transform to (lat, lon, p)
+	sd = np.asarray(sd).reshape(X.shape[1], shape[0], shape[1]).transpose([1,2,0])
+
+	# Compute t-values, ndarray(lat, lon, p)
+	t_values = Theta / sd
+
+	# Compute p values
+	prop = scipy.stats.t.cdf(t_values, n - p)
+	return 2 * np.minimum(prop, 1 - prop)
+
 def theta_vector(y, frequencies=18, splines=False):
 	"""
 	Contstruct a theta vector (p,) containg all the theta values for a
@@ -153,6 +189,38 @@ def theta_vector(y, frequencies=18, splines=False):
 	Theta = (V * diag_pow(S, -1) * U.T) * np.asmatrix(y.ravel()).T
 
 	return Theta
+
+def pvalue_vector(y, frequencies=18, splines=False):
+	y = np.asmatrix(y.ravel()).T
+
+	Theta = theta_vector(y, frequencies=frequencies, splines=splines)
+	H = hat_matrix(frequencies=frequencies, splines=splines)
+	X = design_matrix(frequencies=frequencies, splines=splines)
+	(n, p) = X.shape
+
+	# SVD factorize the X matrix, allowing for numerical stable calculation of
+	# the hat matrix (H)
+	U,S,V = np.linalg.svd(X, full_matrices=False)
+	U,S,V = (U, np.diag(S), V.T)
+
+	# Compute RMSR (sigma.hat)
+	sigma = float(np.sqrt(np.sum(np.power(y - H * y, 2), 0) / (n - p)))
+
+	# Compute cov matrix without sigma^2 (makes it meaning full for all positions)
+	S2inv = diag_pow(S, -2)
+	cov_diag = np.diag(V * S2inv * V.T)
+
+	# Compute a matrix of size(lat * lon, p) with sd(beta) values
+	sd = np.sqrt(cov_diag) * sigma
+
+	# Compute t-values, ndarray(lat, lon, p)
+	t_values = Theta.A.ravel() / sd
+
+	# Compute p values
+	prop = scipy.stats.t.cdf(t_values, n - p)
+	p = 2 * np.minimum(prop, 1 - prop)
+
+	return p.ravel()
 
 def hat_matrix(X=None, interpolate=False, frequencies=18, splines=False):
 	"""

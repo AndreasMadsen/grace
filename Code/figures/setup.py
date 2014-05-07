@@ -1,5 +1,5 @@
 
-__all__ = ["figure_dir", "figure_path"]
+__all__ = ["basedir", "figure_dir", "figure_path"]
 
 import os
 import os.path as path
