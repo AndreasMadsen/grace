@@ -42,7 +42,7 @@ Y = np.asmatrix(grace.grids[initial[0], initial[1], :]).T
 days = grace.ols.time_vector()
 
 # Plot y and y.hat
-plt.scatter(days, Y.A.ravel(), color="IndianRed", alpha=0.7)
+plt.scatter(days, Y.A.ravel(), color="SteelBlue", alpha=0.7)
 
 date_ticks = np.linspace(np.min(days), np.max(days), 6).astype('int')
 plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
