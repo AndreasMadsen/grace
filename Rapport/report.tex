@@ -19,6 +19,7 @@
 \usepackage{parskip}	% Tillader paragraph vertical margin
 \usepackage{url}		% Tillader \url formatering
 \usepackage{subcaption}	% Tilader subfigure og subtable samt captions i dem
+\usepackage{sectsty}
 \usepackage{csquotes}	% Anbefalet package for BibLaTeX
 \usepackage[backend=bibtex,style=ieee]{biblatex}				% Benyt BibLaTeX til formatering
 \usepackage[bookmarks,bookmarksnumbered,hidelinks]{hyperref} % clickable pdf (til sidst)
@@ -38,6 +39,8 @@
 \numberwithin{table}{section}
 
 \addbibresource{sources.bib}					% Tilføjer sources.bib som reference katalog
+\setcounter{secnumdepth}{5}					% Tæl paragraph sektioner
+\subsubsectionfont{\fontsize{11}{8}\selectfont}		% Gør subsubsection lidt større end paragraph
 \setlength{\marginparwidth}{80pt} 				% Mere brede på margin notes og todos
 \setlength{\parindent}{15pt}					% Giver lidt luft imellem afsnitene
 \setlength{\parindent}{0cm}   					% Deaktiver afsnit indrykning
