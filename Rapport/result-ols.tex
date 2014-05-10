@@ -18,7 +18,7 @@ The two selected locations are:
 
 \paragraph{Greenland}
 
-At the west coast of Greenland is a strong period trend, caused by the the ice melting over the summer and reappearing over the winter. This trend is seen in Figure \ref{fig:ols-selected-0-fit}. In order to estimate the velocity and acceleration it's important that this trend is caught by the $\sin(\cdot)$ and $\cos(\cdot)$ terms in OLS regression.
+At the west coast of Greenland is a strong period trend, caused by the the ice melting over the summer and reappearing over the winter. This trend is seen in Figure \ref{fig:ols-selected-0-fit}. In order to estimate the velocity and acceleration of the EWH, there isn't caused by some season, it's important that the periodc trend is caught by the $\sin(\cdot)$ and $\cos(\cdot)$ terms in OLS regression.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-0-fit}
@@ -27,10 +27,45 @@ At the west coast of Greenland is a strong period trend, caused by the the ice m
 \end{figure}
  
 From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caught by the model, however for some seasons (particular between 2008 and 2010) the fit is not very good. This is even more clear when looking at the residuals (Figure \ref{fig:ols-selected-0-residual}). From this it's clear that the residuals are far from white noise, which was one of the OLS assumptions.
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-0-residual}
 	\caption{The OLS residuals are blue.}
 	\label{fig:ols-selected-0-residual}
 \end{figure}
+
+Besides the yearly season, there is when looking at the estimated OLS coefficients (Table \ref{table:ols-selected-0-paramters}) also a half yearly season. Though strangely enough it isn't very visible on the OLS fit (Figure \ref{fig:ols-selected-0-fit}). The remaining seasons are with 95\% confidence not significantly different from zero and for the purpose of getting a better estimate, it might be worth iteratively removing these terms.
+\begin{table}[H]
+\centering
+\centerline{\input{figures/ols-selected-0-paramters}}
+\caption{Parameter esimates $\hat{\beta}$ and their p-values. }
+\label{table:ols-selected-0-paramters}
+\end{table}
+
+\paragraph{South Pole}
+
+Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. However interestingly enough there is no seasonal trend or at least it's not very strong. Also the existence of high frequency terms on the OLS regression, is more apparent. Though from the actual data it don't look like such period trend exists. This suggests that to many frequency terms have been used, thus causing some overfitting.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-selected-1-fit}
+	\caption{Messurements are blue, the OLS fit is red.}
+	\label{fig:ols-selected-1-fit}
+\end{figure}
+
+When looking at the residuals in Figure \ref{fig:ols-selected-1-residual}, it's again clear that the residuals are far from being white noise. There also seams to be some periodic trend in the residuals, though the beginning and the end of these seasons is quite hard to make out. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-selected-1-residual}
+	\caption{The OLS residuals are blue.}
+	\label{fig:ols-selected-1-residual}
+\end{figure}
+
+Just as with Greenland many of the OLS terms are with 95\% confidence not significantly different from zero. Interestingly enough there is a yearly season when looking at Table \ref{table:ols-selected-1-paramters}, though it's very hard to make out from the OLS fit in Figure \ref{fig:ols-selected-1-fit}.
+
+\begin{table}[H]
+\centering
+\centerline{\input{figures/ols-selected-1-paramters}}
+\caption{Parameter esimates $\hat{\beta}$ and their p-values. }
+\label{table:ols-selected-1-paramters}
+\end{table}

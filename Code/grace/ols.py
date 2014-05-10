@@ -97,7 +97,7 @@ def theta_description(frequencies=18, splines=False):
 	names = ["intercept (1)"]
 
 	names = splines_description(names, lambda t: [
-		"slope (" + t + ")",
+		"vel. (" + t + ")",
 		"acc. (0.5 * (" + t + ")^2)"
 	], use_splines = False)
 

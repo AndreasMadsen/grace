@@ -9,6 +9,7 @@ import os.path as path
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from tabulate import tabulate
+import re
 
 positions = {
 	"Greenland": (26, 130),
@@ -56,6 +57,17 @@ description = grace.ols.theta_description()
 
 (n, p) = (days.shape[0], len(description))
 
+def latexity(string):
+	output = string \
+		.replace('(t)', 't') \
+		.replace(u'π', '\\pi') \
+		.replace('cos', '\\cos') \
+		.replace('sin', '\\sin') \
+		.replace('*', '\\cdot')
+	output = re.sub(r'([0-9A-Za-z\\.]+)/([0-9A-Za-z\\.]+)', r'\\sfrac{\1}{\2}', output)
+	output = re.sub(r'([0-9])e([-0-9]+)', r'\1 \\cdot e^{\2}', output)
+	return output
+
 for i, name in enumerate(positions.keys()):
 	print "\n\n%s" % (name)
 
@@ -88,7 +100,7 @@ for i, name in enumerate(positions.keys()):
 	date_ticks = np.linspace(np.min(days), np.max(days), 6).astype('int')
 	plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
 	plt.xlim(np.min(days), np.max(days))
-	plt.ylabel('EWH [m]')
+	plt.ylabel('Residuals [m]')
 	fig.savefig(figure_path( "ols-selected-%d-residual.pdf" % (i) ))
 
 	#
@@ -106,14 +118,19 @@ for i, name in enumerate(positions.keys()):
 	tabel_content = []
 	for index, name in enumerate(description):
 		tabel_content.append([
-			'$' + name.replace('(t)', 't').replace(u'π', '\\pi').replace('cos', '\\cos').replace('sin', '\\sin') + '$',
-			'$' + str(round(theta[index], 5)) + '$',
-			'$' + str(round(pvalues[index], 3)) + '$'
+			'$' + latexity(name).replace('vel. t', 'vel. (t)') + '$',
+			'$' + latexity('%.2e' % (theta[index])) + '$',
+			'$%.3f$' % (pvalues[index])
 		])
+	tabel_content.append(['', '', ''])
 
-	latex = tabulate(tabel_content, headers=["","\\hat{\\beta}", "p-value"], tablefmt="latex").replace('lll', 'r|ll')
-
-	with open(figure_path('ols-slected-%d-paramters.tex' % (i)), "w") as texfile:
-	    texfile.write(latex)
+	with open(figure_path('ols-selected-%d-paramters.tex' % (i)), "w") as texfile:
+	    texfile.write(
+			tabulate(tabel_content[:20], headers=["name","estimate", "p-value"], tablefmt="latex").replace('lll', 'r|rr')
+	    )
+	    texfile.write('\\hspace{1cm}')
+	    texfile.write(
+			tabulate(tabel_content[20:], headers=["name","estimate", "p-value"], tablefmt="latex").replace('lll', 'r|rr')
+	    )
 
 #plt.show()
