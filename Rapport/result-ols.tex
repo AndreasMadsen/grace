@@ -73,8 +73,9 @@ Just as with Greenland many of the OLS terms are with 95\% confidence not signif
 \pagebreak
 \subsubsection{World view}
 
-\paragraph{Parameters} For interpreting climatic changes there can be seen as mass changes, the velocity and acceleration of these mass changes are the most important parameters in the OLS regression.
+\paragraph{Parameters}
 
+For interpreting climatic changes there can be seen as mass changes, the velocity and acceleration of these mass changes are the most important parameters in the OLS regression.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-world-parameter-vel}
@@ -92,7 +93,6 @@ Just as with Greenland many of the OLS terms are with 95\% confidence not signif
 The first two figures (Figure \ref{fig:ols-world-parameter-vel} and Figure \ref{fig:ols-world-parameter-acc}) shows that there generally is a mass loss at both Greenland and the South Pole and that it is accelerating. However interestingly enough the east cost of Greenland don't show any acceleration, maybe even a slight deceleration of the mass loss (a positive value).
 
 On both figures there is also a circular pattern at Thailand (10 N, 95 E), which is caused by an earthquake in XXXX \todo{insert date}, resulting in significant changes in the mass distribution, thus affecting the data from GRACE.
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-world-parameter-year}
@@ -103,3 +103,17 @@ On both figures there is also a circular pattern at Thailand (10 N, 95 E), which
 The seasonal trends don't reveal any information about mass loss dude to ice melting, since this is something there will continue to have effect for many years. However it dose affect the estimation of the velocity and acceleration. Also having more season related terms in the OLS regression than necessary, will result fewer degrees of freedom.
 
 In Figure \ref{fig:ols-world-parameter-year} its seen from the intensity, that South Pole don't have a strong yearly seasonal trend unlike Greenland. It also appears that it's primarily the east coast of Greenland there have a yearly seasonal trend. The strongest seasonal trend appears in South America, this is dude to the rainy season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.
+
+\paragraph{Performance} 
+
+As a measure of performance the root mean squared error have been calculated for each position.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-performance-rmse}
+	\caption{RMSE for each position.}
+	\label{fig:ols-world-performance-rmse}
+\end{figure}
+
+From \ref{fig:ols-world-performance-rmse} its seen that the hardest places to fit are in South America and Thailand. In South America it is especially around the Amazon River the RMSE is high, this suggests that it is caused by the rainy seasons, since this where also the place with the highest amplitude on the yearly seasonal term. It's a bit odd that this is so hard to fit, since the model do support seasonal trends. One reason could be that this OLS model assumes that the season are equally long each year, which is not very likely. The circular pattern around Thailand is no surprise, since the OLS model was never meant to fit this distortion.
+
+Neither of these issues are related to the ice melting, wish makes them less important. However the east coast of Greenland and the South Pole also show a relative higher RMSE, when comparing to the ocean or the nearby land, which is less ideal. The fact that it is primarily the east coast of Greenland and not the west coast, suggests that the issues are related to the seasons, just like with South America. This was also something there where observed, when looking at the specific locations.

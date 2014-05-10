@@ -40,3 +40,13 @@ execfile(path.join(basedir, 'ols_ih.py'), {}, {__name__: '__execfile__'})
 fig = plt.gcf()
 fig.set_size_inches(9, 3.5)
 fig.savefig(figure_path('ols-world-parameter-year.pdf'))
+
+#
+# Performance plots
+#
+
+execfile(path.join(basedir, 'ols_rmse.py'), {}, {__name__: '__execfile__'})
+
+fig = plt.gcf()
+fig.set_size_inches(9, 3.5)
+fig.savefig(figure_path('ols-world-performance-rmse.pdf'))
