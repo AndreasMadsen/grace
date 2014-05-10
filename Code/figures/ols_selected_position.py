@@ -57,17 +57,6 @@ description = grace.ols.theta_description()
 
 (n, p) = (days.shape[0], len(description))
 
-def latexity(string):
-	output = string \
-		.replace('(t)', 't') \
-		.replace(u'π', '\\pi') \
-		.replace('cos', '\\cos') \
-		.replace('sin', '\\sin') \
-		.replace('*', '\\cdot')
-	output = re.sub(r'([0-9A-Za-z\\.]+)/([0-9A-Za-z\\.]+)', r'\\sfrac{\1}{\2}', output)
-	output = re.sub(r'([0-9])e([-0-9]+)', r'\1 \\cdot e^{\2}', output)
-	return output
-
 for i, name in enumerate(positions.keys()):
 	print "\n\n%s" % (name)
 
@@ -118,7 +107,7 @@ for i, name in enumerate(positions.keys()):
 	tabel_content = []
 	for index, name in enumerate(description):
 		tabel_content.append([
-			'$' + latexity(name).replace('vel. t', 'vel. (t)') + '$',
+			'$' + latexity(name).replace('frac', 'sfrac').replace('vel. t', 'vel. (t)') + '$',
 			'$' + latexity('%.2e' % (theta[index])) + '$',
 			'$%.3f$' % (pvalues[index])
 		])
