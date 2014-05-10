@@ -69,3 +69,37 @@ Just as with Greenland many of the OLS terms are with 95\% confidence not signif
 \caption{Parameter esimates $\hat{\beta}$ and their p-values. }
 \label{table:ols-selected-1-paramters}
 \end{table}
+
+\pagebreak
+\subsubsection{World view}
+
+\paragraph{Parameters} For interpreting climatic changes there can be seen as mass changes, the velocity and acceleration of these mass changes are the most important parameters in the OLS regression.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-parameter-vel}
+	\caption{Estimated velocity ($t$) parameters}
+	\label{fig:ols-world-parameter-vel}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-parameter-acc}
+	\caption{Estimated acceleration ($\frac{1}{2} t^2$) parameters}
+	\label{fig:ols-world-parameter-acc}
+\end{figure}
+
+The first two figures (Figure \ref{fig:ols-world-parameter-vel} and Figure \ref{fig:ols-world-parameter-acc}) shows that there generally is a mass loss at both Greenland and the South Pole and that it is accelerating. However interestingly enough the east cost of Greenland don't show any acceleration, maybe even a slight deceleration of the mass loss (a positive value).
+
+On both figures there is also a circular pattern at Thailand (10 N, 95 E), which is caused by an earthquake in XXXX \todo{insert date}, resulting in significant changes in the mass distribution, thus affecting the data from GRACE.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-parameter-year}
+	\caption{Estimated phase and amplitude for the yearly seasons.}
+	\label{fig:ols-world-parameter-year}
+\end{figure}
+
+The seasonal trends don't reveal any information about mass loss dude to ice melting, since this is something there will continue to have effect for many years. However it dose affect the estimation of the velocity and acceleration. Also having more season related terms in the OLS regression than necessary, will result fewer degrees of freedom.
+
+In Figure \ref{fig:ols-world-parameter-year} its seen from the intensity, that South Pole don't have a strong yearly seasonal trend unlike Greenland. It also appears that it's primarily the east coast of Greenland there have a yearly seasonal trend. The strongest seasonal trend appears in South America, this is dude to the rainy season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.

@@ -16,7 +16,7 @@ initial = (26, 130)
 #
 date = 230
 
-fig = plt.figure(figsize=(8, 3.5))
+fig = plt.figure(figsize=(9, 3.5))
 
 m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
 m.drawcoastlines(linewidth=.5)
@@ -31,7 +31,7 @@ cbar.set_label('EMH [m]', rotation=270, labelpad=20)
 
 plt.title("EWH [m] - " + str(grace.dates[date,0]))
 
-fig.savefig(figure_path("data-example-world.eps"))
+fig.savefig(figure_path("data-example-world.pdf"))
 
 #
 # Generate a scatter plot
