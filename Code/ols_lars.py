@@ -51,13 +51,28 @@ print '\n'
 print coefs[:,7][:7]
 print description[:7]
 
+
 scaledY=(coefs.T/np.abs(coefs[:,-1]))
+print coefs.T.shape,scaledY.shape,alphas.shape
 plt.figure()
 plt.plot(range(40),coefs.T)
 
 plt.xlabel('Iteration')
 plt.ylabel('Coefficients')
 plt.title('LASSO Path')
+plt.xticks()
+
+#the following is commented because 1 coefficient has such big fluctuations that the plot is unreadable
+"""
+plt.figure()
+print np.tile(alphas,[39,1]).shape, scaledY.shape
+plt.plot(np.tile(alphas,[39,1]).T,scaledY)
+
+plt.xlabel('alpha')
+plt.ylabel('Coefficient/|Final coefficient value|')
+plt.title('LASSO Path')
+plt.xticks()
+"""
 
 plt.figure()
 plt.plot(range(40),scaledY)
