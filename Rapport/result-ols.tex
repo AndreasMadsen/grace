@@ -146,3 +146,41 @@ From Figure \ref{fig:ols-world-performance-cov} it's seen that the parameters ar
 \end{tabular}
 \caption{Variance of the velocity and acceleration parameters}
 \end{table}
+
+\paragraph{p-values} Just as for the selected positions, inspecting the p-values can tell which OLS terms are important.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-diagnostics-pvalue-1}
+	\caption{p-values for the velocity parameter.}
+	\label{fig:ols-world-diagnostics-pvalue-1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-diagnostics-pvalue-2}
+	\caption{p-values for the acceleration parameter.}
+	\label{fig:ols-world-diagnostics-pvalue-2}
+\end{figure}
+
+There is not much surprise in either Figure \ref{fig:ols-world-diagnostics-pvalue-1} or Figure \ref{fig:ols-world-diagnostics-pvalue-2}. Both the velocity and the acceleration appears to be significant pretty much everywhere. The places where it isn't, is where there is a sign shift thus causing the p-value gradient. This is particularly apparent with the acceleration. One odd detail is that also on the ocean, the velocity and acceleration parameters appears to be significantly different from zero. In the ocean there is no reason to steady mass change, though when looking at actual values it's seen that there is a slight slope. This quite small slope then becomes significant, due to the very small variance of the velocity and acceleration parameters. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-diagnostics-pvalue-3}
+	\caption{p-values for the yearly seasonal cosine parameter.}
+	\label{fig:ols-world-diagnostics-pvalue-3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-diagnostics-pvalue-4}
+	\caption{p-values for the yearly seasonal sine parameter.}
+	\label{fig:ols-world-diagnostics-pvalue-4}
+\end{figure}
+
+Also the yearly seasonal parameters are significant pretty much everywhere. For these parameters it makes more sense that they are significant in the ocean.
+
+\todo{How many parameters should be analysed}
+
+\paragraph{PCA of residuals}
