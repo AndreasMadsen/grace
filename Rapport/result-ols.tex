@@ -1,7 +1,7 @@
 %!TEX root=report.tex
 \subsection{OLS}
 
-The first part of the OLS analysis will look at the EWH at two specific locations. The second part will then focus on the entire world. The main purpose of the OLS analysis is to estimate the velocity and acceleration of the gravity changes.
+The first part of the OLS analysis will look at the EWH at two specific locations. The second part will then focus on the entire world. The main purpose of the OLS analysis is to estimate the velocity and acceleration of the mass changes.
 
 \subsubsection{Selected locations}
 
@@ -26,7 +26,7 @@ At the west coast of Greenland is a strong period trend, caused by the the ice m
 	\label{fig:ols-selected-0-fit}
 \end{figure}
  
-From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caught by the model, however for some seasons (particular between 2008 and 2010) the fit is not very good. This is even more clear when looking at the residuals (Figure \ref{fig:ols-selected-0-residual}). From this it's clear that the residuals are far from white noise, which was one of the OLS assumptions.
+From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caught by the model, however for some seasons (particular between 2008 and 2010) the fit is not very good. This is even more clear when looking at the residuals in Figure \ref{fig:ols-selected-0-residual}. From this it's clear that the residuals are far from white noise, which was one of the OLS assumptions.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-0-residual}
@@ -34,7 +34,7 @@ From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caug
 	\label{fig:ols-selected-0-residual}
 \end{figure}
 
-Besides the yearly season, there is when looking at the estimated OLS coefficients (Table \ref{table:ols-selected-0-paramters}) also a half yearly season. Though strangely enough it isn't very visible on the OLS fit (Figure \ref{fig:ols-selected-0-fit}). The remaining seasons are with 95\% confidence not significantly different from zero and for the purpose of getting a better estimate, it might be worth iteratively removing these terms.
+Besides the yearly season, there is when looking at the estimated OLS coefficients (Table \ref{table:ols-selected-0-paramters}) also a half yearly season. Though strangely enough it isn't very visible on the OLS fit (Figure \ref{fig:ols-selected-0-fit}). The remaining seasons are with 95\% confidence not significantly different from zero and for the purpose of getting a better estimate, it might be worth iteratively removing these parameters.
 \begin{table}[H]
 \centering
 \centerline{\input{figures/ols-selected-0-paramters}}
@@ -44,7 +44,7 @@ Besides the yearly season, there is when looking at the estimated OLS coefficien
 
 \paragraph{South Pole}
 
-Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. However interestingly enough there is no seasonal trend or at least it's not very strong. Also the existence of high frequency terms on the OLS regression, is more apparent. Though from the actual data it don't look like such period trend exists. This suggests that to many frequency terms have been used, thus causing some overfitting.
+Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. However interestingly enough there is no seasonal trend or at least it's not very strong. Also the existence of high frequency terms on the OLS regression, is more apparent. Though from the actual data it don't look like such period trend exists. This suggests that too many seasonal parameters have been used, thus causing some overfitting.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-1-fit}
@@ -52,7 +52,7 @@ Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fi
 	\label{fig:ols-selected-1-fit}
 \end{figure}
 
-When looking at the residuals in Figure \ref{fig:ols-selected-1-residual}, it's again clear that the residuals are far from being white noise. There also seams to be some periodic trend in the residuals, though the beginning and the end of these seasons is quite hard to make out. 
+When looking at the residuals in Figure \ref{fig:ols-selected-1-residual}, it's again clear that the residuals are far from being white noise. There also seams to be some periodic trend in the residuals, though the beginning and the end, of these seasons is quite hard to make out. 
 
 \begin{figure}[H]
 	\centering
@@ -100,9 +100,9 @@ On both figures there is also a circular pattern at Thailand (10 N, 95 E), which
 	\label{fig:ols-world-parameter-year}
 \end{figure}
 
-The seasonal trends don't reveal any information about mass loss dude to ice melting, since this is something there will continue to have effect for many years. However it dose affect the estimation of the velocity and acceleration. Also having more season related terms in the OLS regression than necessary, will result fewer degrees of freedom.
+The seasonal trends don't reveal any information about mass loss due to ice melting, since this is something there will continue to have effect for many years. However it dose affect the estimation of the velocity and acceleration. Also having more season related terms in the OLS regression than necessary, will result fewer degrees of freedom.
 
-In Figure \ref{fig:ols-world-parameter-year} its seen from the intensity, that South Pole don't have a strong yearly seasonal trend unlike Greenland. It also appears that it's primarily the east coast of Greenland there have a yearly seasonal trend. The strongest seasonal trend appears in South America, this is dude to the rainy season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.
+In Figure \ref{fig:ols-world-parameter-year} its seen from the intensity, that South Pole don't have a strong yearly seasonal trend unlike Greenland. It also appears that it's primarily the east coast of Greenland there have a yearly seasonal trend. The strongest seasonal trend appears in South America, this is due to the rainy season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.
 
 \paragraph{Performance} 
 
@@ -114,11 +114,11 @@ As a measure of performance the root mean squared error have been calculated for
 	\label{fig:ols-world-performance-rmse}
 \end{figure}
 
-From \ref{fig:ols-world-performance-rmse} its seen that the hardest places to fit are in South America and Thailand. In South America it is especially around the Amazon River the RMSE is high, this suggests that it is caused by the rainy seasons, since this where also the place with the highest amplitude on the yearly seasonal term. It's a bit odd that this is so hard to fit, since the model do support seasonal trends. One reason could be that this OLS model assumes that the season are equally long each year, which is not very likely. The circular pattern around Thailand is no surprise, since the OLS model was never meant to fit this distortion.
+From \ref{fig:ols-world-performance-rmse} its seen that the hardest places to fit are in South America and Thailand. In South America it is especially around the Amazon River the RMSE is high, this suggests that it is caused by the rainy seasons, since this where also the place with the highest amplitude on the yearly seasonal term. It's a bit odd that this is so hard to fit, since the model do support seasonal trends. One explanation could be that this OLS model assumes that the season are equally long each year, which is not very likely. The circular pattern around Thailand is no surprise, since the OLS model was never meant to fit this distortion.
 
 Neither of these issues are related to the ice melting, wish makes them less important. However the east coast of Greenland and the South Pole also show a relative higher RMSE, when comparing to the ocean or the nearby land, which is less ideal. The fact that it is primarily the east coast of Greenland and not the west coast, suggests that the issues are related to the seasons, just like with South America. This was also something there where observed, when looking at the specific locations.
 
-\paragraph{Standard diagnostics} Recalling that $\sigma^{-2} \mathrm{Var}[\hat{Y}_i] = H_{ii}$ and $\sigma^{-2} \mathrm{D}[\hat{\beta}] = V \Sigma^{-2} V^T$ the diagonal of $H$ and $V \Sigma^{-2} V^T$ are both important to examine. This will identify any days and parameters with high variance.
+\paragraph{Standard diagnostics} Recalling that $\mathrm{Var}[\hat{Y}_i] = \sigma^{2} H_{ii}$ and $\mathrm{D}[\hat{\beta}] = \sigma^{2} V \Sigma^{-2} V^T$ the diagonal of $H$ and $V \Sigma^{-2} V^T$ are both important to examine. This will identify any days and parameters with high variance.
 
 \begin{figure}[H]
 	\centering
@@ -163,7 +163,7 @@ From Figure \ref{fig:ols-world-performance-cov} it's seen that the parameters ar
 	\label{fig:ols-world-diagnostics-pvalue-2}
 \end{figure}
 
-There is not much surprise in either Figure \ref{fig:ols-world-diagnostics-pvalue-1} or Figure \ref{fig:ols-world-diagnostics-pvalue-2}. Both the velocity and the acceleration appears to be significant pretty much everywhere. The places where it isn't, is where there is a sign shift thus causing the p-value gradient. This is particularly apparent with the acceleration. One odd detail is that also on the ocean, the velocity and acceleration parameters appears to be significantly different from zero. In the ocean there is no reason to steady mass change, though when looking at actual values it's seen that there is a slight slope. This quite small slope then becomes significant, due to the very small variance of the velocity and acceleration parameters. 
+There is not much surprise in either Figure \ref{fig:ols-world-diagnostics-pvalue-1} or Figure \ref{fig:ols-world-diagnostics-pvalue-2}. Both the velocity and the acceleration appears to be significant pretty much everywhere. The places where it isn't, is where there is a sign shift thus causing the p-value gradient. This is particularly apparent with the acceleration. One odd detail is that also on the ocean, the velocity and acceleration parameters appears to be significantly different from zero. In the ocean there is no reason to expect a steady mass change, though when looking at actual values it's seen that there is a slight slope. This quite small slope then becomes significant, due to the very small variance of the velocity and acceleration parameters. 
 
 \begin{figure}[H]
 	\centering
