@@ -4,7 +4,7 @@
 
 To get an indication if its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) has been selected.
 
-To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated. Also in order to get an indication of the model performance, the last 36 observations (a year) have been separated for cross validation testing.
+To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not be possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated. Also in order to get an indication of the model performance, the last 36 observations (which corresponds to a year) have been separated for cross validation testing.
 
 \begin{figure}[H]
 \centering
@@ -20,7 +20,7 @@ The time series in Figure \ref{fig:ts-initial-split} is clearly not stationary, 
 \caption{The ARIMA$(0,1,0) \times (0,0,0)_{36}$ residuals.}
 \label{fig:ts-residual-i1s0}
 \end{figure}
-On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean and variance aren't the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
+On Figure \ref{fig:ts-residual-i1s0} there are some seasonal periods where the mean and variance are not the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
 
 \begin{figure}[H]
 \centering
@@ -30,7 +30,7 @@ On Figure \ref{fig:ts-residual-i1s0} there some seasonal periods where the mean 
 \end{figure}
 On Figure \ref{fig:ts-residual-i1s1} its seen that the first 37 observations act strange, this is because there aren't enough past observations to estimate the EWH correctly, thus they should be excluded from further analysis.
 
-To determine the AR and MA terms in the ARIMA mode, the ACF and PACF should be estimated using the residuals from Figure \ref{fig:ts-residual-i1s1}.
+To determine the AR and MA terms in the ARIMA model, the ACF and PACF should be estimated using the residuals from Figure \ref{fig:ts-residual-i1s1}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ts-acf-ar0s0}
@@ -46,7 +46,7 @@ Using the PACF in Figure \ref{fig:ts-acf-ar0s0} and the rules for the AR term \c
 	\label{fig:ts-acf-ar2s0}
 \end{figure}
 
-This clearly fitted the non-seasonal trend. From Figure \ref{fig:ts-acf-ar0s0} it might have looked like there was a \texttt{AR(3)} or \texttt{MA(2)} term, but the \texttt{AR(2)} is the simplest of those and fit the trend just fine. The seasonal part is now extremely apparent in Figure \ref{fig:ts-acf-ar2s0}, where it looks like either an \texttt{SAR(2)}.
+This clearly fitted the non-seasonal trend. From Figure \ref{fig:ts-acf-ar0s0} it might have looked like there was a \texttt{AR(3)} or \texttt{MA(2)} term, but the \texttt{AR(2)} is the simplest of those and fit the trend just fine. The seasonal part is now extremely apparent in Figure \ref{fig:ts-acf-ar2s0}, where it looks like either a \texttt{SAR(2)}- or a \texttt{SAR(1)}-term.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ts-acf-ar2s2}
@@ -54,11 +54,11 @@ This clearly fitted the non-seasonal trend. From Figure \ref{fig:ts-acf-ar0s0} i
 	\label{fig:ts-acf-ar2s2}
 \end{figure}
 
-From just looking at the estimated ACF and PACF in Figure \ref{fig:ts-acf-ar2s2}, ARIMA$(2,1,0) \times (2,1,0)_{36}$ seams like a good choice. To finally validate the model, a good start is to look at the residuals.
+From just looking at the estimated ACF and PACF in Figure \ref{fig:ts-acf-ar2s2}, ARIMA$(2,1,0) \times (2,1,0)_{36}$ seems like a good choice. To finally validate the model, a good start is to look at the residuals.
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=5cm]{figures/ts-final-residual}
-	\caption{ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals. The first 111 residuals have been skipped since they can't be estimated correctly.}
+	\caption{ARIMA$(2,1,0) \times (2,1,0)_{36}$ residuals. The first 111 residuals have been skipped since they cannot be estimated correctly.}
 	\label{fig:ts-final-residual}
 \end{figure}
 
@@ -86,4 +86,4 @@ From the Ljung-Box test (Figure \ref{fig:ts-final-ljungbox}) the p-value for the
 \label{fig:ts-final-forecast}
 \end{figure}
 
-From Figure \ref{fig:ts-final-forecast} it quite clear that the test data is consistently bellow the expectation line (red). While it is still inside the 95\% confidence interval, this high correlation in the error between lags indicates that the model isn't particular useful. 
+From Figure \ref{fig:ts-final-forecast} it quite clear that the test data is consistently bellow the expectation line (red). While it is still inside the 95\% confidence interval, this high correlation in the error between lags indicates that the model is not particular useful. 

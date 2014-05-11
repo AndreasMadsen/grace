@@ -1,9 +1,10 @@
 %!TEX root=report.tex
 \subsection{Phase and Amplitude}
 
-The $\hat{\beta}$ parameters in the OLS problem are coefficients in a linear combinations of $\cos(\omega_i t)$ and $\sin(\omega_i t)$ function pairs.
+The $\hat{\beta}$ parameter in the OLS problem contains coefficients $\hat{\beta_i}$ which determines which linear combinations of $\cos(\omega_i t)$ and $\sin(\omega_i t)$  are used to predict $Y$.
+Since there is a cosine and sine for each frequency in the design matrix $X$ there is a potential to end up with a linear combination of frequency function pairs.
 However, using domain knowledge from physics, having both $\cos(\omega_i t)$ and $\sin(\omega_i t)$ for the same $\omega_i$ has no meaning.
-Instead one should convert the $\beta$ parameters for the trigonometric functions into amplitudes and phases corresponding to each pair of periodic functions such only a cosine  $A_i \cos(\omega_i t + \phi_i)$ is needed.
+Instead one should convert the $\beta$ parameters for the trigonometric functions into amplitudes and phases corresponding to each pair of periodic functions such that only a cosine  $A_i \cos(\omega_i t + \phi_i)$ is needed.
 This is done by using Ptolemy's theorem
 \begin{equation}
 A_i \cos(\omega_i t - \phi_i) = A_i \cos(\phi_i) \cos(\omega_i t) + A_i \sin(\phi_i) \sin(\omega_i t).

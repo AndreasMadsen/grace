@@ -1,13 +1,13 @@
 %!TEX root=report.tex
 \subsection{OLS}
-OLS (Ordinary Least Squares) regression is used for finding the best linear transformations of one or more variables independent $X$ which on average predict the dependent variable $Y$. \todo{Improve formulation}
+OLS (Ordinary Least Squares) regression is used for finding the best linear transformation of one or more exogenous variables $X$ so as to predict the dependent variable $Y$. \todo{Improve formulation}
 This is done by a matrix-vector product between a $\beta$ vector and $X$.
 Since $X$ can be custom tailored for various purposes it is often referred to as the design matrix.
 \begin{align}
 Y=X \beta +\epsilon && \text{, where } \mathrm{E}[\epsilon] = 0 \text{ and } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
 \end{align}
 
-In the equation above the $\beta$-vector is the unknown parameter which needs to be determined while  $\epsilon$ is a vector containing the residuals which the model can't account for.
+In the equation above the $\beta$-vector is the unknown parameter which needs to be determined while  $\epsilon$ is a vector containing the residuals which the model cannot account for.
 Often the purpose of OLS is to predict $Y$, but in this case we want to analyze the individual $\beta_i$ elements.
 
 \subsubsection{The solution to the OLS problem}
@@ -106,10 +106,10 @@ Seeing as $\sigma^2$ is a scalar and dependent of $Y$, a similar spatial indepen
 
 To calculate p-values for OLS parameters the student's t-distribution is used, with the t-score \cite[p.~172]{time-series-analysis}
 \begin{align}
-\mathrm{t} = \frac{\beta_i}{\mathrm{SD}[\beta_i]} && \text{where: } \mathrm{SD}[\beta_i] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }.
+\mathrm{t} = \frac{\hat{\beta_i}}{\mathrm{SD}[\hat{\beta_i}]} && \text{where: } \mathrm{SD}[\hat{\beta_i}] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }.
 \end{align}
 
-Now by plugging the t-score into the CDF ``student's t cumulative distribution function'' ($\Phi_t$) with $N - p$ degrees of freedom, we get
+Now by plugging the t-score into the Student's Cumulative T-Distribution Function ($\Phi_t$) with $N - p$ degrees of freedom, we get
 \begin{equation}
 p = 2 \cdot \Phi_t\left(\mathrm{abs}(t), N-p\right)
 \end{equation}

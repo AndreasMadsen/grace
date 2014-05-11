@@ -14,8 +14,8 @@ grid.water.10day_model_minus_RL02MF.19212_19221.txt
 \end{lstlisting}
 
 In the filename, the last two numbers (e.g. \texttt{19202\_19211}) are important.
-These numbers contain the start and end date for the file content.
-Both numbers are the number of days since ``1950-01-01'', where the first number denotes the start date and the last number the end date of the period for the measurements. \cite{GRACE-data-format-dates}
+The first number denotes the start date and the second number the end date for the file content. 
+Each number specifies the number of days since ``1950-01-01'' \cite{GRACE-data-format-dates}.
 
 The actual content of each text file should be read as a ``Space Separated Values'' format.
 When this is done one will have a $6480 \times 10$ matrix. 

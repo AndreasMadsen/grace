@@ -44,8 +44,10 @@ for i in range(100):
 	#print "coefficients for AR-process on residuals: "+str(model.rho)
 	rho,sigma=sm.regression.yule_walker(result.resid, order=model.order)
 	model=sm.GLSAR(interpolated_Y,X,rho)
+
+print result.summary()
 print "coefficients for AR-process on residuals: "+str(model.rho)
-print "coefficients of beta vector: " +str(result.params)
+
 
 print "coefficient diff: "+str((result.params-Theta.ravel()))
 fig = plt.figure()
