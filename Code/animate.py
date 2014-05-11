@@ -13,6 +13,8 @@ m.drawcoastlines(linewidth=.5)
 m.drawparallels(np.arange(-90.,120.,30.),labels=[1,0,0,0])
 m.drawmeridians(np.arange(0.,420.,60.),labels=[0,0,0,1])
 
+print math.ceil(np.max(grace.grids)), math.floor(np.min(grace.grids))
+
 im = m.imshow(grace.grids[::-1,:,0], vmax=math.ceil(np.max(grace.grids)), vmin=math.floor(np.min(grace.grids)))
 im.set_cmap('binary_r')
 

@@ -17,6 +17,7 @@ p_values = grace.ols.pvalue_matrix()
 #
 # Parameter plots
 #
+print "Parameter plots"
 
 # Plot velocity and acceleration
 parameter_plots = [
@@ -48,6 +49,7 @@ fig.savefig(figure_path('ols-world-parameter-year.pdf'))
 #
 # Performance plots
 #
+print "Performance plots"
 
 # Plot RMSE
 execfile(path.join(basedir, 'ols_rmse.py'), {}, {__name__: '__execfile__'})
@@ -59,6 +61,7 @@ fig.savefig(figure_path('ols-world-performance-rmse.pdf'))
 #
 # Standard diagnostics
 #
+print "Standard diagnostics"
 
 # Plot diag(H)
 execfile(path.join(basedir, 'ols_diagH.py'), {}, {__name__: '__execfile__'})
@@ -77,11 +80,14 @@ fig.savefig(figure_path('ols-world-diagnostics-cov.pdf'))
 
 plt.switch_backend(backend)
 
-# Plot p-values
+#
+# p-values
+#
+print "p-values"
+
 for index in [1,2,3,4]:
 
 	fig = plt.figure(figsize=(9, 3.5))
-	plt.title('$' + latexity(description[index]).replace('vel. t', 'vel. (t)') + '$', fontsize=10)
 
 	m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
 	m.drawcoastlines(linewidth=.5, color="white")

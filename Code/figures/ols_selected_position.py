@@ -108,7 +108,7 @@ for i, name in enumerate(positions.keys()):
 	for index, name in enumerate(description):
 		tabel_content.append([
 			'$' + latexity(name).replace('frac', 'sfrac').replace('vel. t', 'vel. (t)') + '$',
-			'$' + latexity('%.2e' % (theta[index])) + '$',
+			'$' + latexity('%.2e' % (theta[index])).replace('e', '10') + '$',
 			'$%.3f$' % (pvalues[index])
 		])
 	tabel_content.append(['', '', ''])

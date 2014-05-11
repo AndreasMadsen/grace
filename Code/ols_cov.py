@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import grace
 import grace.ols
@@ -8,6 +7,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 X = grace.ols.design_matrix()
 description = grace.ols.theta_description()
+description = [text.replace('(t)', 't') for text in description]
+description[1] = 'vel. (t)'
 
 # SVD factorize the X matrix, allowing for numerical stable calculation of
 # the hat matrix (H)
@@ -20,7 +21,8 @@ cov = np.asarray(V * S2inv * V.T)
 
 fig = plt.figure(figsize=(7,7))
 
-im = plt.imshow(cov, interpolation='nearest')
+im = plt.imshow(cov, interpolation='nearest', vmax=0.006, vmin=-0.0005)
+im.set_cmap('binary_r')
 
 plt.xticks(np.arange(0, len(description)), description, fontsize = 10)
 plt.setp(plt.xticks()[1], rotation=-90)

@@ -118,4 +118,31 @@ From \ref{fig:ols-world-performance-rmse} its seen that the hardest places to fi
 
 Neither of these issues are related to the ice melting, wish makes them less important. However the east coast of Greenland and the South Pole also show a relative higher RMSE, when comparing to the ocean or the nearby land, which is less ideal. The fact that it is primarily the east coast of Greenland and not the west coast, suggests that the issues are related to the seasons, just like with South America. This was also something there where observed, when looking at the specific locations.
 
-\paragraph{Standard diagnostics}
+\paragraph{Standard diagnostics} Recalling that $\sigma^{-2} \mathrm{Var}[\hat{Y}_i] = H_{ii}$ and $\sigma^{-2} \mathrm{D}[\hat{\beta}] = V \Sigma^{-2} V^T$ the diagonal of $H$ and $V \Sigma^{-2} V^T$ are both important to examine. This will identify any days and parameters with high variance.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/ols-world-diagnostics-diagH}
+	\caption{The diagonal of $H$ will reveal any days with a high variance.}
+	\label{fig:ols-world-performance-diagH}
+\end{figure}
+
+The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very big, the highest is $0.16$ and recalling that the 95\% confidence interval can be approximated by $\hat{Y}_i \pm 2 \cdot \hat{\sigma} \sqrt{\mathrm{Var}[\hat{Y}_i]}$. The maximal confidence interval becomes $\hat{Y}_i \pm 2 \cdot 0.135 \cdot \sqrt{0.16} = \hat{Y}_i \pm 0.108$, which is small when comparing to the EWH values, there is between $1$ and $-3$. What is odd about $\mathrm{diag}(H)$ is there appear be some parts in each year there are more difficult to predict than others. \todo{Why is this}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=9cm]{figures/ols-world-diagnostics-cov}
+	\caption{$V \Sigma^{-2} V^T$ will reveal correlated parameter and parameters with high variance.}
+	\label{fig:ols-world-performance-cov}
+\end{figure}
+
+From Figure \ref{fig:ols-world-performance-cov} it's seen that the parameters are nicely uncorrelated and while the seasonal parameters have a slightly high variance when comparing to their values, the velocity and acceleration parameters are practically zero.
+\begin{table}[H]
+\centering
+\begin{tabular}{r|c c c}
+	name & $\mathrm{Var}[\hat{\beta}_i]$ \\ \hline
+	$vel. (t)$ & $2.91390457 \cdot 10^{-09}$  \\
+	$acc. (0.5 \cdot t^2)$ & $1.29525397 \cdot 19^{-14}$
+\end{tabular}
+\caption{Variance of the velocity and acceleration parameters}
+\end{table}
