@@ -11,6 +11,44 @@ EARTH_OMEGA = 365.242
 def diag_pow(M, p):
 	return np.diag(np.diag(M) ** p)
 
+def alternative_splines_producer(X, t, factory, use_splines,freq):
+	if (use_splines):
+		# Figure how many years there are
+		t_year = times.days_to_date(t).astype('datetime64[Y]')
+
+		# The -1 exists so the no spines are created for the last year,
+		# this is because there aren't enogth observations to fit those
+		# splines correctly.
+		years = np.max(t_year) - np.min(t_year) - 1
+
+		t_min = np.min(t)
+		
+		for s in range(0, years + 1):
+			t_shift = t - EARTH_OMEGA * s
+			t_transform = np.asarray(factory(t_shift)).T
+			t_transform[t_shift < t_min, :] = 0
+		#print t_transform.shape, t_shift.shape
+		#	print t_shift,t_min
+			n_point_intermezzo=round((freq*60)**2)+5
+			if s>0:
+				#index=np.logical_and(t_shift >= t_min,t_shift <= t_min)
+				iLag=t_shift < t_min
+				location_points=[i for i,x in enumerate(iLag) if x==1]
+				p1=t_transform[location_points[-1]+1,:]
+				p2=t_transform[location_points[-1]+1+n_point_intermezzo,:]
+			
+				for i in range(int(n_point_intermezzo)):
+					t_transform[location_points[-1]-i,:]=p2/2.0*(n_point_intermezzo-i)/n_point_intermezzo
+					t_transform[location_points[-1]+1+i,:]=p2/2.0*(i)/n_point_intermezzo+p2/2.0
+			
+
+			X = np.column_stack( (X , t_transform) )
+			#print min(X.ravel()),max(X.ravel())
+	else:
+		X = np.column_stack( (X, np.asarray(factory(t)).T ) )
+
+	return X
+
 def splines_producer(X, t, factory, use_splines):
 	if (use_splines):
 		# Figure how many years there are
@@ -22,17 +60,18 @@ def splines_producer(X, t, factory, use_splines):
 		years = np.max(t_year) - np.min(t_year) - 1
 
 		t_min = np.min(t)
-
+		
 		for s in range(0, years + 1):
 			t_shift = t - EARTH_OMEGA * s
 			t_transform = np.asarray(factory(t_shift)).T
 			t_transform[t_shift < t_min, :] = 0
-
 			X = np.column_stack( (X , t_transform) )
+
 	else:
 		X = np.column_stack( (X, np.asarray(factory(t)).T ) )
 
 	return X
+
 
 def splines_description(names, factory, use_splines):
 	if (use_splines):
@@ -73,6 +112,7 @@ def design_matrix(t=None, frequencies=18, splines=False):
 
 	# X = [1]
 	X = np.ones((t.size, 1))
+
 
 	# X = [t, 0.5 * t^2]
 	X = splines_producer(X, t, lambda t: [t, 0.5 * (t**2)], use_splines=False)
