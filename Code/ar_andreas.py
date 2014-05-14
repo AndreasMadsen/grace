@@ -96,7 +96,7 @@ print "MSR: %f" % (np.sum(plain_error**2) / (y_plain.size - X_plain.shape[1]))
 #
 #
 
-fig = plt.figure(figsize=(10, 4))
+fig = plt.figure(figsize=(10, 6))
 
 # Plot y and y.hat
 plt.scatter(days_plain, y_plain.A.ravel(), color="SteelBlue", alpha=0.7)
