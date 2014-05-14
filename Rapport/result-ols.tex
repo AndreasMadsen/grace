@@ -44,7 +44,7 @@ In addition to the yearly season, when looking at the estimated OLS coefficients
 
 \paragraph{South Pole}
 
-Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. Interestingly enough,however, there is no seasonal trend or at least it is not very strong. Also the existence of high frequency terms in the OLS regression, is more apparent. Though from the actual data it does not look like such periodic trends exist. This suggests that too many seasonal parameters have been used, thus causing some overfitting.
+Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. Interestingly enough, there is no seasonal trend or at least it is not very strong. Also the existence of high frequency terms in the OLS regression, is more apparent. Though from the actual data it does not look like such periodic trends exist. This suggests that too many seasonal parameters have been used, thus causing some overfitting.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-1-fit}
@@ -184,3 +184,49 @@ Also the yearly seasonal parameters are significant pretty much everywhere. For 
 \todo{How many parameters should be analysed}
 
 \paragraph{PCA of residuals}
+
+By computing the principal component for the OLS residuals, it is some times possible to discover patterns in the residuals. As with all PCA one the first couple of principal components are valuable to look at.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/ols-pca-explained}
+\caption{Variance explained by each principal component}
+\label{fig:ols-pca-explained}
+\end{figure}
+
+If the PCA had been used on the original GRACE data, first couple of PCs would likely have explained most of the variance. However since this PCA is done on the residuals, the primary data is hopefully noise, thus no particularly direction shows a lot of variance. The shape of Figure \ref{fig:ols-pca-explained} indicates that there is a lot of noise, but that there also exists residuals there isn't just noise.
+
+Plotting the first principal component score and loading, one gets:
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/ols-pca-score-0}
+\caption{PC score for the first principal component}
+\label{fig:ols-pca-score-0}
+\end{figure}
+
+From Figure \ref{fig:ols-pca-score-0} its seen that there is some residuals at South America there is unlikely to be caused by noise. This could be because of the rainy seasons, since those are poorly modeled using this OLS regression. If that is the case one should expect Figure \ref{fig:ols-pca-loading-0} to show some yearly periodic trend. Unfortunately this do not seam to be the case. \todo{Now what?}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/ols-pca-loading-0}
+\caption{PC loading for the first principal component}
+\label{fig:ols-pca-loading-0}
+\end{figure}
+
+Plotting the second principal component score and loading, one gets:
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/ols-pca-score-1}
+\caption{PC score for the second principal component}
+\label{fig:ols-pca-score-1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{figures/ols-pca-loading-1}
+\caption{PC loading for the second principal component}
+\label{fig:ols-pca-loading-1}
+\end{figure}
+
+In Figure \ref{fig:ols-pca-score-1} a strong circular pattern appears. This is the caused by the earthquake near Thailand in 2004 and can't be modeled by this OLS regression, so those residuals are expected. A bit strange is that \ref{fig:ols-pca-loading-1} indicates that the residuals not only comes from 2002 to 2004 but also around 2006 and 2009.
+
+More important do Figure \ref{fig:ols-pca-score-1} also show some residuals near west Greenland, this is not ideal since this is one of the areas this report attempts to analyze.
