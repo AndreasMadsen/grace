@@ -160,6 +160,6 @@ ts.plot(y.train, col="SteelBlue",
 #lines(y.train - m$residuals, col="IndianRed", lwd=0.5)
 lines(y.test, col="#4F8913")
 lines(f$mean, col="IndianRed", lwd=2)
-lines(ts(f$lower, start=start(y.test)), col="LightGray")
-lines(ts(f$upper, start=start(y.test)), col="LightGray")
+lines(ts(f$lower, start=start(y.test)), col="DarkGray")
+lines(ts(f$upper, start=start(y.test)), col="DarkGray")
 savefig("ts-final-forecast", width=15, height=5)
