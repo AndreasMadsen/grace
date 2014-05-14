@@ -27,7 +27,7 @@ U_grid = np.asarray(U.T).reshape(shape[2], shape[0], shape[1]).transpose([1,2,0]
 #
 # Plot Theta parameter for all positions
 #
-dayIndex = 1 #should this be renamed to theta index...?
+dayIndex = 3
 
 fig = plt.figure(figsize=(12, 9))
 
@@ -44,7 +44,7 @@ im.set_cmap('binary_r')
 
 m.colorbar()
 
-plt.title("PC: " + str(dayIndex+1))
+plt.title("index: " + str(dayIndex))
 
 plt.subplot(gs[-1, :-1])
 
