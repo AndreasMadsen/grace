@@ -18,12 +18,14 @@ paramIndex = 3
 
 # Calculate phase
 amplitude = np.sqrt(Theta[:,:,paramIndex]**2 + Theta[:,:,paramIndex+1]**2)
-phase = -np.arctan2(-Theta[:,:,paramIndex+1], Theta[:,:,paramIndex])
+phase = np.arctan2(Theta[:,:,paramIndex+1], Theta[:,:,paramIndex])
 
 # Rescale phase to [0, 1]
 phase = (phase + np.pi) / (2.0 * np.pi)
 # Rescale amplitude to [0, 1]
 amplitude = (amplitude + np.min(amplitude)) / (np.max(amplitude) - np.min(amplitude))
+# Rescale amplitude to [0.25, 1]
+amplitude = (amplitude / 0.95) + 0.05
 
 # Stack [phase, 1, amplitude]
 hsv = np.dstack((phase, np.ones_like(phase), amplitude))
@@ -33,7 +35,7 @@ rgb = colors.hsv_to_rgb(hsv)
 fig = plt.figure(figsize=(12, 6))
 
 m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
-m.drawcoastlines(linewidth=.5)
+m.drawcoastlines(linewidth=.5, color="gray")
 m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
 m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
 
@@ -68,4 +70,4 @@ ticks = np.hstack((ticks[-1], ticks))
 # Bind computed ticks to the color bar
 cbar.ax.set_yticklabels( ticks )
 
-plt.show()
+if (__name__ == '__main__'): plt.show()

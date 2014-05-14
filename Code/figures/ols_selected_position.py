@@ -9,6 +9,7 @@ import os.path as path
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from tabulate import tabulate
+import re
 
 positions = {
 	"Greenland": (26, 130),
@@ -66,7 +67,7 @@ for i, name in enumerate(positions.keys()):
 	#
 	# Plot y and y.hat
 	#
-	plt.figure(figsize=(10, 4))
+	fig = plt.figure(figsize=(10, 4))
 	plt.scatter(days, Y.A.ravel(), color="SteelBlue", alpha=0.7)
 	plt.plot(days_all, (H_all * Y).A.ravel(), color="IndianRed")
 
@@ -75,13 +76,12 @@ for i, name in enumerate(positions.keys()):
 	plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
 	plt.xlim(np.min(days), np.max(days))
 	plt.ylabel('EWH [m]')
-	plt.title("%s (%.1f, %.1f)" % (name, coords[0], coords[1]))
 	fig.savefig(figure_path( "ols-selected-%d-fit.pdf" % (i) ))
 
 	#
 	# Plot residuals
 	#
-	plt.figure(figsize=(10, 4))
+	fig = plt.figure(figsize=(10, 4))
 	plt.plot(days, (Y - H * Y).A.ravel(), color="SteelBlue", alpha=0.7)
 	plt.axhline(0, np.min(days), np.max(days), color='Gray')
 
@@ -89,8 +89,7 @@ for i, name in enumerate(positions.keys()):
 	date_ticks = np.linspace(np.min(days), np.max(days), 6).astype('int')
 	plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
 	plt.xlim(np.min(days), np.max(days))
-	plt.ylabel('EWH [m]')
-	plt.title("%s (%.1f, %.1f)" % (name, coords[0], coords[1]))
+	plt.ylabel('Residuals [m]')
 	fig.savefig(figure_path( "ols-selected-%d-residual.pdf" % (i) ))
 
 	#
@@ -108,14 +107,19 @@ for i, name in enumerate(positions.keys()):
 	tabel_content = []
 	for index, name in enumerate(description):
 		tabel_content.append([
-			'$' + name.replace('(t)', 't').replace(u'π', '\\pi').replace('cos', '\\cos').replace('sin', '\\sin') + '$',
-			'$' + str(round(theta[index], 5)) + '$',
-			'$' + str(round(pvalues[index], 3)) + '$'
+			'$' + latexity(name).replace('frac', 'sfrac').replace('vel. t', 'vel. (t)') + '$',
+			'$' + latexity('%.2e' % (theta[index])).replace('e', '10') + '$',
+			'$%.3f$' % (pvalues[index])
 		])
+	tabel_content.append(['', '', ''])
 
-	latex = tabulate(tabel_content, headers=["","\\hat{\\beta}", "p-value"], tablefmt="latex").replace('lll', 'r|ll')
-
-	with open(figure_path('ols-slected-%d-paramters.tex' % (i)), "w") as texfile:
-	    texfile.write(latex)
+	with open(figure_path('ols-selected-%d-paramters.tex' % (i)), "w") as texfile:
+	    texfile.write(
+			tabulate(tabel_content[:20], headers=["name","estimate", "p-value"], tablefmt="latex").replace('lll', 'r|rr')
+	    )
+	    texfile.write('\\hspace{1cm}')
+	    texfile.write(
+			tabulate(tabel_content[20:], headers=["name","estimate", "p-value"], tablefmt="latex").replace('lll', 'r|rr')
+	    )
 
 #plt.show()

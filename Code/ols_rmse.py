@@ -36,6 +36,4 @@ im.set_cmap('binary_r')
 
 m.colorbar()
 
-plt.title('RMSR')
-
-plt.show()
+if (__name__ == '__main__'): plt.show()

@@ -16,7 +16,7 @@ initial = (26, 130)
 #
 date = 230
 
-fig = plt.figure(figsize=(8, 3.5))
+fig = plt.figure(figsize=(9, 3.5))
 
 m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
 m.drawcoastlines(linewidth=.5)
@@ -31,7 +31,7 @@ cbar.set_label('EMH [m]', rotation=270, labelpad=20)
 
 plt.title("EWH [m] - " + str(grace.dates[date,0]))
 
-fig.savefig(figure_path("data-example-world.eps"))
+fig.savefig(figure_path("data-example-world.pdf"))
 
 #
 # Generate a scatter plot
@@ -42,7 +42,7 @@ Y = np.asmatrix(grace.grids[initial[0], initial[1], :]).T
 days = grace.ols.time_vector()
 
 # Plot y and y.hat
-plt.scatter(days, Y.A.ravel(), color="IndianRed", alpha=0.7)
+plt.scatter(days, Y.A.ravel(), color="SteelBlue", alpha=0.7)
 
 date_ticks = np.linspace(np.min(days), np.max(days), 6).astype('int')
 plt.xticks(date_ticks, grace.times.days_to_str(date_ticks))
