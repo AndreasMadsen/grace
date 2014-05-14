@@ -1,30 +1,30 @@
 %!TEX root=report.tex
 
-\subsection{OLS AR(1)}
-The difference between standard OLS and the proposed model for OLS with autocorrelated residuals was examined for a multitude of different locations on the globe.
-Now, since the AR part of the model requires equidistant time series a linear interpolation was used to fill in the many gaps that existed in the data. 
-Sadly, however, even when using interpolated time series there seemed to be very little difference between the two models. This was a bit surprising since the $\rho$ estimate almost always was close to $0.9$ and in some cases even higher. 
+\subsection{OLS with autocorrelated residuals}
+Since the OLS model with autocorrelated residuals, requires an equidistant time series a linear interpolation \todo{Confirm that it is linear}, was used to fill in the gaps in the GRACE data. 
 
-Since the difference between models were negligible, we find that it suffices to show the results for just one such location (in this case (lon,lat)$=(24,134)$).
-Firstly a visual representation of the differences:
+The difference between OLS with and without autocorrelated residuals, was then examined for a multitude of different locations on the globe. In this examination the result was generally the same, $\hat{y}$ wasn't changed very much, but the $\hat{\sigma}_\epsilon^2$ quite a bit smaller.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1.0\linewidth]{figures/ols-AR(1)-24-134}
-\caption{OLS. vs OLS with autocorrrelated residuals - comparison made for the west coast of Greenland. Here $\hat{\rho}\approx0.894$.}
+\includegraphics[width=1.0\textwidth]{figures/ar-compare}
+\caption{OLS and OLS with autocorrrelated residuals. Position is 63.5 N 49.5 W, west coast of Greenland.}
+\label{fig:ar-compare}
 \end{figure}
 
-Secondly, follows an overview of the models:
-\begin{tabular}{l || c |  r}[H]
- & OLS & OLS-AR(1) \\ \hline
-$R^2$ & 0.990 &0.875 \\
-AIC & -1149 &-1742 \\
-Durbin-Watson & 0.208 & 2.354
-\end{tabular}\\\\
-On the positive side the Durbin-Watson test suggest that the model improved  ($0\ge D\ge 4$. $D<<2$ implies positive autocorrelation between the residuals while $D>>2$ implies negative autocorrelation). 
-As discussed in the theory section, when $D<<2$ model estimates tend to be too optimistic.
- This is seen in the table above as well as in the estimated t-scores (not shown here). 
-\\
-Seeing as the OLS overestimates its performance and the model predictions look visually similar(this is due to the fact that the biggest absolute difference in $\beta$ coefficients is $10^-3$) it is hard to objectively identify the best model.
- However, if one were pressed to conclude something it might be that the OLS-AR(1) model most likely provides a more realistic estimate of the model performance than pure OLS. 
-So to recap, the $\beta$-vector estimates were found to be almost identical and the only improvement offered by OLS-AR(1) is given by more precise p-values.
+\begin{table}[H]
+\centering
+\begin{tabular}{r | l l}
+                             & OLS    & OLS+AR(1) \\ \hline
+$\rho$		 & 0          & 0.773 \\
+$\hat{\sigma}_\epsilon^2$ & $1.35 \cdot 10^{-3}$ & $ 5.64 \cdot 10^{-4}$ \\
+MSR                   & 43.027 & 43.482 \\
+Durbin-Watson & 0.477 & 2.328
+\end{tabular}
+\caption{Summarized difference between OLS with and without autocorrelated residuals}
+\label{table:ar-compare}
+\end{table}
+
+From Figure \ref{fig:ar-compare} it is seen that the $\hat{y}$ is almost identical, which is because the $\hat{\beta}$ parameters are almost identical. One could have hoped for a better result here, but the reason for the poor fit is properly that the season length aren't the same each year and correcting for autocorrelated residuals won't do much difference here.
+
+In Table \ref{table:ar-compare} the its seen that the MSE ($\sum_{i=1}^n (y_i - \hat{y}_i)^2$, not interpolated) is similar unchanged. The estimated variance and the Durbin-Watson test statistics is however much improved. This suggests that the OLS overestimated the noise variance of the data. The result should be that the p-value are more correct and in this case more parameters should be significantly different from zero.

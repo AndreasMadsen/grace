@@ -22,7 +22,7 @@ def alternative_splines_producer(X, t, factory, use_splines,freq):
 		years = np.max(t_year) - np.min(t_year) - 1
 
 		t_min = np.min(t)
-		
+
 		for s in range(0, years + 1):
 			t_shift = t - EARTH_OMEGA * s
 			t_transform = np.asarray(factory(t_shift)).T
@@ -36,11 +36,11 @@ def alternative_splines_producer(X, t, factory, use_splines,freq):
 				location_points=[i for i,x in enumerate(iLag) if x==1]
 				p1=t_transform[location_points[-1]+1,:]
 				p2=t_transform[location_points[-1]+1+n_point_intermezzo,:]
-			
+
 				for i in range(int(n_point_intermezzo)):
 					t_transform[location_points[-1]-i,:]=p2/2.0*(n_point_intermezzo-i)/n_point_intermezzo
 					t_transform[location_points[-1]+1+i,:]=p2/2.0*(i)/n_point_intermezzo+p2/2.0
-			
+
 
 			X = np.column_stack( (X , t_transform) )
 			#print min(X.ravel()),max(X.ravel())
@@ -60,7 +60,7 @@ def splines_producer(X, t, factory, use_splines):
 		years = np.max(t_year) - np.min(t_year) - 1
 
 		t_min = np.min(t)
-		
+
 		for s in range(0, years + 1):
 			t_shift = t - EARTH_OMEGA * s
 			t_transform = np.asarray(factory(t_shift)).T

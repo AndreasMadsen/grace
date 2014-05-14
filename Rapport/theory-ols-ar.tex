@@ -2,47 +2,67 @@
 
 \subsection{OLS with autocorrelated residuals}
 
-In OLS it is assumed that the residuals between different observations are uncorrelated - i.e. $E[\epsilon_i \epsilon_j | X]=0, \forall i \neq j$. 
-However, since our data is both time series and spatial this assumption most likely does not hold (this is quantified with the Durbin-Watson test statistic in the results section). 
-The violation of this assumption can lead to an underestimation of the variance of the residuals $\sigma_e$\footnote{www.en.wikipedia.org/wiki/Autocorrelation}.
- This in turn leads to an overestimation of the $\beta$ parameters' t-scores and thus the p-values will be erroneous. 
-\\
-To correct for the above one can assume that the error terms are created by a stochastic process. 
-One can imagine that this process can receive exogenous influences or shocks $u_i$ at every point in time $t_i$ and that these shocks will propagate through time in such a way that their "ripple" effects slowly subside.
-By assuming that $u_i$ is a stochastic variable with mean $E[u_i]=0$ and variance $var[u_i]=\sigma_u^2$, the residuals from the OLS model becomes a weighted sum of absorbed shocks 
+In OLS it is assumed that the residuals between different observations are uncorrelated. However since our data a time series this assumption do most likely not hold. This can also be confirmed with the Durbin-Watson test statistic \cite[p.~173]{autocorrelation-kousgaard}. This test statistic is calculated using
+\begin{equation}
+d = \frac{\sum_{i=2}^n \left( \hat{\epsilon}_i - \hat{\epsilon}_{i-1} \right)^2}{ \sum_{i=1}^n\hat{\epsilon}_i^2 }
+\end{equation}
+
+and is between 0 and 4. If $d$ is close to 0 are the residuals $\hat{\epsilon}_i$ and $\hat{\epsilon}_{i-1}$ correlated positively, if close to 4 the residuals are negatively correlated. The purpose of this method is to reduce the correlation between the residuals, the Durbin-Watson test statistic should then become 2.
+
+When the residuals are correlated, one gets an underestimation \todo{Out result indicates that $\hat{\sigma}_\epsilon^2$ is smaller with OLS+AR(1)} of the variance of the residuals $\hat{\sigma}_\epsilon^2$ \cite{wiki-autocorrelation}. This in turn leads to an overestimation of the $\hat{\beta}$ parameters t-scores and thus the p-values will be erroneous, leading to a type 1 error.
+
+To correct for the correlated residuals one can assume that the error terms are created by a stochastic process. 
+One can imagine that this process can receive exogenous influences or shocks $u_i$ at every point in time $t_i$ and that these shocks will propagate through time in such a way that their ``ripple'' effects slowly subside. \todo{Kilde}
+By assuming that $u_i$ is a stochastic variable with mean $\mathrm{E}[u_i]=0$ and variance $\mathrm{Var}[u_i]=\sigma_u^2$, the residuals from the OLS model becomes a weighted sum of absorbed shocks 
 \begin{equation}
 \epsilon_i=u_i+\alpha_1 u_{i-1}+\alpha_2 u_{i-2}+...
 \end{equation}
 
- The $u_i$s are assumed to be independent and identically distributed (i.i.d.).
-By letting $\alpha_i=\rho^i$ and assuming $|\rho|<1$ one achieves the formula for a first order Autoregressive process (denoted AR(1))
+The $u_i$'s are assumed to be independent and identically distributed.
+By letting $\alpha_i=\rho^i$ and assuming $|\rho|<1$ one achieves the formula for a first order Autoregressive process
 \begin{equation}
-\epsilon_i=\rho \epsilon_{i-1}+u_i
+\epsilon_i=\rho \epsilon_{i-1}+u_i.
 \end{equation}
 
-In the above it is apparent that $\rho$ is the correlation between any given residual and its successor. 
-Thus the OLS normal equation can be rewritten as
-\begin{equation}\label{olsAR}
-\text{MIN}_{\beta,\rho} (Y-X\beta)^T \Sigma^{-1}(Y-X\beta)
-\end{equation}
- where $ \Sigma^{-1}$ is given as
+In the above it is apparent that $\rho$ is the correlation between any given residual and its successor. Thus the OLS cost function can be be rewritten as
 \begin{equation}
-\begin{bmatrix}
-1 & -\rho & 0 & \cdots & 0 & 0\\
--\rho & 1+\rho^2 & -\rho & \cdots & 0 & 0\\
-0 & -\rho & 1+\rho^2 & -\rho &\cdots & 0  \\
-\vdots &\ddots & \ddots & \ddots & \ddots & 0 \\
-0 & 0 &0& -\rho & 1+\rho^2 & -\rho  \\
-0 & 0 &0&0&-\rho & 1
+\min_{\beta, \rho}\ (Y-X\beta)^T \Sigma^{-1}(Y-X\beta),
+\label{eq:theory-olsar-min}
+\end{equation}
+
+where $ \Sigma^{-1}$ is given as
+\begin{equation}
+\Sigma^{-1}  = \begin{bmatrix}
+1         & -\rho         & 0               & \cdots & 0              & 0         \\
+-\rho   & 1+\rho^2 & -\rho         & \cdots & 0               & 0         \\
+0         & -\rho         & 1+\rho^2 & \cdots &0                & 0         \\
+\vdots & \vdots      & \vdots       & \ddots & \vdots      & \vdots \\
+0         & 0               &0                & \cdots & 1+\rho^2 & -\rho    \\
+0         & 0               &0                & \cdots &-\rho          & 1
 \end{bmatrix}
 \end{equation}
 
-Since equation system \ref{olsAR} is nonlinear there is no closed form solution to this problem. However, a practical way of solving the problem looks as follows:
+The optimization problem \eqref{eq:theory-olsar-min} is nonlinear and there is no closed form solution to this problem. However when keeping $\rho$ constant the $\beta$ parameters can be estimated using Weighted Least Squared, which is similar to OLS but with a constant $\Sigma$ matrix and have the solution \cite[p.~38]{time-series-analysis}
+\begin{equation}
+\hat{\beta} = (x^T \Sigma^{-1} x)^{-1} x^T \Sigma^{-1} Y.
+\end{equation}
+
+This should then be rewritten using SVD, to account for a near singular $x^T \Sigma^{-1} x$ matrix.
+
+Similar when $\beta$ is a constant, $\rho$ can be estimated with  \cite[p.~178]{autocorrelation-kousgaard}
+\begin{equation}
+\hat{\rho} = \frac{ \sum_{i=2}^n \hat{\epsilon_i}\hat{\epsilon}_{i-1} }{ \sum_{i=2}^{n-1} \hat{\epsilon_i}^2 }.
+\label{eq:theory-olsar-rho}
+\end{equation}
+
+A practical way of solving the problem with respect to both $\beta$ and $\rho$, looks as follows:
 \begin{enumerate}
-\item initialize by letting $\rho=0$ and estimate $\beta$ with the usual OLS method.
+\item initialize by letting $\rho=0$
 \item Iterate: \begin{enumerate}
-\item Keep $\beta$ constant and estimate $\rho$ by $\hat{\rho}=\sum_{i=2}^n \hat{\epsilon_i}\hat{\epsilon_{i-1}}/ \sum_{i=2}^{n-1} \hat{\epsilon_i}^2$
-\item Keep $\rho$ constant and assume  $\rho=\hat{\rho}$. Estimate $\beta$ via \ref{olsAR}
-\item Repeat until convergence or some predetermined upper iteration boundary is met.
+	\item Keep $\hat{\rho}$ constant and estimate $\beta$ using as a WLS problem.
+	
+	\item Keep $\hat{\beta}$ constant and estimate $\rho$ using \eqref{eq:theory-olsar-rho}.
+	
+	\item Repeat until convergence of $\rho$ or until some predetermined upper iteration boundary is met.
 \end{enumerate}
 \end{enumerate}
