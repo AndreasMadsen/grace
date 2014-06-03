@@ -42,7 +42,7 @@ plt.setp(plt.xticks()[1], rotation=-90, fontsize = 10)
 # How may splines (the years parameter calculated internally in module.ols)
 splines = 9
 
-plt.figure()
+plt.figure(figsize=(12,6))
 
 # Intercept
 plt.subplot(4,1,1)
@@ -61,5 +61,5 @@ plt.subplot(4,1,4)
 for i in range(0,splines + 1):
 	plt.plot(all_days, X_all[:,i * 2 + 3].A.ravel())
 	plt.plot(all_days, X_all[:,i * 2 + 4].A.ravel())
-
+plt.savefig('../Rapport/figures/splines.png')
 plt.show()

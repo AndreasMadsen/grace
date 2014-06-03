@@ -1,0 +1,42 @@
+%!TEX root=report.tex
+\subsection{Basis expansion}
+\subsubsection{The classical way: Splines}
+This section delves into basis expansion via splines.
+ However, let us first motivate why this might be needed.
+It has previously described how the design matrix $X$ was constructed such that we had 
+\begin{equation*}
+\resizebox{\textwidth}{!}{$
+X = \left[\begin{matrix}
+	\mathbf{1} &
+	\mathbf{t} &
+	\frac{1}{2} \mathbf{t}^2 &
+	\cos\left( \dfrac{2 \pi}{\frac{365.242}{1}} \mathbf{t} \right) &
+	\sin\left( \dfrac{2 \pi}{\frac{365.242}{1}} \mathbf{t} \right) &
+	\cdots &
+	\cos\left( \dfrac{2 \pi}{\frac{365.242}{18}} \mathbf{t} \right) &
+	\sin\left( \dfrac{2 \pi}{\frac{365.242}{18}} \mathbf{t} \right)
+\end{matrix}\right].
+$}
+\end{equation*}
+The problem with the above $X$ is that every year is assumed to have identical behaviour. 
+For instance in Denmark sometimes the winter comes much later than "usual", or the summer is much colder/warmer etc. 
+These types of variation wont be accounted for with the current $X$ - instead  one will get an "average yearly behaviour". 
+This in turn leads to higher variance of the residuals which decreases the accuracy of the trend and acceleration parameter of the model. 
+Thus the question is, how might one go about allowing yearly differences?
+
+The way one can achieve this is by virtue of hinge-functions which can be defined in two ways
+\begin{equation*}
+h(x)=f(x-\zeta_1)_{+} \text{    or    } h(x)=f(x-\zeta_1)_{-}
+\end{equation*}.
+The above simply reads that in the case of $_{+}$ when $x-\zeta_1\ge0$  then $h(x)=f(x-\zeta_1)$; if $x-\zeta_1<0$ then $h(x)=0$.
+$\zeta$ denotes the "knot" and one might place multiple knots in the same dimension. 
+Each hinge function can simply be added as a new dimension in the design matrix and thus one can model piecewise behaviour.
+\\
+The unique thing about splines is that the hinge functions are constrained to consist only of polynomials.
+ In this case each hinge function is guaranteed to be continuous and it can be shown that the spline's derivatives are continuous to order $M-2$ where $M$ is the degree of polynomial  \cite[p.~144]{statistical-learning}.
+
+\subsubsection{Knots and trigonometric functions}
+To model each year with different behaviour, in essence all that is needed is to create 9 knots (10 intervals requires 9 splits) and construct the hinge functions.
+However, since the functions being used are sines and cosines, there is no guarantee of continuity at the knots (only continuity if the trigonometric function evaluates to zero at the knot).
+ In grim cases, when multiple discontinuous functions are combined, one can end up with cusps - i.e. a steep descent/ascend followed by the opposite movement in rapid succession.
+If to many of those phenomenons end up occurring, this type of model should be rejected; this will be reflected on in the result section. 
