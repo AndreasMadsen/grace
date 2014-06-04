@@ -1,9 +1,10 @@
 %!TEX root=report.tex
 \subsection{Basis expansion}
-\subsubsection{The classical way: Splines}
-This section delves into basis expansion via splines.
- However, let us first motivate why this might be needed.
-It has previously described how the design matrix $X$ was constructed such that we had 
+
+Basis expansion is done by adding more columns to design matrix. Let us first motivate why this might be needed.
+
+\subsection{Motivation}
+It has previously been described how the design matrix $X$ was constructed such that we had 
 \begin{equation*}
 \resizebox{\textwidth}{!}{$
 X = \left[\begin{matrix}
@@ -18,25 +19,26 @@ X = \left[\begin{matrix}
 \end{matrix}\right].
 $}
 \end{equation*}
-The problem with the above $X$ is that every year is assumed to have identical behaviour. 
-For instance in Denmark sometimes the winter comes much later than "usual", or the summer is much colder/warmer etc. 
-These types of variation wont be accounted for with the current $X$ - instead  one will get an "average yearly behaviour". 
-This in turn leads to higher variance of the residuals which decreases the accuracy of the trend and acceleration parameter of the model. 
-Thus the question is, how might one go about allowing yearly differences?
+The problem with the above $X$ is that the periodic columns assumes the pattern accounts for the entire period. This causes problems in areas such as Denmark, where the winter comes later than ``usual'', or the summer is much colder/warmer etc..
 
-The way one can achieve this is by virtue of hinge-functions which can be defined in two ways
-\begin{equation*}
-h(x)=f(x-\zeta_1)_{+} \text{    or    } h(x)=f(x-\zeta_1)_{-}
-\end{equation*}.
-The above simply reads that in the case of $_{+}$ when $x-\zeta_1\ge0$  then $h(x)=f(x-\zeta_1)$; if $x-\zeta_1<0$ then $h(x)=0$.
-$\zeta$ denotes the "knot" and one might place multiple knots in the same dimension. 
-Each hinge function can simply be added as a new dimension in the design matrix and thus one can model piecewise behaviour.
-\\
-The unique thing about splines is that the hinge functions are constrained to consist only of polynomials.
- In this case each hinge function is guaranteed to be continuous and it can be shown that the spline's derivatives are continuous to order $M-2$ where $M$ is the degree of polynomial  \cite[p.~144]{statistical-learning}.
+This leads to higher variance of the residuals which decreases the accuracy of the velocity and acceleration parameter of the model. By adding columns to the design matrix, such that the periodic pattern is only assumed extend over one period, the accuracy can be improved.
+
+\subsection{The Hinge-function}
+
+One can achieve this basis expansion is by virtue of the hinge-function
+\begin{equation}
+f(x - \zeta)_+ = \begin{cases}
+  f(x - \zeta) & \text{if } x - \zeta \ge 0 \\
+  0                 & \text{otherwise}
+\end{cases} \quad \forall x \in \mathbb{R}, \zeta \in \mathbb{R}
+\end{equation}
+$\zeta$ denotes the ``knot'' between the zero part and the $f$ part. By choosing $f$ and adding the hinge function to the design matrix, a basis expansion where terms are only active for some parts of the time series is obtained.
+
+When $f$ is a polynomial one achieve a piecewise polynomial which is called a spline.
+In this case each hinge function is guaranteed to be continuous and it can be shown that the spline's derivatives are continuous to order $M-2$ where $M$ is the degree of polynomial $f$ \cite[p.~144]{statistical-learning}. When dealing with polynomials, splines there are continues up to and including its second order derivatives are called \textit{cubic splines} and they generates nicely looking curves when performing the regression. \cite[p.~143]{statistical-learning}.
 
 \subsubsection{Knots and trigonometric functions}
-To model each year with different behaviour, in essence all that is needed is to create 9 knots (10 intervals requires 9 splits) and construct the hinge functions.
+To model each year with different behavior, in essence all that is needed is to create 9 knots (10 intervals requires 9 splits) and construct the hinge functions.
 However, since the functions being used are sines and cosines, there is no guarantee of continuity at the knots (only continuity if the trigonometric function evaluates to zero at the knot).
- In grim cases, when multiple discontinuous functions are combined, one can end up with cusps - i.e. a steep descent/ascend followed by the opposite movement in rapid succession.
-If to many of those phenomenons end up occurring, this type of model should be rejected; this will be reflected on in the result section. 
+In grim cases, when multiple discontinuous functions are combined, one can end up with cusps, that is a steep descent/ascend followed by the opposite movement in rapid succession.
+If this phenomenon becomes too gross, one should consider rejecting the model, this will be discussed in the result section. 
