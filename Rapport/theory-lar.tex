@@ -1,19 +1,18 @@
 %!TEX root=report.tex
 \subsection{Least angular regression (LAR)}
-We'll here briefly discuss the LAR model.
 The LAR model is almost equivalent to the linear regression, except that instead of only minimizing the sum of squares, an $\ell^1$ norm penalty as added on the $\hat{\beta}$-vectors coefficients.
 \begin{align}
 \min_{\hat{\beta}}\ (Y - \hat{Y})^T (Y - \hat{Y}) \quad \text{subject to} \quad ||\hat{\beta}||_1 \le s
 \end{align}
 
 The LAR algorithm \cite{LAR-algorithm} solves this problem by initially letting all the $\beta$ coefficients be zero.
-It then finds the attribute, $b_1$, with the highest absolute correlation with the dependent variable Y and increases (or decreases depending on the sign of the correlation)
+It then finds the attribute, $b_1$, with the highest absolute correlation with the dependent variable Y and increases \todo{what increases} (or decreases depending on the sign of the correlation)
 until it reaches a point where another attribute $b_2$ has as much  correlation with the residuals $R=Y-\hat{Y}$ as  $b_i$ has.
 At this point the algorithm then increases both $b_1$ and $b_2$ in their joint direction until another attribute $b_i$ has the highest residual correlation.
-This process can then be continued until there is no benefit in increasing any of the $b_i$s - that is, the full LARS solution is equivalent to the linear regression.
+This process can then be continued until there is no benefit in increasing any of the $b_i$s - that is, the full LAR solution is equivalent to the linear regression.
 It should also be noted that if a coefficient crosses 0 in a iteration (step),
-that the coefficient should be set to 0, and the regression direction should subsequently be recomputed.
+that coefficient should be set to 0, and the regression direction \todo{Allan marks this} should subsequently be recomputed.
 
 So why might one use LAR instead of for example the LASSO model? 
-When using the LASSO one has to chose a specific value $s$ to get one solution.
-However, in the LAR model you actually get the full solution path which means that you can find all the LASSO solutions instead of having to do multiple LASSOS with different regularization parameters ($s$).
+When using the LASSO one has to chose a specific value of $s$ to get one solution.
+However, in the LAR model you actually get the full solution path which means that you can find all the LASSO solutions instead of having to do multiple LASSO with different regularization parameters ($s$).

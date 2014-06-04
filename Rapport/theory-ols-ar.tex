@@ -2,29 +2,16 @@
 
 \subsection{OLS with autocorrelated residuals}
 
-In OLS it is assumed that the residuals between different observations are uncorrelated. However since our data a time series this assumption do most likely not hold. This can also be confirmed with the Durbin-Watson test statistic \cite[p.~173]{autocorrelation-kousgaard}. This test statistic is calculated using
+In OLS it is assumed that the residuals between different observations are uncorrelated. However since our data is a time series this assumption does most likely not hold. This can also be confirmed with the Durbin-Watson test statistic \cite[p.~173]{autocorrelation-kousgaard}. This test statistic is calculated using
 \begin{equation}
 d = \frac{\sum_{i=2}^n \left( \hat{\epsilon}_i - \hat{\epsilon}_{i-1} \right)^2}{ \sum_{i=1}^n\hat{\epsilon}_i^2 }
 \end{equation}
 
-and is between 0 and 4. If $d$ is close to 0 are the residuals $\hat{\epsilon}_i$ and $\hat{\epsilon}_{i-1}$ correlated positively, if close to 4 the residuals are negatively correlated. The purpose of this method is to reduce the correlation between the residuals, the Durbin-Watson test statistic should then become 2.
+which lies between 0 and 4. If $d$ is close to 0 the residuals $\hat{\epsilon}_i$ and $\hat{\epsilon}_{i-1}$ are correlated positively, if close to 4 the residuals are negatively correlated. The purpose of this method is to reduce the correlation between the residuals, the Durbin-Watson test statistic should then become 2.
 
-When the residuals are correlated, one gets an underestimation \todo{Out result indicates that $\hat{\sigma}_\epsilon^2$ is smaller with OLS+AR(1)} of the variance of the residuals $\hat{\sigma}_\epsilon^2$ \cite{wiki-autocorrelation}. This in turn leads to an overestimation of the $\hat{\beta}$ parameters t-scores and thus the p-values will be erroneous, leading to a type 1 error.
+When the residuals are correlated, one gets bad estimation of the variance of the residuals $\hat{\sigma}_\epsilon^2$. This in turn leads to bad interference statistics, such as misleading p-values.
 
-To correct for the correlated residuals one can assume that the error terms are created by a stochastic process. 
-One can imagine that this process can receive exogenous influences or shocks $u_i$ at every point in time $t_i$ and that these shocks will propagate through time in such a way that their ``ripple'' effects slowly subside. \todo{Kilde}
-By assuming that $u_i$ is a stochastic variable with mean $\mathrm{E}[u_i]=0$ and variance $\mathrm{Var}[u_i]=\sigma_u^2$, the residuals from the OLS model becomes a weighted sum of absorbed shocks 
-\begin{equation}
-\epsilon_i=u_i+\alpha_1 u_{i-1}+\alpha_2 u_{i-2}+...
-\end{equation}
-
-The $u_i$'s are assumed to be independent and identically distributed.
-By letting $\alpha_i=\rho^i$ and assuming $|\rho|<1$ one achieves the formula for a first order Autoregressive process
-\begin{equation}
-\epsilon_i=\rho \epsilon_{i-1}+u_i.
-\end{equation}
-
-In the above it is apparent that $\rho$ is the correlation between any given residual and its successor. Thus the OLS cost function can be be rewritten as
+To correct for the correlated residuals, one can use a weighted least squares (WLS) regression. This uses a $\Sigma$ matrix there will correct for the correlated residuals
 \begin{equation}
 \min_{\beta, \rho}\ (Y-X\beta)^T \Sigma^{-1}(Y-X\beta),
 \label{eq:theory-olsar-min}
@@ -44,12 +31,12 @@ where $ \Sigma^{-1}$ is given as
 
 The optimization problem \eqref{eq:theory-olsar-min} is nonlinear and there is no closed form solution to this problem. However when keeping $\rho$ constant the $\beta$ parameters can be estimated using Weighted Least Squared, which is similar to OLS but with a constant $\Sigma$ matrix and have the solution \cite[p.~38]{time-series-analysis}
 \begin{equation}
-\hat{\beta} = (x^T \Sigma^{-1} x)^{-1} x^T \Sigma^{-1} Y.
+\hat{\beta} = (X^T \Sigma^{-1} X)^{-1} X^T \Sigma^{-1} Y.
 \end{equation}
 
-This should then be rewritten using SVD, to account for a near singular $x^T \Sigma^{-1} x$ matrix.
+This should then be rewritten using SVD, to account for a near singular $X^T \Sigma^{-1} X$ matrix.
 
-Similar when $\beta$ is a constant, $\rho$ can be estimated with  \cite[p.~178]{autocorrelation-kousgaard}
+Similarly when $\beta$ is kept constant, $\rho$ can be estimated with  \cite[p.~178]{autocorrelation-kousgaard}
 \begin{equation}
 \hat{\rho} = \frac{ \sum_{i=2}^n \hat{\epsilon_i}\hat{\epsilon}_{i-1} }{ \sum_{i=2}^{n-1} \hat{\epsilon_i}^2 }.
 \label{eq:theory-olsar-rho}

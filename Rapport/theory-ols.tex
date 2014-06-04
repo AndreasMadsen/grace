@@ -2,7 +2,7 @@
 \subsection{OLS}
 OLS (Ordinary Least Squares) regression is used for finding the best linear transformation of one or more exogenous variables $X$ so as to predict the dependent variable $Y$. \todo{Improve formulation}
 This is done by a matrix-vector product between a $\beta$ vector and $X$.
-Since $X$ can be custom tailored for various purposes it is often referred to as the design matrix.
+Since $X$ can be custom tailored for various purposes it is often referred to as the design matrix. The model is
 \begin{align}
 Y=X \beta +\epsilon && \text{, where } \mathrm{E}[\epsilon] = 0 \text{ and } \mathrm{D}[\epsilon] = \mathrm{D}[Y] = \sigma^2 I .
 \end{align}
@@ -38,13 +38,13 @@ X^T X \hat{\beta}&=X^T Y \\
 \end{split}
 \end{equation}
 
-The solution above is formally correct \cite[p.~12]{statistical-learning}, but if $X$ is badly conditioned $(X^T X)^{-1}$ might not be numerically stable (i.e. if the columns in $X$ are highly correlated leading to a near singular $X^T X$) \cite[p.~8]{aasbjerg-ls}.
+The solution above is formally correct \cite[p.~12]{statistical-learning}, but if $X$ is badly conditioned $(X^T X)^{-1}$ might not be numerically stable (i.e., if the columns in $X$ are highly correlated leading to a near singular $X^T X$) \cite[p.~8]{aasbjerg-ls}.
 To avoid this problem $X$ should be factorised and the solution reformulated; in this report we will exclusively do this using SVD
 \begin{equation}
 \begin{split}
 \left( U \Sigma V^T\right)^T \left(U \Sigma V^T\right) \hat{\beta} &= \left(U \Sigma V^T\right)^T Y \\
-\left( V \Sigma^2 V^T \right) \hat{\beta} &= V \Sigma U^T Y \\
-\hat{\beta} &= \left( V \Sigma^2 V^T \right)^{-1} V \Sigma U^T Y \\
+V \Sigma^2 V^T \hat{\beta} &= V \Sigma U^T Y \\
+\left(V \Sigma^{-2} V^T\right) V \Sigma^2 V^T \hat{\beta} &= \left(V \Sigma^{-2} V^T\right) V \Sigma U^T Y \\
 \hat{\beta} &= V \Sigma^{-1} U^T Y.
 \end{split}
 \end{equation}
@@ -57,25 +57,25 @@ In the special case of the GRACE data, the $X$ matrix is identical for every pos
 \begin{equation}
 \begin{split}
 \hat{Y} &= X \hat{\beta} \Rightarrow \hat{Y} = X V \Sigma^{-1} U^T Y \\
-\hat{Y} &= H X \quad \text{, where } H = X V \Sigma^{-1} U^T.
+\hat{Y} &= H Y \quad \text{, where } H = X V \Sigma^{-1} U^T.
 \end{split}
 \end{equation}
 
-As earlier with $\beta$, the hat matrix can be calculated for all $Y$ vectors by horizontally stacking $Y$ to form a matrix.
+As earlier with $\beta$, the hat matrix can be calculated for all $Y$ vectors by vertically stacking $Y$ to form a matrix.
 
-An important property of the $H$ matrix is that it is idempotent ($H^2 = H$).
+An important property of the $H$ matrix is that it is idempotent ($H^2 = H$) and symmetrical ($H^T = H$).
 This is because $H$ is a projection matrix which projects $Y$ onto $\hat{Y}$.
-Projecting $Y$ onto $\hat{Y}$ and then projecting again onto $\hat{Y}$, will obviously not change anything, because one is already in the $\hat{Y}$-plane.
+Projecting $Y$ onto $\hat{Y}$ and then projecting again onto $\hat{Y}$, will obviously not change anything, because one is already in the $\hat{Y}$-plane, spanned by the columns of $X$.
 
 \subsubsection{Root Mean Squared Error}
 
-``Root Mean Squared Residuals'' (RMSE) is an indicator of how good an $Y$ estimate is.
+The ``Root Mean Squared Error'' (RMSE) is an indicator of how good an $Y$ estimate is.
 It can be calculated as
 \begin{equation}
-\hat{\sigma} = \sqrt{\frac{\left(Y - \hat{Y}\right)^T \left(Y - \hat{Y}\right)}{N-p}},
+\hat{\sigma} = \sqrt{\frac{\left(Y - \hat{Y}\right)^T \left(Y - \hat{Y}\right)}{n-m}},
 \end{equation}
 
-where $p$ is the number of parameters (elements in $\beta$) and $N$ is the number of observations (elements in $Y$).
+where $m$ is the number of parameters (elements in $\beta$) and $n$ is the number of observations (elements in $Y$).
 RMSE is an estimate for the standard deviation of $Y$ \cite[theorem~3.4]{time-series-analysis} thus the symbol $\hat{\sigma}$.
 
 
@@ -93,25 +93,25 @@ The variance of $\hat{Y_i}$ is given by the diagonal elements in $\mathrm{D}[\ha
 
 Because $\sigma^2$ is a scalar, the diagonal in $H$ is important to examine, since it can reveal potential elements (in our case points of time) with high variance in the predictions.
 
-\subsubsection{The dispersion of $\hat{\beta}$}
+\subsubsection{The dispersion of $\hat{\boldsymbol\beta}$}
 
 The dispersion of $\hat{\beta}$ is calculated as \cite[theorem~3.2]{time-series-analysis}:
 \begin{equation}
 \mathrm{D}[\hat{\beta}] = \sigma^2 (X^T X)^{-1} = \sigma^2 V \Sigma^{-2} V^T
 \end{equation}
 
-Seeing as $\sigma^2$ is a scalar and dependent of $Y$, a similar spatial independent expression can be made, by removing the scalar $\sigma^2$  factor, thus looking exclusively at $V \Sigma^{-2} V^T$.
+Since $\sigma^2$ is a scalar and dependent of $Y$, a similar spatial independent expression can be made, by removing the scalar $\sigma^2$  factor, thus looking exclusively at $V \Sigma^{-2} V^T$.
 
-\subsubsection{p-values for $\hat{\beta}$}
+\subsubsection{p-values for $\hat{\boldsymbol\beta}$}
 
-To calculate p-values for OLS parameters the student's t-distribution is used, with the t-score \cite[p.~172]{time-series-analysis}
+Assuming the residuals are normally distributed, the p-values for OLS parameters can be calculated using the student's t-distribution, with the t-score \cite[p.~172]{time-series-analysis}
 \begin{align}
 \mathrm{t} = \frac{\hat{\beta_i}}{\mathrm{SD}[\hat{\beta_i}]} && \text{where: } \mathrm{SD}[\hat{\beta_i}] = \sqrt{\mathrm{Cov}[\hat{\beta}]_{ii}} = \hat{\sigma} \sqrt{ (V \Sigma^{-2} V^T)_{ii} }.
 \end{align}
 
-Now by plugging the t-score into the Student's Cumulative T-Distribution Function ($\Phi_t$) with $N - p$ degrees of freedom, we get
+Now by plugging the t-score into the Student's Cumulative distribution function ($\Phi_t$) with $N - p$ degrees of freedom, we get
 \begin{equation}
 p = 2 \cdot \Phi_t\left(\mathrm{abs}(t), N-p\right)
 \end{equation}
 
-The null-hypothesis is that $\beta_i = 0$ and th  e alternate hypothesis is $\beta_i \not = 0$.
+The null-hypothesis is that $\beta_i = 0$ and the alternative hypothesis is $\beta_i \not = 0$.
