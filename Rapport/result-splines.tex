@@ -47,8 +47,3 @@ Unfortunately for the south pole, the resulting fits do display some cusps and o
 	\caption{The OLS residuals are blue.}
 	\label{fig:splines-selected-1-residual}
 \end{figure}
-
-\subsubsection{Ideas}
-If one wanted to delve deeper into the possibilities of basis expansions and hinge function the most important thing would be to analyse where to place the knots. Even though it was here chosen to place the knots at predetermined points in time and have the knots be equal for all locations, several libraries have been developed which optimizes knot location as well polynomial degrees etc.
- A famous algorithm MARS\textregistered (multivariate adaptive regression splines) developed by Jerome Friedman, can achieve this using a 2-phase pass technique \cite{wiki-MARS} (forward, backward) but implementing the algorithm seemed out of scope for this report.
-\todo[inline]{Andreas er uenlig. Den slags er brugtbart når man forventer pludselige hendelser, men ikke ved hvornår. Som fx US Air Trafic. I vores tilfælde giver det perfekt mening at modeller en svingning til et år. At introducere en ny svinging (et år) før den forige er gennemføret, gør modellen urealistisk. Istedet bør man fokusere på de curps der er nu, da det er det umidbare problem. Dette løser MARS heller ikke.}
