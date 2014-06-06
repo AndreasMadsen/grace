@@ -18,8 +18,8 @@ Y=Y.A
 
 fig = plt.figure(figsize=(12,6))
 
-# Plot y 
-r=Y.shape[0]-50000
+# Plot curves, uncomment the -50000 for testing
+r=Y.shape[0] #-50000
 for i in range(r):
 	print 'Processing location ' + str(i+1) + ' out of  ' + str(r)
 	plt.plot(days, Y[i,:], 'b-',label='Observations',alpha=0.05)
@@ -32,6 +32,7 @@ plt.xlim(np.min(days), np.max(days))
 plt.ylabel('EWH [m]')
 plt.xlabel('date')
 
-print 'saving and plotting figure'
-fig.savefig("../Rapport/figures/transparent_lines.png")
+print 'plotting figure'
+#uncomment for figure saving
+#fig.savefig("../Rapport/figures/transparent_lines.png")
 plt.show()
