@@ -12,7 +12,7 @@ Y = np.asmatrix(grace.load.grids.reshape(shape[0] * shape[1], shape[2]))
 
 if __name__=='__main__':
 	#compute gap statistics (see gap.py)
-	res=gap(Y[:1000].A,ks=range(1,10))
+	res=gap(Y.A,nrefs=5,ks=range(1,21))
 	pickle.dump(res, open('gap.res','wb'))
 	[gaps,SD]=res
 	print 'gap-statistics:', gaps
