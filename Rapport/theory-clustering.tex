@@ -51,11 +51,11 @@ Then follows a weighting and sum over all the clusters
 W_{K}=\sum_{k=1}^K \frac{1}{2n_k} D_k
 \end{equation}
 where $K$ is the number of clusters and $n_k$ the observations in the k'th cluster.
-Given the quantity $W_k$ one can then calculate a gap by simulating $b$ datasets $B$ drawn from approximately the same distribution as $X$ and calculating the gap as
+Given the quantity $W_k$ one can then calculate a gap by simulating $b$ datasets $B$ drawn from a random uniform distribution $X$ and calculating the gap as
 \begin{equation}
 Gap(k)=E^{*}\{log W_k\} - log(W_k)
 \end{equation}
-where the expected value $E^{*}$ can be estimated by the mean over the simulated datasets $B$. 
+where the expected value $E^{*}$ can be estimated by the mean over the simulated datasets $B$. That is the gap statistics tries to avoid overfitting by comparing the cluster gain on a dataset where "there are no clusters" (random uniform).
 After calculating the standard deviation of $W_k$ on $B$ as 
 \begin{equation}
 \sigma_k=\sigma{W_k | B}\sqrt{1+\frac{1}{b}}
