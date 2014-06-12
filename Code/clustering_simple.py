@@ -33,7 +33,7 @@ def fit_cluster(X):
 	end=time.time()
 	
 	model=skc.MiniBatchKMeans(init='k-means++',
-			n_clusters=10,batch_size=batch_size*2).fit(X)
+			n_clusters=20,batch_size=batch_size*2).fit(X)
 	print 'Models done in ' + str(end-start)  + ' seconds.'
 	return model
 

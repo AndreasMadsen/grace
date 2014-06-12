@@ -1,0 +1,7 @@
+%!TEX root=report.tex
+\subsection{KMeans}
+First off what needed to be identified was the number of clusters. 
+Due to the size of the design matrix $X$, (64800,341), and the fact multiple simulated datasets of the same size would be needed to calculate the gap-statistic it was decided to leverage the high performance computing (HPC\footnote{link: http://www.cc.dtu.dk/}) cluster that DTU offers for students and faculty. 
+ It should be noted that if such a setup was not available one could have used smaller samples and/or a variant of KMeans using so called "minibatches". \\
+Alas even on the HPC as the cluster count increases so does compute time, so in the cluster number interval [1;10], 20 random univariate distributions were sampled whereas in the interval [10-20] only 5 samples were made. Following is the plot of the gap statistic along with the standard deviation
+
