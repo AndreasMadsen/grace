@@ -21,18 +21,18 @@ print "Parameter plots"
 
 # Plot velocity and acceleration
 parameter_plots = [
-	(1, 'vel', 'velocity $\\left[\\frac{m}{day}\\right]$'),
-	(2, 'acc', 'acceleration $\\left[\\frac{m}{day^2}\\right]$')
+	(1, 'vel', 'velocity $\\left[\\frac{m}{year}\\right]$', 1),
+	(2, 'acc', 'acceleration $\\left[\\frac{m}{year^2}\\right]$', 2)
 ];
 
-for index, name, unit in parameter_plots:
+for index, name, unit, power in parameter_plots:
 	fig = plt.figure(figsize=(9, 3.5))
 
 	m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
 	m.drawcoastlines(linewidth=.5)
 	m.drawparallels(np.arange(-90.,120.,30.),labels=[1,0,0,0])
 	m.drawmeridians(np.arange(0.,420.,60.),labels=[0,0,0,1])
-	im = m.imshow(Theta[::-1,:,index])
+	im = m.imshow(Theta[::-1,:,index] * (365.242)**power)
 	im.set_cmap('binary_r')
 	cbar = m.colorbar()
 	cbar.set_label(unit, rotation=270, labelpad=20)
