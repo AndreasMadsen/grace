@@ -144,8 +144,8 @@ def theta_description(frequencies=18, splines=False):
 	omega = 365.242
 	for i in range(1,frequencies + 1):
 		names = splines_description(names, lambda t: [
-			u"cos(2π/" + str(round(omega/i, 1)) +  " * (" + t + "))",
-			u"sin(2π/" + str(round(omega/i, 1)) +  " * (" + t + "))"
+			u"cos(%d * ω * (%s))" % (i, t),
+			u"sin(%d * ω * (%s))" % (i, t)
 		], use_splines = splines)
 
 	return names

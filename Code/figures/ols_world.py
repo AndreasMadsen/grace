@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib; backend = matplotlib.get_backend()
 import matplotlib.pyplot as plt
 import mpl_toolkits.basemap as maps
+import re
 
 Theta = grace.ols.theta_matrix()
 description = grace.ols.theta_description()

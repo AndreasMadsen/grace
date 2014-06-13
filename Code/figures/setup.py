@@ -27,6 +27,7 @@ def latexity(string):
 	output = string \
 		.replace('(t)', 't') \
 		.replace(u'π', '\\pi') \
+		.replace(u'ω', '\\omega') \
 		.replace('cos', '\\cos') \
 		.replace('sin', '\\sin') \
 		.replace('*', '\\cdot')

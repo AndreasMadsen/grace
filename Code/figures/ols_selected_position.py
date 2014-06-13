@@ -111,6 +111,7 @@ for i, name in enumerate(positions.keys()):
 			'$' + latexity('%.2e' % (theta[index])).replace('e', '10') + '$',
 			'$%.3f$' % (pvalues[index])
 		])
+	# Make the amount of rows even
 	tabel_content.append(['', '', ''])
 
 	with open(figure_path('ols-selected-%d-paramters.tex' % (i)), "w") as texfile:
