@@ -35,10 +35,10 @@ f(x - \zeta)_+ = \begin{cases}
 $\zeta$ denotes the ``knot'' between the zero part and the $f$ part. By choosing $f$ and adding the hinge function to the design matrix, a basis expansion where terms are only active for some parts of the time series is obtained.
 
 When $f$ is a polynomial one achieve a piecewise polynomial which is called a spline.
-In this case each hinge function is guaranteed to be continuous and it can be shown that the spline's derivatives are continuous to order $M-2$ where $M$ is the degree of polynomial $f$ \cite[p.~144]{statistical-learning}. When dealing with polynomials, splines there are continues up to and including its second order derivatives are called \textit{cubic splines} and they generates nicely looking curves when performing the regression. \cite[p.~143]{statistical-learning}.
+In this case each hinge function is guaranteed to be continuous and it can be shown that the spline's derivatives are continuous to order $M-2$ where $M$ is the degree of polynomial $f$ \cite[p.~144]{statistical-learning}. When dealing with polynomials, splines which are continuous up to and including its second order derivatives are called \textit{cubic splines} and they generate nicely looking curves when performing the regression. \cite[p.~143]{statistical-learning}.
 
 \subsubsection{Knots and trigonometric functions}
 To model each year with different behavior, in essence all that is needed is to create 9 knots (10 intervals requires 9 splits) and construct the hinge functions.
 However, since the functions being used are sines and cosines, there is no guarantee of continuity at the knots (only continuity if the trigonometric function evaluates to zero at the knot).
 In grim cases, when multiple discontinuous functions are combined, one can end up with cusps, that is a steep descent/ascend followed by the opposite movement in rapid succession.
-If this phenomenon becomes too gross, one should consider rejecting the model, this will be discussed in the result section. 
+If this phenomenon becomes too large, one should consider rejecting the model, this will be discussed in the result section. 

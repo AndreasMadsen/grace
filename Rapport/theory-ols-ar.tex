@@ -11,7 +11,7 @@ which lies between 0 and 4. If $d$ is close to 0 the residuals $\hat{\epsilon}_i
 
 When the residuals are correlated, one gets bad estimation of the variance of the residuals $\hat{\sigma}_\epsilon^2$. This in turn leads to bad interference statistics, such as misleading p-values.
 
-To correct for the correlated residuals, one can use a weighted least squares (WLS) regression. This uses a $\Sigma$ matrix there will correct for the correlated residuals
+To correct for the correlated residuals, one can use a general least squares (GLS) regression. This uses a $\Sigma$ matrix there will correct for the correlated residuals
 \begin{equation}
 \min_{\beta, \rho}\ (Y-X\beta)^T \Sigma^{-1}(Y-X\beta),
 \label{eq:theory-olsar-min}
@@ -29,7 +29,7 @@ where $ \Sigma^{-1}$ is given as
 \end{bmatrix}
 \end{equation}
 
-The optimization problem \eqref{eq:theory-olsar-min} is nonlinear and there is no closed form solution to this problem. However when keeping $\rho$ constant the $\beta$ parameters can be estimated using Weighted Least Squared, which is similar to OLS but with a constant $\Sigma$ matrix and have the solution \cite[p.~38]{time-series-analysis}
+The optimization problem \eqref{eq:theory-olsar-min} is nonlinear and there is no closed form solution to this problem. However when keeping $\rho$ constant the $\beta$ parameters can be estimated using  General Least Squared, which is similar to OLS but with a constant $\Sigma$ matrix and have the solution \cite[p.~38]{time-series-analysis}
 \begin{equation}
 \hat{\beta} = (X^T \Sigma^{-1} X)^{-1} X^T \Sigma^{-1} Y.
 \end{equation}

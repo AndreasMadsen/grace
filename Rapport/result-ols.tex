@@ -8,7 +8,7 @@ The first part of the OLS analysis will examine the EWH at two specific location
 The two selected locations are:
 \begin{itemize}
 \item Greenland ($63.5^\circ$ N, $49.5^\circ$ W)
-\item South Pole ($74.5^\circ$ S, $87.5^\circ$ W)
+\item Western Antartica ($74.5^\circ$ S, $87.5^\circ$ W)
 \end{itemize}
 \begin{figure}[H]
 	\centering
@@ -26,7 +26,7 @@ At the west coast of Greenland a strong period trend can be observed, probably c
 	\label{fig:ols-selected-0-fit}
 \end{figure}
  
-From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caught by the model, however for some seasons (particular between 2008 and 2010) the fit is not very good. This is even more clear when looking at the residuals in Figure \ref{fig:ols-selected-0-residual}. From this it is clear that the residuals are far from white noise, which was one of the OLS assumptions.
+From Figure \ref{fig:ols-selected-0-fit} it's seen that the period trend is caught by the model, however for some seasons (particularly between 2008 and 2010) the fit is not very good. This is even more clear when looking at the residuals in Figure \ref{fig:ols-selected-0-residual}. From this it is clear that the residuals are far from white noise, which was one of the OLS assumptions.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-selected-0-residual}
@@ -38,11 +38,11 @@ In addition to the yearly season, when looking at the estimated OLS coefficients
 \begin{table}[H]
 \centering
 \centerline{\input{figures/ols-selected-0-paramters}}
-\caption{Parameter estimates $\hat{\beta}$ and their p-values. }
+\caption{Parameter estimates $\hat{\beta}$ and their p-values for Greenland.}
 \label{table:ols-selected-0-paramters}
 \end{table}
 
-\paragraph{South Pole}
+\paragraph{Western Antarctica}
 
 Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fig:ols-selected-1-fit}. Interestingly enough, there is no seasonal trend or at least it is not very strong. Also the existence of high frequency terms in the OLS regression, is more apparent. Though from the actual data it does not look like such periodic trends exist. This suggests that too many seasonal parameters have been used, thus causing some overfitting.
 \begin{figure}[H]
@@ -52,7 +52,7 @@ Just like with Greenland there is a clear drop in mass as seen in Figure \ref{fi
 	\label{fig:ols-selected-1-fit}
 \end{figure}
 
-When looking at the residuals in Figure \ref{fig:ols-selected-1-residual}, it is again clear that the residuals are far from being white noise. There also seems to be some periodic trend in the residuals, although the beginnings and the endings of these seasons are quite hard to make out. 
+When looking at the residuals in Figure \ref{fig:ols-selected-1-residual}, it is again clear that the residuals are far from being white noise. There also seems to be some periodic trend in the residuals; that is the residuals appear to have a seasonal pattern. However, the beginnings and the endings of these seasons are quite hard to make out. 
 
 \begin{figure}[H]
 	\centering
@@ -66,7 +66,7 @@ Just as with Greenland many of the OLS terms are with 95\% confidence not signif
 \begin{table}[H]
 \centering
 \centerline{\input{figures/ols-selected-1-paramters}}
-\caption{Parameter esimates $\hat{\beta}$ and their p-values. }
+\caption{Parameter esimates $\hat{\beta}$ and their p-values for Greenland. }
 \label{table:ols-selected-1-paramters}
 \end{table}
 
@@ -90,19 +90,19 @@ As mentioned earlier, the velocity and acceleration of the mass changes are the 
 	\label{fig:ols-world-parameter-acc}
 \end{figure}
 
-The first two figures (Figure \ref{fig:ols-world-parameter-vel} and Figure \ref{fig:ols-world-parameter-acc}) shows that, generally there is a mass loss at both Greenland and the South Pole and that it is accelerating. However interestingly enough the East Coast of Greenland do not show any acceleration, maybe even a slight deceleration of the mass loss (a positive value).
+The first two figures (Figure \ref{fig:ols-world-parameter-vel} and Figure \ref{fig:ols-world-parameter-acc}) show that, generally there is a mass loss at both Greenland and the Western Antarctica and that it is accelerating. However interestingly enough the East Coast of Greenland do not show any acceleration, maybe even a slight deceleration of the mass loss (a positive value).
 
 On both figures there is also a circular pattern at Thailand (10 N, 95 E), which is caused by the infamous earthquake of the 26th December 2004, resulting in significant changes in the mass distribution, thus affecting the data from GRACE.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/ols-world-parameter-year}
-	\caption{Estimated phase and amplitude for the yearly seasons.}
+	\caption{Intensity-Hue plot. Estimated phase controls the hue while the amplitude sets the intensity.}
 	\label{fig:ols-world-parameter-year}
 \end{figure}
 
 The seasonal trends do not reveal any information about mass loss due to ice melting, since this is something which will continue to have effect for many years. However it does affect the estimation of the velocity and acceleration. Also having more season related terms in the OLS regression than necessary, will result in fewer degrees of freedom.
 
-In Figure \ref{fig:ols-world-parameter-year} it is seen from the intensity, that the South Pole do not have a strong yearly seasonal trend unlike Greenland. It also appears that it is primarily the East Coast of Greenland which has a yearly seasonal trend. The strongest seasonal trend appears in South America, and this is due to the rain season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.
+In Figure \ref{fig:ols-world-parameter-year} it is seen from the intensity, that the Western Antarctica do not have a strong yearly seasonal trend unlike Greenland. It also appears that it is primarily the East Coast of Greenland which has a yearly seasonal trend. The strongest seasonal trend appears in South America (more specifically the Amazon Basin), and this is due to the rain season. This rain also takes quite some time to reach the ocean, thus causing the phase gradient.
 
 \paragraph{Performance} 
 
@@ -114,11 +114,11 @@ As a measure of  model performance the root mean squared error has been calculat
 	\label{fig:ols-world-performance-rmse}
 \end{figure}
 
-From \ref{fig:ols-world-performance-rmse} it is seen that the hardest places to fit are South America and Thailand. In South America it is especially around the Amazon River that the RMSE is high. This suggests that it is caused by the rain seasons, since this is also the place with the highest amplitude of the yearly seasonal term. It's a bit odd that this is so hard to fit, since the model does support seasonal trends. One explanation could be that this OLS model assumes that the season are equally long and with identical phases each year, which is not very likely. The circular pattern around Thailand is no surprise, since the OLS model was never meant to fit this distortion.
+From \ref{fig:ols-world-performance-rmse} it is seen that the hardest places to fit are South America and Thailand. In South America it is especially around the Amazon River that the RMSE is high. This suggests that it is caused by changes in the rain seasons, since this is also the place with the highest amplitude of the yearly seasonal term. It's a bit odd that this is so hard to fit, since the model does support seasonal trends. One explanation could be that this OLS model assumes that the season are equally long and with identical phases each year, which is not very likely. The circular pattern around Thailand is no surprise, since the OLS model was never meant to fit this distortion.
 
-Neither of these issues are related to the ice melting, which makes them less important. However the East Coast of Greenland and the South Pole also show a relative higher RMSE, when comparing to the ocean or the nearby land, which is less than ideal. The fact that it is primarily the East Coast of Greenland and not the west coast, suggests that the issues are related to the seasons, just like with South America. This was also something observed, when looking at the specific location's time series.
+Neither of these issues are related to the ice melting, which makes them less important. However the East Coast of Greenland and the Western Antarctica also show a relative higher RMSE, when comparing to the ocean or the nearby land, which is less than ideal. The fact that it is primarily the East Coast of Greenland and not the west coast, suggests that the issues are related to the seasons, just like with the Amazon Basin. This was also something observed, when looking at the specific location's time series.
 
-\paragraph{Standard diagnostics} Recalling that $\mathrm{Var}[\hat{Y}_i] = \sigma^{2} H_{ii}$ and $\mathrm{D}[\hat{\beta}] = \sigma^{2} V \Sigma^{-2} V^T$ the diagonal of $H$ and $V \Sigma^{-2} V^T$ are both important to examine. This will identify any days and parameters with high variance.
+\paragraph{Standard diagnostics} Recalling that $\mathrm{Var}[\hat{Y}_i] = \sigma^{2} H_{ii}$ and $\mathrm{D}[\hat{\beta}] = \sigma^{2} V \Sigma^{-2} V^T$ the diagonal of $H$ and $V \Sigma^{-2} V^T$ are both important to examine. This will identify any days and parameters with high variance (the reader should remember that is applies to all positions).
 
 \begin{figure}[H]
 	\centering
@@ -127,7 +127,7 @@ Neither of these issues are related to the ice melting, which makes them less im
 	\label{fig:ols-world-performance-diagH}
 \end{figure}
 
-The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very big, the highest is $0.16$ and recalling that the 95\% confidence interval can be approximated by $\hat{Y}_i \pm 2 \cdot \hat{\sigma} \sqrt{\mathrm{Var}[\hat{Y}_i]}$. The maximal confidence interval becomes $\hat{Y}_i \pm 2 \cdot 0.135 \cdot \sqrt{0.16} = \hat{Y}_i \pm 0.108$, which is small when comparing to the EWH values, which range from $1$ to $-3$. What is odd about $\mathrm{diag}(H)$ is that there appears be some parts in each year there are more difficult to predict than others. \todo{Why is this}
+The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very big, the highest is $0.16$ and recalling that the 95\% confidence interval can be approximated by $\hat{Y}_i \pm 2 \cdot \hat{\sigma} \sqrt{\mathrm{Var}[\hat{Y}_i]}$. The maximal confidence interval becomes $\hat{Y}_i \pm 2 \cdot 0.135 \cdot \sqrt{0.16} = \hat{Y}_i \pm 0.108$, which is small when comparing to the EWH values, which range from $1$ to $-3$. What is odd about $\mathrm{diag}(H)$ is that there appears to be some parts in each year which are more difficult to predict than others. \todo{Why is this}
 
 \begin{figure}[H]
 	\centering
@@ -136,17 +136,17 @@ The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very
 	\label{fig:ols-world-performance-cov}
 \end{figure}
 
-From Figure \ref{fig:ols-world-performance-cov} it is seen that the parameters are nicely uncorrelated and while the seasonal parameters have a slightly high variance when comparing to their values, the velocity and acceleration parameters are practically zero.
+From Figure \ref{fig:ols-world-performance-cov} it is seen that the parameters are nicely uncorrelated and while the seasonal parameters have a slightly high variance when comparing to their values; the variation of the velocity and the acceleration parameters are practically zero.
 \begin{table}[H]
 \centering
 \begin{tabular}{r|c c c}
 	name & $\mathrm{Var}[\hat{\beta}_i]$ \\ \hline
-	$vel. (t)$ & $2.91390457 \cdot 10^{-09}$  \\
-	$acc. (0.5 \cdot t^2)$ & $1.29525397 \cdot 19^{-14}$
+	$vel. (t)$ & $2.91390457 \cdot 10^{-09} [\frac{m^2}{day^2}]$  \\
+	$acc. (0.5 \cdot t^2)$ & $1.29525397 \cdot 19^{-14} [\frac{m^2}{day^4}]$
 \end{tabular}
-\caption{Variance of the velocity and acceleration parameters}
+\caption{Variance of the velocity and acceleration parameters for all positions .}
 \end{table}
-
+\todo{Check that this is really true}
 \paragraph{p-values} Just as for the selected positions, inspecting the p-values can tell which OLS terms are important.
 
 \begin{figure}[H]
@@ -203,12 +203,12 @@ Plotting the first principal component score and loading, one gets:
 \label{fig:ols-pca-score-0}
 \end{figure}
 
-From Figure \ref{fig:ols-pca-score-0} its seen that there is some residuals at South America there is unlikely to be caused by noise. This could be because of the rainy seasons, since those are poorly modeled using this OLS regression. If that is the case one should expect Figure \ref{fig:ols-pca-loading-0} to show some yearly periodic trend. Unfortunately this do not seam to be the case. \todo{Now what?}
+From Figure \ref{fig:ols-pca-score-0} its seen that there is some residuals in South America which are unlikely to be caused by noise. This could be because of the rainy seasons, since those are poorly modeled using this OLS regression. If that is the case one should expect Figure \ref{fig:ols-pca-loading-0} to show some yearly periodic trend. Unfortunately this does not seem to be the case. \todo{Now what?}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/ols-pca-loading-0}
-\caption{PC loading for the first principal component}
+\caption{PC loadings for the first principal component}
 \label{fig:ols-pca-loading-0}
 \end{figure}
 
@@ -216,7 +216,7 @@ Plotting the second principal component score and loading, one gets:
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/ols-pca-score-1}
-\caption{PC score for the second principal component}
+\caption{PC scores for the second principal component}
 \label{fig:ols-pca-score-1}
 \end{figure}
 
@@ -227,6 +227,6 @@ Plotting the second principal component score and loading, one gets:
 \label{fig:ols-pca-loading-1}
 \end{figure}
 
-In Figure \ref{fig:ols-pca-score-1} a strong circular pattern appears. This is the caused by the earthquake near Thailand in 2004 and can't be modeled by this OLS regression, so those residuals are expected. A bit strange is that \ref{fig:ols-pca-loading-1} indicates that the residuals not only comes from 2002 to 2004 but also around 2006 and 2009.
+In Figure \ref{fig:ols-pca-score-1} a strong circular pattern appears. This is the caused by the earthquake near Thailand in 2004 and can't be modeled by this OLS regression, so those residuals are expected. It is a bit strange that Fig. \ref{fig:ols-pca-loading-1} indicates that the residuals not only comes from 2002 to 2004 but also around 2006 and 2009.
 
-More important do Figure \ref{fig:ols-pca-score-1} also show some residuals near west Greenland, this is not ideal since this is one of the areas this report attempts to analyze.
+More importantly Fig. \ref{fig:ols-pca-score-1} also show some residuals near west Greenland. This is not ideal since this is one of the areas this report attempts to analyze.

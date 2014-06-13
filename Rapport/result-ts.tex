@@ -2,9 +2,9 @@
 
 \subsection{Time series analysis - ARIMA}
 
-To get an indication if its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) has been selected.
+To get an indication of whether its possible to use time series analysis on the GRACE data, a single position (63.5 N 49.5 W, west coast of Greenland) has been selected.
 
-To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not be possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated. Also in order to get an indication of the model performance, the last 36 observations (which corresponds to a year) have been separated for cross validation testing.
+To analyze the data using an ARIMA model an equidistant dataset is required. For example it would otherwise not be possible to solve the Yule-Walker equations \cite[s.~122]{time-series-analysis}. In the original GRACE dataset some values are missing, thus they should be interpolated (linear interpolation was used). Also in order to get an indication of the model performance, the last 36 observations (corresponding to one year) have been separated for model validation.
 
 \begin{figure}[H]
 \centering
