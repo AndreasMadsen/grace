@@ -23,7 +23,7 @@ if __name__=='__main__':
   end=time.time()
   print 'Loading done in ' + str(end-start) + ' seconds.'
 
-  network=sAe.SparseAutoEncoder(options=options, data=Y[:1000].T)# Y.T
+  network=sAe.SparseAutoEncoder(options=options, data=Y.T)# Y[:1000].T
   
   print 'Training sparse autoencoder'
   start=time.time()
