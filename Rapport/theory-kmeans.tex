@@ -1,0 +1,61 @@
+%!TEX root=report.tex
+\subsection{K-means clustering}
+
+Clustering is the process of grouping or dividing a set of objects into disjunct subsets, such that objects in each cluster are similar.
+All clustering methods are unsupervised learning methods, thus there is no ``correct'' answer.
+It have been shown that given a set of objects, humans also differ in their choice of clusters.
+
+Since similarity is an imprecise term, one uses a distance function to use as a Dissimilarity Measure $d$.
+
+There are 4 conditions a distance function $d$ must satisfy, they are all derived from the norm definition \cite[p.~30]{math-4}:
+\begin{align}
+\text{(i) }   & d(p_1,p_2) \ge 0 && \forall \ p_1, p_2 \in V \\
+\text{(ii) }  & d(p_1,p_2) \le d(p_1, p_3) + d(p_3, p_2) && \forall \ p_1, p_2, p_3 \in V \\
+\text{(iii) } & d(p_1, p_2) = d(p_2, p_1) && \forall \ p_1, p_2 \in V \\
+\text{(iv) } & d(p_1, p_2) = 0 \Leftrightarrow p_1 = p_2 && \forall \ p_1, p_2 \in V
+\end{align}
+
+Given a distance measure the total cluster variance $C^{*}$ can be calculated as
+\begin{equation}
+C^{*}=\sum^K_{k=1} N_k \sum_{i \in C_k} D(x_i-\mu_k).
+\end{equation}
+Here $\mu_k$ denotes the k\textsuperscript{th} cluster center (also called a centroid), $N_k$ the number of observations in cluster $k$ and $C_k$ denotes the subset with all the points in the cluster $k$.
+
+In this analysis the Euclidean distance $d(p_i, p_j)= \sqrt{(p_i-p_j)(p_i-p_j)^{T}}$ has been chosen as the dissimilarity measure.
+K-means is then the chosen algorithm for minimizing $C^{*}$ given $K$ clusters.
+The k-means method as the dataset size is $(lat \cdot lon, days) = (64800,341)$ and k-means is fairly quick to converge and calculate.
+
+K-means makes a single big assumption about the clusters being hyper dimensional sphere. But beyond this K-means is a simple iterative algorithm:
+\begin{enumerate}
+	\item Initialize cluster centroids
+	\item Iterate until centroid convergence:
+	\begin{enumerate}
+		\item Given the current set of centroids, reassign each observation to the closest centroid using the distance function.
+		\item Using the current cluster assignment $C_k\ \forall k$, minimize $C^{*}$ by recomputing the centroids for each cluster as the mean of points in each cluster.
+	\end{enumerate}
+\end{enumerate}
+
+\subsubsection{Gap-statistics}
+
+The big issue with clustering is that there is no obvious way of selecting the amount of clusters $K$. In this analysis the Gap-statistics \cite[p.~519]{statistical-learning} as proposes by Hastie, Tibshirani and Firedman is used.
+
+First calculate the cluster dissimilarity using $K$ clusters \cite{gap-statistic}
+\begin{equation}
+W_K = \sum_{k=1}^K \frac{1}{2 N_k} \sum_{x_i\in C_k} \sum_{x_j\in C_k} d(x_i,x_j).
+\end{equation}
+
+Given the quantity $W_k$ one can then calculate a gap $G$ by simulating $b$ datasets from a random uniform distribution and calculating the gap as
+\begin{equation}
+G(k) = \mathrm{E}[\log(W_k)] - \log(W_k),
+\end{equation}
+where the expectation $E[log W_k]$ can be estimated by the mean over the $b$ simulated datasets. That is the gap statistics tries to avoid overfitting by comparing the cluster gain on a dataset where there are no clusters (uniformly distributed).
+
+The amount of clusters $K$ is then minimized under the condition
+\begin{equation}
+K^{*} = \argmin_K \left\{ K \ | \ G(K) \ge G(K + 1) - s'_{K} \right\}.
+\end{equation}
+
+Here $s'_{K+1}$ is the standard error on the $b$ samples calculated as 
+\begin{equation}
+s'_{K} = \mathrm{SD}[\log(W_k)] \sqrt{1+\frac{1}{b}}.
+\end{equation}

@@ -20,6 +20,7 @@
 \usepackage{url}		% Tillader \url formatering
 \usepackage{subcaption}	% Tilader subfigure og subtable samt captions i dem
 \usepackage{sectsty}
+\usepackage{nth}
 \usepackage{csquotes}	% Anbefalet package for BibLaTeX
 \usepackage[backend=bibtex,style=ieee]{biblatex}				% Benyt BibLaTeX til formatering
 \usepackage[bookmarks,bookmarksnumbered,hidelinks]{hyperref} % clickable pdf (til sidst)
@@ -45,6 +46,7 @@
 \setlength{\parindent}{15pt}					% Giver lidt luft imellem afsnitene
 \setlength{\parindent}{0cm}   					% Deaktiver afsnit indrykning
 \DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.gif}	% ændre til .png, .jpg for hurtig visning
+\DeclareMathOperator*{\argmin}{arg\,min}
 \pagestyle{fancy}
 
 \begin{document}
@@ -72,7 +74,7 @@
 \input{theory-ols-ar}
 \input{theory-lar}
 \input{theory-splines}
-\input{theory-clustering}
+\input{theory-kmeans}
 
 \pagebreak
 \section{Results}
@@ -81,7 +83,7 @@
 \input{result-lar}
 \input{result-ols-ar}
 \input{result-splines}
-\input{result-clusters}
+\input{result-kmeans}
 
 \pagebreak
 \input{appendix}
