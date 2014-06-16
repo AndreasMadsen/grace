@@ -5,7 +5,7 @@ import time
 import cPickle as pickle
 
 visible_size = 341
-hidden_size = 196
+hidden_size = 10
 
 
 options = sAe.SparseAutoEncoderOptions(visible_size,hidden_size,
