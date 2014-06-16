@@ -33,6 +33,6 @@ if __name__=='__main__':
 
   print 'Writing output to files'
   output = open("./HPC-output/network.pickle", "wb")
-  output.write(pickle.dumps(solutions))
+  output.write(pickle.dumps([solutions.W1,solutions.W2,solutions.b1, solutions.b2]))
   output.close()
   print 'Done'
