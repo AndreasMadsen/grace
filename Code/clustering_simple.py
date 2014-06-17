@@ -13,7 +13,6 @@ import matplotlib as mpl
 # get x values (in days)
 days = grace.ols.time_vector()
 
-
 # Get the ewh values with days on columns and position on rows
 shape = grace.load.grids.shape
 Y = np.asmatrix(grace.load.grids.reshape(shape[0] * shape[1], shape[2]))
