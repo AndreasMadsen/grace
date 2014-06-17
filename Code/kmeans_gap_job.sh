@@ -1,7 +1,7 @@
 #!/bin/sh
 #PBS -N kmeans-gap
 #PBS -l walltime=01:00:00
-#PBS -l nodes=1:ppn=8:gpus=1
+#PBS -l nodes=1:ppn=8
 #PBS -m eba
 #PBS -M amwebdk@gmail.com
 
