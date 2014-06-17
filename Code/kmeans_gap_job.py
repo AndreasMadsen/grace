@@ -12,8 +12,7 @@ if __name__=='__main__':
 	X = X[mask, :]
 
 	optimizer = GAP(verbose=True)
-	estimator = sklearn.cluster.MiniBatchKMeans(batch_size = 1000)
-	#estimator = sklearn.cluster.KMeans(n_clusters=8, n_jobs=1)
+	estimator = sklearn.cluster.KMeans(n_clusters=8, n_jobs=-1)
 	optimizer.calculate(X, estimator, sims=3, ks=range(1,10))
 
 	np.savez('HPC-output/gap.npz', **optimizer.dump())
