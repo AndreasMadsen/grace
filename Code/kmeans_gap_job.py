@@ -16,6 +16,6 @@ if __name__=='__main__':
 
 	optimizer = GAP(verbose=True)
 	estimator = sklearn.cluster.KMeans(n_clusters=8, n_jobs=parallel)
-	optimizer.calculate(X, estimator, sims=3, ks=range(1,10))
+	optimizer.calculate(X, estimator, sims=5, ks=range(1,21))
 
 	np.savez('HPC-output/gap.npz', **optimizer.dump())
