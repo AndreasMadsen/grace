@@ -122,7 +122,7 @@ def plot_pca_clusters(model,kpca,X):
 	
 	im = m.imshow(world,cmap=cmap,norm=norm)
 	plt.title('KPCA Clustering')
-	
+	fig.savefig('HPC-output/kpca-world.png')
 	fig = plt.figure(figsize=(12, 6))
 	labels=model.predict(centroids)
 #	print centroids,model.weights_,labels
@@ -132,7 +132,7 @@ def plot_pca_clusters(model,kpca,X):
 	plt.legend(loc=3)
 	plt.title('Cluster centroids (inverse transformed kpca)')
 
-	plt.show()
+	fig.savefig('HPC-output/kpca-centroids.png')
 	return 0
 
 
@@ -171,4 +171,4 @@ if __name__=='__main__':
 	[Y_encoded,kpca]=kernel_pca_fit(Y)
 	model=fit_gmm(Y_encoded)
 	#plot_clusters(model,Y_encoded,v)
-	plot_pca_cluster(model,kpca,Y_encoded)
+	plot_pca_clusters(model,kpca,Y_encoded)
