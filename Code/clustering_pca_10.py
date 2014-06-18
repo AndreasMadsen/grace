@@ -21,18 +21,18 @@ def write_latex_table(x,v):
 	for i,elem in enumerate(x):
 		covs[:,i]=1.96*np.sqrt(np.dot(np.diag(elem).reshape(1,10), v.T[:10]))
 	with open('HPC-output/covariance_structure.txt','wb') as f:
-		f.write('\\begin\{tabular}{l|c|c|c|c|c|c|c|c}')
+		f.write('\\begin{tabular}{l|c|c|c|c|c|c|c|c}')
 		f.write('\n\tday')
 		for i in range(8):
 			f.write(' &\t cluster ' +str(i))
 		f.write(' \\\\')
 		for i,row in enumerate(covs):
-			f.write('\n\t'+str(i+1)+ ' & ')
+			f.write('\n\t'+str(i+1))
 			for elem in row:
-				f.write('\t' + str(elem)+ ' & ')
+				f.write('\t & ' + str(elem))
 			f.write('\\\\')
 
-		f.write('\n\\end\{tabular\}')
+		f.write('\n\\end{tabular}')
 			
 	print 'latex table written'
 	

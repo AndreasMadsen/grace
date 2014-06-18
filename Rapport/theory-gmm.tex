@@ -5,11 +5,23 @@ The GMM is a more advanced clustering model than KMeans.
 The main advantage is that there are no restrictions on each cluster's covariance matrix where as the reader remembers that KMeans clusters had a diagonal covariance structure. 
 Such restrictions (i.e. shared covariance, diagonal covariance, spherical covariance etc.) can relatively easily be applied in the GMM if one so chooses; here, however, only the case with no covariance restrictions will be described.
 \\
-In the GMM each cluster is viewed as a Gaussian density function. 
-This density has a centroid (Just as with KMeans) and a covariance matrix.
-The density function is assumed to be a combination (mixture) of $K$ Gaussian PDFs (Probability Density Function) where K is finite.
+In the GMM the assumption is that data stems from a single density function.
+The density function is assumed to be a combination (mixture) of $K$ Gaussian PDFs (Probability Density Function) where K is finite and denotes the number of mixture components (i.e. clusters).
+In this report we will further constraint the PDFs to be multinormal distributions.
+Each mixture component has a centroid (the mean), a covariance matrix and a mixing weight.
+The sum of mixing weights across components has to be one for the GMM to constitue an actual pdf.
+\\
+To estimate the model parameters several different methods exists. In this report we will use the expectation maximization (EM) algorithm which is quite complex and thus wont be described here (to the interested reader we recommend \cite[p.~214,272,463]{statistical-learning}.
 
 
-In practice if K is large and the vector space has is high dimensional 
+
+In practice if K is large and the vector space $X$ is high dimensional, estimation of the model parameters will take too much computing power, and even if one get model parameters to converge, the degrees of freedom will be low; i.e. one might very easily overfit.
+In our case the input space would be 341-dimensional (341 observations per location) and thus a dimensionality reduction of some kind is needed. 
 
 \subsubsection{Dimensionality reduction}
+In many cases a $p$ dimensional dataset most of the data lies on a lower dimensional manifold. 
+Different methods exists to try to identify such manifolds, but here a previously described technique will be used. 
+When selected a subset of the Principal components (PCs) from a Principal Component Analysis (PCA) in effect one is forcing the data onto a lower dimensional manifold.
+The GRACE data contains quite a bit of noise and one might hope that the noise will be primarily contained in its own PCs. Hopefully these PCs will only account for a smaller amount of the variance in the data. 
+Thus if we sorts the PCs by significance and only select the most significant, some of the noise will be "lost".
+This in turn, coupled with the performance boost that GMM offers over KMeans, will hopefully lead to better clustering.
