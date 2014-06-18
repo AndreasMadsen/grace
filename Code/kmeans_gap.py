@@ -93,7 +93,7 @@ class GAP:
 
 		score = 0
 		for k in range(0, clusters):
-			score += distances[groups == k, k].sum()
+			score += np.power(distances[groups == k, k], 2).sum()
 
 		return score
 
@@ -107,7 +107,8 @@ class GAP:
 
 		opti_k = self.ks[-1]
 		for i in range(0, self.ks.shape[0] - 1):
-			if (G[i] >= G[i + 1] - sd[i]):
+			if (G[i] >= G[i + 1] - sd[i + 1]):
 				opti_k = self.ks[i]
+				break
 
 		return (opti_k, G, sd)

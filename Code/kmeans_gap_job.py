@@ -15,7 +15,10 @@ if __name__=='__main__':
 	X = X[mask, :]
 
 	optimizer = GAP(verbose=True)
-	estimator = sklearn.cluster.KMeans(n_clusters=8, n_jobs=parallel)
-	optimizer.calculate(X, estimator, sims=5, ks=range(1,21))
+	estimator = sklearn.cluster.KMeans(n_init=1, n_jobs=parallel)
+	optimizer.calculate(X, estimator, sims=20, ks=range(1,21))
 
 	np.savez('HPC-output/gap.npz', **optimizer.dump())
+
+	(K, G, sd) = optimizer.optimal()
+	print "Optimal amount of clusters: %d" % (K)

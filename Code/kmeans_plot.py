@@ -26,6 +26,9 @@ optimizer.load(np.load('HPC-output/gap.npz'))
 
 (K, G, sd) = optimizer.optimal()
 print "Optimal amount of clusters: %d" % (K)
+if (K > 12):
+	print "WARNING: Current only 12 clusters are supported (colors)"
+	K = 12
 plt.errorbar(optimizer.ks, G, sd)
 plt.xlim(optimizer.ks[0], optimizer.ks[-1])
 
