@@ -47,52 +47,6 @@ def write_latex_table(x,v):
 	print 'latex table written'
 	
 
-def plot_clusters(model,X,V):
-	y=model.predict(X)
-	y=y.reshape(180,360)[::-1]
-	shape=y.shape
-	#print y.shape
-	fig = plt.figure(figsize=(12, 6))
-
-	m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
-	m.drawcoastlines(linewidth=2.5, color="white")
-	m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
-	m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
-	
-	centroids=model.means_
-	covariance=model.covars_
-	write_latex_table(covariance,v)
-	cmap=plt.cm.jet
-	cmaplist=[cmap(i) for i in range(cmap.N)]
-	cmap=cmap.from_list('Custom cmap',cmaplist,cmap.N)
-	bounds=np.linspace(0,len(centroids),len(centroids)+1)
-	norm=mpl.colors.BoundaryNorm(bounds,cmap.N)
-	
-	world = np.ones((shape[0], shape[1], 3)).astype('uint8') * 255
-
-	for i in range(0,shape[0]):
-		for j in range(0,shape[1]):
-			world[i,j,:]=colors_rgb[y[i,j]]
-	
-	im = m.imshow(world,cmap=cmap,norm=norm)
-	plt.title('Clusters')
-	
-	fig = plt.figure(figsize=(12, 6))
-	labels=model.predict(centroids)
-#	print centroids,model.weights_,labels
-	for i,series in enumerate(np.dot(centroids,v.T[:number_of_pcs])):
-		plt.plot(days, series.ravel(),lw=2,c='#' + colors_hex[i],label='cluster '+str(i+1))
-		#uncomment for plus/minus 2x sd ontop
-
-		#plt.plot(days, (series.ravel()+np.dot(2*np.sqrt(np.diag(covariance[i])).reshape(1,number_of_pcs),v.T[:number_of_pcs])).ravel(),'--',lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
-		#plt.plot(days,(series.ravel() -np.dot(2*np.sqrt(np.diag(covariance[i])).reshape(1,number_of_pcs),v.T[:number_of_pcs])).ravel(),'--',lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
-	plt.legend(loc=3)
-	plt.title('Cluster centroids')
-
-	plt.show()
-	return 0
-
-
 def plot_pca_clusters(model,kpca,X):
 	y=model.predict(X)
 	y=y.reshape(180,360)[::-1]
@@ -107,7 +61,7 @@ def plot_pca_clusters(model,kpca,X):
 	
 	centroids=model.means_
 	covariance=model.covars_
-	write_latex_table(covariance,v)
+
 	cmap=plt.cm.jet
 	cmaplist=[cmap(i) for i in range(cmap.N)]
 	cmap=cmap.from_list('Custom cmap',cmaplist,cmap.N)
