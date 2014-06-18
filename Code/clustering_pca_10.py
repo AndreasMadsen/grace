@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cPickle as pickle
 import sklearn.mixture as skm
-import sklearn.cluster as skc
 import time
 import mpl_toolkits.basemap as maps
 import matplotlib as mpl
@@ -15,8 +14,30 @@ import grace.times
 
 days=grace.ols.time_vector()
 
+def write_latex_table(x,v):
+	print 'writing latex table'
+	covs=np.zeros([341,x.shape[0]])
+	print covs.shape
+	for i,elem in enumerate(x):
+		covs[:,i]=1.96*np.sqrt(np.dot(np.diag(elem).reshape(1,10), v.T[:10]))
+	with open('HPC-output/covariance_structure.txt','wb') as f:
+		f.write('\\begin\{tabular}{l|c|c|c|c|c|c|c|c}')
+		f.write('\n\tday')
+		for i in range(8):
+			f.write(' &\t cluster ' +str(i))
+		f.write(' \\\\')
+		for i,row in enumerate(covs):
+			f.write('\n\t'+str(i+1)+ ' & ')
+			for elem in row:
+				f.write('\t' + str(elem)+ ' & ')
+			f.write('\\\\')
 
-def plot_clusters(model,X,w1):
+		f.write('\n\\end\{tabular\}')
+			
+	print 'latex table written'
+	
+
+def plot_clusters(model,X,V):
 	y=model.predict(X)
 	y=y.reshape(180,360)[::-1]
 	#print y.shape
@@ -28,6 +49,8 @@ def plot_clusters(model,X,w1):
 	m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
 	
 	centroids=model.means_
+	covariance=model.covars_
+	write_latex_table(covariance,v)
 	cmap=plt.cm.jet
 	cmaplist=[cmap(i) for i in range(cmap.N)]
 	cmap=cmap.from_list('Custom cmap',cmaplist,cmap.N)
@@ -38,11 +61,15 @@ def plot_clusters(model,X,w1):
 	plt.title('Clusters')
 	
 	fig = plt.figure(figsize=(12, 6))
-	
 	labels=model.predict(centroids)
 #	print centroids,model.weights_,labels
-	for i,series in enumerate(centroids):
-		plt.plot(range(1,11), series.ravel(),lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
+	for i,series in enumerate(np.dot(centroids,v.T[:10])):
+		plt.plot(days, series.ravel(),lw=2,c=cmap(norm( [float(labels[i])] )).ravel(),label='cluster '+str(i+1))
+		#uncomment for plus/minus 2x sd ontop
+
+		#plt.plot(days, (series.ravel()+np.dot(2*np.sqrt(np.diag(covariance[i])).reshape(1,10),v.T[:10])).ravel(),'--',lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
+		#plt.plot(days,(series.ravel() -np.dot(2*np.sqrt(np.diag(covariance[i])).reshape(1,10),v.T[:10])).ravel(),'--',lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
+	plt.legend(loc=3)
 	plt.title('Cluster centroids')
 
 
@@ -84,7 +111,7 @@ def pca_fit(X):
 	S_diag = np.diag(S)
 	rho = (S_diag**2) / (S_diag**2).sum()
 	print 'variance explained: ',rho[:10].sum()
-	return np.dot(X,V[:,:10])
+	return [np.dot(X,V[:,:10]),V]
 
 if __name__=='__main__':
 	print 'Clustering in the autoencoded space.'
@@ -99,6 +126,6 @@ if __name__=='__main__':
 	#Y_encoded=activation(np.dot(w1,Y)+b1)
 	#transposing to comply with scikit
 	#Y_encoded=Y_encoded.T
-	Y_encoded=pca_fit(Y.T)
+	[Y_encoded,v]=pca_fit(Y.T)
 	model=fit_gmm(Y_encoded)
 	plot_clusters(model,Y_encoded,w1)
