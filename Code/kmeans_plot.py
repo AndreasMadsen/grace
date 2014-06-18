@@ -19,7 +19,7 @@ colors_rgb = map(lambda hex: [ord(c) for c in hex.decode('hex')], colors_hex)
 #
 # Plot GAP statistics
 #
-plt.figure(figsize=(8,4.2))
+fig = plt.figure(figsize=(8,4.2))
 
 optimizer = GAP(verbose=True)
 optimizer.load(np.load('HPC-output/gap.npz'))
@@ -29,13 +29,14 @@ print "Optimal amount of clusters: %d" % (K)
 if (K > 12):
 	print "WARNING: Current only 12 clusters are supported (colors)"
 	K = 12
-plt.errorbar(optimizer.ks, G, sd)
+plt.errorbar(optimizer.ks, G, sd, color="SteelBlue")
 plt.xlim(optimizer.ks[0], optimizer.ks[-1])
+fig.savefig('../Rapport/figures/kmeans-gap.pdf')
 
 #
 # Plot World
 #
-plt.figure(figsize=(9, 3.5))
+fig = plt.figure(figsize=(9, 3.5))
 
 # Transform grids data
 shape = grace.grids.shape
@@ -44,7 +45,7 @@ mask = grace.mask.mask_matrix()
 X = X[mask.reshape(shape[0] * shape[1]), :]
 
 # Perform clustering
-estimator = sklearn.cluster.KMeans(n_clusters=K)
+estimator = sklearn.cluster.KMeans(n_clusters=7)
 groups = estimator.fit_predict(X)
 print "Cluster calculation done"
 
@@ -64,10 +65,12 @@ m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
 m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
 m.imshow(world[::-1, :, :], interpolation="bicubic")
 
+fig.savefig('../Rapport/figures/kmeans-world.pdf')
+
 #
 # Plot Centroids
 #
-plt.figure(figsize=(8,4.2))
+fig = plt.figure(figsize=(8,4.2))
 
 centroids = estimator.cluster_centers_
 days = grace.ols.time_vector()
@@ -86,5 +89,7 @@ years_split = grace.times.date_to_days(
 plt.vlines(years_split, *plt.ylim(), color='Gray', linestyles='dotted')
 plt.xticks(years_split[::2], grace.times.days_to_str(years_split[::2]))
 plt.xlim(np.min(days), np.max(days))
+
+fig.savefig('../Rapport/figures/kmeans-centroids.pdf')
 
 plt.show()
