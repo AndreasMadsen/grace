@@ -14,6 +14,14 @@ import grace.times
 
 days=grace.ols.time_vector()
 
+colors_hex = [
+	"a6cee3", "1f78b4", "b2df8a", "33a02c", "fb9a99", "e31a1c",
+	"fdbf6f", "ff7f00", "cab2d6", "6a3d9a", "ffff99", "b15928","edf8b1"
+	,"bcbddc", "636363", 
+]
+colors_rgb = map(lambda hex: [ord(c) for c in hex.decode('hex')], colors_hex)
+
+
 def write_latex_table(x,v):
 	print 'writing latex table'
 	covs=np.zeros([341,x.shape[0]])
@@ -40,6 +48,7 @@ def write_latex_table(x,v):
 def plot_clusters(model,X,V):
 	y=model.predict(X)
 	y=y.reshape(180,360)[::-1]
+	shape=y.shape
 	#print y.shape
 	fig = plt.figure(figsize=(12, 6))
 
@@ -57,14 +66,20 @@ def plot_clusters(model,X,V):
 	bounds=np.linspace(0,len(centroids),len(centroids)+1)
 	norm=mpl.colors.BoundaryNorm(bounds,cmap.N)
 	
-	im = m.imshow(y,cmap=cmap,norm=norm)
+	world = np.ones((shape[0], shape[1], 3)).astype('uint8') * 255
+
+	for i in range(0,shape[0]):
+		for j in range(0,shape[1]):
+			world[i,j,:]=colors_rgb[y[i,j]]
+	
+	im = m.imshow(world,cmap=cmap,norm=norm)
 	plt.title('Clusters')
 	
 	fig = plt.figure(figsize=(12, 6))
 	labels=model.predict(centroids)
 #	print centroids,model.weights_,labels
 	for i,series in enumerate(np.dot(centroids,v.T[:10])):
-		plt.plot(days, series.ravel(),lw=2,c=cmap(norm( [float(labels[i])] )).ravel(),label='cluster '+str(i+1))
+		plt.plot(days, series.ravel(),lw=2,c='#' + colors_hex[i],label='cluster '+str(i+1))
 		#uncomment for plus/minus 2x sd ontop
 
 		#plt.plot(days, (series.ravel()+np.dot(2*np.sqrt(np.diag(covariance[i])).reshape(1,10),v.T[:10])).ravel(),'--',lw=2,c=cmap(norm( [float(labels[i])] )).ravel())
@@ -77,36 +92,20 @@ def plot_clusters(model,X,V):
 
 	return 0
 
-def load_network():
-	network=pickle.load(open(
-				'HPC-output/network.pickle','rb'))
-	return network
-
-def display_SA():
-	w1,w2,b1,b2=load_network()
-	#print w1.shape
-	fig=plt.figure(figsize=(12,6))
-	plt.plot(w1.T)
-	plt.title('w1')
-	plt.show()
-	return 
-
-#sigmoid activation funtion
-def activation(x):
-	return 1.0/(1.0+np.exp(-x))
 
 def fit_gmm(X):
 	print 'fitting full gaussian mixture model'
 	start=time.time()
-	model=skm.GMM(n_components=8,covariance_type='full'
+	model=skm.GMM(n_components=13,covariance_type='full'
 			,random_state=1337,n_iter=100,thresh=0.01,n_init=1)
 	model.fit(X)
 	end=time.time()
 	print 'Fit done in ' + str(end-start) + ' seconds.'
 	return model
+
 def pca_fit(X):
 	print 'calculating singular value decomposition'
-	U,S,V = np.linalg.svd(Y.T, full_matrices=False)
+	U,S,V = np.linalg.svd(Y, full_matrices=False)
 	U,S,V = (U, np.diag(S), V.T)
 	S_diag = np.diag(S)
 	rho = (S_diag**2) / (S_diag**2).sum()
@@ -114,18 +113,11 @@ def pca_fit(X):
 	return [np.dot(X,V[:,:10]),V]
 
 if __name__=='__main__':
-	print 'Clustering in the autoencoded space.'
+	print 'Clustering in the PCA space.'
 #	display_SA()
-#	loading (Y is transposed such that days are on rows and positions on columns)
+#	loading ( position are on rows and days on columns)
 	shape=grace.load.grids.shape
-	Y=grace.load.grids.reshape(shape[0]*shape[1],shape[2]).T
-	#loading weight matrices and b vectors
-	w1,w2,b1,b2=load_network()
-	#print Y.shape,w1.shape,np.dot(w1,Y).shape
-	#Y_encoded is now 10 by 64800
-	#Y_encoded=activation(np.dot(w1,Y)+b1)
-	#transposing to comply with scikit
-	#Y_encoded=Y_encoded.T
-	[Y_encoded,v]=pca_fit(Y.T)
+	Y=grace.load.grids.reshape(shape[0]*shape[1],shape[2])
+	[Y_encoded,v]=pca_fit(Y)
 	model=fit_gmm(Y_encoded)
-	plot_clusters(model,Y_encoded,w1)
+	plot_clusters(model,Y_encoded,v)
