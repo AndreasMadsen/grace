@@ -1,0 +1,15 @@
+%!TEX root=report.tex
+\subsection{The Gaussian Mixture Model (GMM)}
+
+The GMM is a more advanced clustering model than KMeans. 
+The main advantage is that there are no restrictions on each cluster's covariance matrix where as the reader remembers that KMeans clusters had a diagonal covariance structure. 
+Such restrictions (i.e. shared covariance, diagonal covariance, spherical covariance etc.) can relatively easily be applied in the GMM if one so chooses; here, however, only the case with no covariance restrictions will be described.
+\\
+In the GMM each cluster is viewed as a Gaussian density function. 
+This density has a centroid (Just as with KMeans) and a covariance matrix.
+The density function is assumed to be a combination (mixture) of $K$ Gaussian PDFs (Probability Density Function) where K is finite.
+
+
+In practice if K is large and the vector space has is high dimensional 
+
+\subsubsection{Dimensionality reduction}
