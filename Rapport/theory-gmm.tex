@@ -1,27 +1,25 @@
 %!TEX root=report.tex
-\subsection{The Gaussian Mixture Model (GMM)}
+\subsection{Gaussian Mixture Model (GMM)}
+The GMM is a more advanced clustering model than K-Means. 
+The main advantage is that GMM allows for hyper elliptical clusters. This uses gaussian kernels with its the shape described in a covariance matrix. A result similar to K-means could be obtained by forcing this covariance matrix to be the identity matrix.
 
-The GMM is a more advanced clustering model than KMeans. 
-The main advantage is that there are no restrictions on each cluster's covariance matrix where as the reader remembers that KMeans clusters had a diagonal covariance structure. 
-Such restrictions (i.e. shared covariance, diagonal covariance, spherical covariance etc.) can relatively easily be applied in the GMM if one so chooses; here, however, only the case with no covariance restrictions will be described.
-\\
-In the GMM the assumption is that data stems from a single density function.
-The density function is assumed to be a combination (mixture) of $K$ Gaussian PDFs (Probability Density Function) where K is finite and denotes the number of mixture components (i.e. clusters).
-In this report we will further constraint the PDFs to be multinormal distributions.
+Restrictions on the covariance matrix (i.e. shared covariance, diagonal covariance, spherical covariance etc.) can easily be applied in GMM and is quite common. In this analysis however, no covariance restrictions will be used.
+
+In the GMM the assumption is that data comes from a single density function.
+The density function is assumed to be a combination (mixture) of $K$ Gaussian PDFs where K is finite and denotes the number of mixture components (i.e. clusters).
+
 Each mixture component has a centroid (the mean), a covariance matrix and a mixing weight.
-The sum of mixing weights across components has to be one for the GMM to constitue an actual pdf.
-\\
-To estimate the model parameters several different methods exists. In this report we will use the expectation maximization (EM) algorithm which is quite complex and thus wont be described here (to the interested reader we recommend \cite[p.~214,272,463]{statistical-learning}.
+The sum of mixing weights across components has to be one for the GMM to constitute an actual pdf.
 
+To estimate the model parameters several different methods exists. The most common and is the expectation maximization (EM) algorithm which is quite complex and thus wont be described here. To the curious reader we recommend \cite[p.~214,272,463]{statistical-learning}.
 
-
-In practice if K is large and the vector space $X$ is high dimensional, estimation of the model parameters will take too much computing power, and even if one get model parameters to converge, the degrees of freedom will be low; i.e. one might very easily overfit.
-In our case the input space would be 341-dimensional (341 observations per location) and thus a dimensionality reduction of some kind is needed. 
+In practice if K is large and the vector space $X$ is high dimensional, estimation of the model parameters will take too much computing power, and even if one get model parameters to converge, the degrees of freedom will be low.
+In our case the input space would be 341-dimensional (341 observations in time per location) and thus a dimensionality reduction of some kind is needed. 
 
 \subsubsection{Dimensionality reduction}
-In many cases a $p$ dimensional dataset most of the data lies on a lower dimensional manifold. 
-Different methods exists to try to identify such manifolds, but here a previously described technique will be used. 
-When selected a subset of the Principal components (PCs) from a Principal Component Analysis (PCA) in effect one is forcing the data onto a lower dimensional manifold.
-The GRACE data contains quite a bit of noise and one might hope that the noise will be primarily contained in its own PCs. Hopefully these PCs will only account for a smaller amount of the variance in the data. 
-Thus if we sorts the PCs by significance and only select the most significant, some of the noise will be "lost".
-This in turn, coupled with the performance boost that GMM offers over KMeans, will hopefully lead to better clustering.
+In many cases when dealing with high dimensional data, most of the data lies on a lower dimensional manifold. 
+Different methods exists to try to identify such manifolds, but in this analysis the previously described technique PCA will be used. \todo{Now we use kernel PCA, not just linear PCA}
+This is done by selecting only the most important principal components from the PCA, thus forcing the data onto a lower dimensional manifold.
+The GRACE data contains quite a bit of noise and one might hope that the noise will be primarily contained in its own principal components. Hopefully these PCs will only account for a smaller amount of the variance in the data. 
+Thus thus when selecting only the most significance PCs some of the noise will be "lost".
+This combined with the more flexible GMM over K-Means, will hopefully lead to better clustering.

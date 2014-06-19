@@ -1,17 +1,42 @@
 %!TEX root=report.tex
-\subsection{GMM clustering results}
-First a matrix $X$ with dimensions 64800x341 ( positions on the rows, observations on columns) was constructed. Then the dimensionality reduction was needed. From the previous KMeans results, a ballpark estimate was made: It was assumed that anywhere from five to fifteen percent of the variance in the data was due to noise. Thus aiming for PCs explaining around 90 percent of the variance, in the the ten most principal components was chosen; in total they accounted for $91.6\%$ of the variance in the original $X$ space.
-\\
-As in the KMeans case the number of clusters chosen was 8. The algorithm converged on the following clusters (centroids are shown on the next page).
+\subsection{GMM clustering}
+Like with K-means clustering, an $X$ matrix with dimensions ($64800 \times 341$) is used. Dude to the high number of variables in GMM, the dimensionality was reduced using PCA and only selecting the first 10 PCs.
+The result was not ideal, so instead a kernel version of PCA was used.
+
+\begin{itemize}
+\item The first 10 principal components was used
+\item The ``Radial basis function'' was used as a kernel function
+\item The amount of degree is 3
+\item The gamma coefficient is set to $\sfrac{1}{341}$
+\end{itemize}
+
 \begin{figure}[H]
 	\center
-	\includegraphics[width=\textwidth]{figures/gmm_world_8_clusters.png}
-	\caption{GMM clusters}
+	\includegraphics[width=\textwidth]{figures/gmm-pca-explaned}
+	\caption{Variance explaned for the first 25 PCs, calculated as eigenvalues in $K = H(X) H(X)^T$.}
+	\label{fig:gmm-pca-explaned}
 \end{figure}
+
+As seen in Figure \ref{fig:gmm-pca-explaned}, by selecting the first 10 PCs 93.18\% of the variance in the data is explained.
+
+Next the GMM with 6 clusters was computed using the projected data. 
 \begin{figure}[H]
 	\center
-	\includegraphics[width=\textwidth]{figures/gmm_8_clusters.png}
-	\caption{GMM centroids}
+	\includegraphics[width=\textwidth]{figures/gmm-world}
+	\caption{Each position is a point, the color then matches a given cluster.}
 \end{figure}
-\todo{comment when final number of clusters is decided.}
-The 1.96 times the square root of diagonal of the covariance matrices for each cluster is shown in a table in appendix \ref{GMM-covariance-appendix}.
+
+\begin{figure}[H]
+	\center
+	\includegraphics[width=\textwidth]{figures/gmm-centroids}
+	\caption{The mean vectors for each gauss kernel, projected back in the original space, using the inverse kernel PCA transformation.}
+\end{figure}
+
+Comparing the two plot above:
+\begin{itemize}
+	\item Light green have a slight mass increase, this was also in K-means clustering. Since this is observed in North America, it is likely caused by post glacial rebound.
+	\item  Red and light blue correlates with extreme and regular seasonality, also very much like K-means.
+	\item Blue and orange correspond with trending mass loss. With the same locations as in K-means.
+	\item The big different between GMM and K-means, is that the world graph is a lot less noisy. Only those positions with a significant different behavior than normal (green) have been catched by GMM.
+	\item Finally the pink cluster is almost not noticeable and could be considered redundant. 
+\end{itemize}

@@ -17,10 +17,6 @@ colors_hex = [
 ]
 colors_rgb = map(lambda hex: [ord(c) for c in hex.decode('hex')], colors_hex)
 
-#
-# Plot World
-#
-fig = plt.figure(figsize=(9, 3.5))
 
 # Transform grids data
 shape = grace.grids.shape
@@ -31,7 +27,11 @@ X = X[mask.reshape(shape[0] * shape[1]), :]
 pca = sklearn.decomposition.KernelPCA(n_components=10, kernel='rbf', fit_inverse_transform=True)
 X = pca.fit_transform(X)
 
-print X.shape
+#
+# Plot World
+#
+
+fig = plt.figure(figsize=(9, 3.5))
 
 # Perform clustering
 estimator = sklearn.mixture.GMM(n_components=7, covariance_type='full')
