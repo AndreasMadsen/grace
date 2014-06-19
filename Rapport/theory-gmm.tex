@@ -11,7 +11,7 @@ The density function is assumed to be a combination (mixture) of $K$ Gaussian PD
 Each mixture component has a centroid (the mean), a covariance matrix and a mixing weight.
 The sum of mixing weights across components has to be one for the GMM to constitute an actual pdf.
 
-To estimate the model parameters several different methods exists. The most common and is the expectation maximization (EM) algorithm which is quite complex and thus wont be described here. To the curious reader we recommend \cite[p.~214,272,463]{statistical-learning}.
+To estimate the model parameters several different methods exists. The most common and is the expectation maximization (EM) algorithm which is quite complex and thus wont be described here. To the curious reader we recommend \cite[p.~214,272,463]{statistical-learning}).
 
 In practice if K is large and the vector space $X$ is high dimensional, estimation of the model parameters will take too much computing power, and even if one get model parameters to converge, the degrees of freedom will be low.
 In our case the input space would be 341-dimensional (341 observations in time per location) and thus a dimensionality reduction of some kind is needed. 
