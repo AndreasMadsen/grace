@@ -1,0 +1,35 @@
+%!TEX root=report.tex
+\subsection{Time Series Analysis}
+
+In time series analysis one attempt to find a model for predicting data. This is different form the OLS analysis there tries to estimate the trends in the data, such as velocity and acceleration. Once such model is found, it should be validated by analyzing the residuals. These residuals must be approximately white noise \cite[p.~130]{time-series-analysis}, otherwise the model is invalid. 
+
+\subsubsection{ARIMA}
+
+ARIMA is the name of the stochastic model used. The detail will not be discussed here, instead we refer to \cite[p.~130]{time-series-analysis}.
+
+In short ARIMA uses the previous values with some weight to predict. Which values are used is denoted by the following notation:
+\begin{equation}
+(p, d, q) \times (P, D, Q)_s
+\end{equation}
+
+$p$ is the highest lags of actual measurements used and $q$ is the maximum amount of lags in residuals used. The $d$ part indicates how many difference operators there should be used to transform the data. $(P, D, Q)$ is completely similar, but steps not by one lag but by $s$ lags. This allows for seasons trends such as an yearly pattern.
+
+\subsubsection{ACF and PACF}
+ 
+ACF and PACF is a measure of correlation between different time lags and is used to make a qualified guess about how the predicting model should look like. 
+For how these are estimation please see \cite[p.~146]{time-series-analysis}.
+
+When ACF and PACF have been estimated, rules \cite[table~6.1]{time-series-analysis} for how the stochastic model should look can be applied.
+Typically when dealing with complex models, this becomes and iterative process.
+Where one will calculate the ACF and PACF on the suggested model and then adjust the model accordingly.
+
+\subsection{Ljung-Box test}
+
+The null hypothesis for the Ljung-Box is ``The data is independently distributed''. Thus a low p-value means that the residuals aren't white noise.
+
+The Ljung-Box is a $\chi^2$ test with the statistical value:
+\begin{equation}
+Q = n \cdot (n + 2) \sum_{k=1}^h \frac{\hat{\rho}_k^2}{n - k}
+\end{equation}
+
+$n$ is the number of observations. The parameter $h$ is the highest lag in the ACF there should be considered. The $\chi^2$ statistics, have $h - (p + q + P + Q)$ degrees of freedom.

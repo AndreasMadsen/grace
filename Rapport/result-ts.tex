@@ -15,18 +15,18 @@ To analyze the data using an ARIMA model an equidistant dataset is required. For
 
 The time series in Figure \ref{fig:ts-initial-split} is clearly not stationary, thus it is necessary to consider the time series difference.
 \begin{figure}[H]
-\centering
-\includegraphics[height=5cm]{figures/ts-residual-i1s0}
-\caption{The ARIMA$(0,1,0) \times (0,0,0)_{36}$ residuals.}
-\label{fig:ts-residual-i1s0}
+	\centering
+	\includegraphics[height=5cm]{figures/ts-residual-i1s0}
+	\caption{The ARIMA$(0,1,0) \times (0,0,0)_{36}$ residuals.}
+	\label{fig:ts-residual-i1s0}
 \end{figure}
 On Figure \ref{fig:ts-residual-i1s0} there are some seasonal periods where the mean and variance are not the same as the remaining period, thus it is not completely stationary. Taking also the seasonal difference (assuming the season is 36 observations, a year) gives however a very stationary output.
 
 \begin{figure}[H]
-\centering
-\includegraphics[height=5cm]{figures/ts-residual-i1s1}
-\caption{The ARIMA$(0,1,0) \times (0,1,0)_{36}$ residuals.}
-\label{fig:ts-residual-i1s1}
+	\centering
+	\includegraphics[height=5cm]{figures/ts-residual-i1s1}
+	\caption{The ARIMA$(0,1,0) \times (0,1,0)_{36}$ residuals.}
+	\label{fig:ts-residual-i1s1}
 \end{figure}
 On Figure \ref{fig:ts-residual-i1s1} its seen that the first 37 observations act strange, this is because there aren't enough past observations to estimate the EWH correctly, thus they should be excluded from further analysis.
 
@@ -80,10 +80,10 @@ Figure \ref{fig:ts-final-residual} looks stationary, there are no outliers nor s
 From the Ljung-Box test (Figure \ref{fig:ts-final-ljungbox}) the p-value for the first many lags looks good, however after 25 it can be with 95\% confidence statically significant concluded that the residuals are correlated. In terms of pure time series analysis is makes the model quite useless, however it is still valuable to do the cross validation.
 
 \begin{figure}[H]
-\centering
-\centerline{\includegraphics[height=6cm]{figures/ts-final-forecast}}
-\caption{Forecast on Cross Validation. Blue is the training data, green is the test data. Red is then the predicted test values with its 95\% confidence interval marked with gray lines.}
-\label{fig:ts-final-forecast}
+	\centering
+	\centerline{\includegraphics[height=6cm]{figures/ts-final-forecast}}
+	\caption{Forecast on Cross Validation. Blue is the training data, green is the test data. Red is then the predicted test values with its 95\% confidence interval marked with gray lines.}
+	\label{fig:ts-final-forecast}
 \end{figure}
 
 From Figure \ref{fig:ts-final-forecast} it quite clear that the test data is consistently bellow the expectation line (red). While it is still inside the 95\% confidence interval, this high correlation in the error between lags indicates that the model is not particular useful. 
