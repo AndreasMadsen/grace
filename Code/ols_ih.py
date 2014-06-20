@@ -24,8 +24,6 @@ phase = np.arctan2(Theta[:,:,paramIndex+1], Theta[:,:,paramIndex])
 phase = (phase + np.pi) / (2.0 * np.pi)
 # Rescale amplitude to [0, 1]
 amplitude = (amplitude + np.min(amplitude)) / (np.max(amplitude) - np.min(amplitude))
-# Rescale amplitude to [0.25, 1]
-amplitude = (amplitude / 0.95) + 0.05
 
 # Stack [phase, 1, amplitude]
 hsv = np.dstack((phase, np.ones_like(phase), amplitude))
