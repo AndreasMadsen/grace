@@ -11,7 +11,7 @@ until it reaches a point where another attribute $b_2$ has as much  correlation 
 At this point the algorithm then increases/decreases both $b_1$ and $b_2$ in their joint direction until another attribute $b_i$ has the highest residual correlation.
 This process can then be continued until there is no benefit in increasing any of the $b_i$s - that is, the full LAR solution is equivalent to the linear regression.
 It should also be noted that if a coefficient crosses 0 in a iteration (step),
-that coefficient should be set to 0, and the regression direction \todo{Allan marks this} should subsequently be recomputed.
+that coefficient should be set to 0, and the regression direction should subsequently be recomputed.
 
 So why might one use LAR instead of for example the LASSO model? 
 When using the LASSO one has to chose a specific value of $s$ to get one solution.

@@ -127,7 +127,7 @@ Neither of these issues are related to the ice melting, which makes them less im
 	\label{fig:ols-world-performance-diagH}
 \end{figure}
 
-The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very big, the highest is $0.16$ and recalling that the 95\% confidence interval can be approximated by $\hat{Y}_i \pm 2 \cdot \hat{\sigma} \sqrt{\mathrm{Var}[\hat{Y}_i]}$. The maximal confidence interval becomes $\hat{Y}_i \pm 2 \cdot 0.135 \cdot \sqrt{0.16} = \hat{Y}_i \pm 0.108$, which is small when comparing to the EWH values, which range from $1$ to $-3$. What is odd about $\mathrm{diag}(H)$ is that there appears to be some parts in each year which are more difficult to predict than others. \todo{Why is this}
+The variances shown in Figure \ref{fig:ols-world-performance-diagH} are not very big, the highest is $0.16$ and recalling that the 95\% confidence interval can be approximated by $\hat{Y}_i \pm 2 \cdot \hat{\sigma} \sqrt{\mathrm{Var}[\hat{Y}_i]}$. The maximal confidence interval becomes $\hat{Y}_i \pm 2 \cdot 0.135 \cdot \sqrt{0.16} = \hat{Y}_i \pm 0.108$, which is small when comparing to the EWH values, which range from $1$ to $-3$. What is odd about $\mathrm{diag}(H)$ is that there appears to be some parts in each year which are more difficult to predict than others.
 
 \begin{figure}[H]
 	\centering
@@ -146,7 +146,6 @@ From Figure \ref{fig:ols-world-performance-cov} it is seen that the parameters a
 \end{tabular}
 \caption{Variance of the velocity and acceleration parameters for all positions .}
 \end{table}
-\todo{Check that this is really true}
 \paragraph{p-values} Just as for the selected positions, inspecting the p-values can tell which OLS terms are important.
 
 \begin{figure}[H]
@@ -181,8 +180,6 @@ There is not much surprise in either Figure \ref{fig:ols-world-diagnostics-pvalu
 
 Also the yearly seasonal parameters are significant pretty much everywhere. For these parameters it makes more sense that they are significant in the ocean.
 
-\todo{How many parameters should be analysed}
-
 \paragraph{PCA of residuals}
 
 By computing the principal component for the OLS residuals, it is some times possible to discover patterns in the residuals. As with all PCA one the first couple of principal components are valuable to look at.
@@ -203,7 +200,7 @@ Plotting the first principal component score and loading, one gets:
 \label{fig:ols-pca-score-0}
 \end{figure}
 
-From Figure \ref{fig:ols-pca-score-0} its seen that there is some residuals in South America which are unlikely to be caused by noise. This could be because of the rainy seasons, since those are poorly modeled using this OLS regression. If that is the case one should expect Figure \ref{fig:ols-pca-loading-0} to show some yearly periodic trend. Unfortunately this does not seem to be the case. \todo{Now what?}
+From Figure \ref{fig:ols-pca-score-0} its seen that there is some residuals in South America which are unlikely to be caused by noise. This could be because of the rainy seasons, since those are poorly modeled using this OLS regression. If that is the case one should expect Figure \ref{fig:ols-pca-loading-0} to show some yearly periodic trend. Unfortunately this does not seem to be the case.
 
 \begin{figure}[H]
 \centering

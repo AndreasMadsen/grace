@@ -18,8 +18,9 @@ In our case the input space would be 341-dimensional (341 observations in time p
 
 \subsubsection{Dimensionality reduction}
 In many cases when dealing with high dimensional data, most of the data lies on a lower dimensional manifold. 
-Different methods exists to try to identify such manifolds, but in this analysis the previously described technique PCA will be used. \todo{Now we use kernel PCA, not just linear PCA}
+Different methods exists to try to identify such manifolds, but in this analysis the previously described technique PCA will be used.
 This is done by selecting only the most important principal components from the PCA, thus forcing the data onto a lower dimensional manifold.
 The GRACE data contains quite a bit of noise and one might hope that the noise will be primarily contained in its own principal components. Hopefully those PCs will only account for a small amount of the variance in the data. 
-Thus when selecting only the most significance PCs some of the noise will be "lost".
-This combined with the more flexible GMM over K-Means, will hopefully lead to better clustering.
+Thus when selecting only the most significance PCs some of the noise will be "lost". It should be noted that the standard PCA method wasn't used, instead a more complex method called Kernel PCA is used.
+
+Using kernel PCA combined with the more flexible GMM over K-Means, will hopefully lead to better clustering.
