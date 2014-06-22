@@ -28,4 +28,5 @@ source_grid = source_grid[::-1, :]
 (lons, lats) = (load.positions[:, :, 1], load.positions[:, :, 0])
 grid = maps.interp(source_grid, source_lon, source_lat, lons, lats)
 
-print grid
+# Unit convertion (from mm/yr to m/day)
+grid = (grid / 1000) / (365.242)

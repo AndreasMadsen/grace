@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import grace
+import grace.ols
 import grace.gia
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,12 +10,13 @@ import mpl_toolkits.basemap as maps
 #
 # Plot Theta parameter for all positions
 #
-data = grace.gia.grid
+
+data = grace.ols.theta_matrix()[:, :, 1]
 minmax = {"vmin": np.min(data), "vmax": np.max(data)}
 
 
 fig = plt.figure(figsize=(12, 6))
-fig.suptitle('Pure GIA grid')
+fig.suptitle('Pure velocity estimated from OLS')
 
 #
 # Do the north pole
