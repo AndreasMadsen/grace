@@ -9,7 +9,6 @@ import mpl_toolkits.basemap as maps
 #
 # Plot Theta parameter for all positions
 #
-paramIndex = 1
 data = grace.gia.grid
 minmax = {"vmin": np.min(data), "vmax": np.max(data)}
 
