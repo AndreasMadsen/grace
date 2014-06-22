@@ -25,17 +25,30 @@ plt.ylim(-20, 20)
 plt.xlim(-15, 15)
 plt.gca().set_aspect('equal', adjustable='box')
 
-fig.savefig('before.pdf')
-
-fig = plt.figure(figsize=(6,8))
+#fig.savefig('original.pdf')
 
 # Do SVD of residuals (transposed)
 U,S,V = np.linalg.svd(X, full_matrices=False)
 U,S,V = (U, np.diag(S), V.T)
+print S
+Z = X * V
+
+fig = plt.figure(figsize=(6,8))
+
+plt.scatter(Z[:, 0].A.ravel(), Z[:, 1].A.ravel(), color="SteelBlue", alpha=0.7)
+plt.ylim(-20, 20)
+plt.xlim(-15, 15)
+plt.gca().set_aspect('equal', adjustable='box')
+
+fig.savefig('rotated.pdf')
+
+fig = plt.figure(figsize=(6,8))
 
 plt.scatter(U[:, 0].A.ravel(), U[:, 1].A.ravel(), color="SteelBlue", alpha=0.7)
 plt.ylim(-0.20, 0.20)
 plt.xlim(-0.15, 0.15)
 plt.gca().set_aspect('equal', adjustable='box')
 
-fig.savefig('after.pdf')
+#fig.savefig('scaled.pdf')
+
+plt.show()
