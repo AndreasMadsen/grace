@@ -15,7 +15,7 @@ description = grace.ols.theta_description()
 #
 # Plot Theta parameter for all positions
 #
-paramIndex = 2
+paramIndex = 1
 
 fig = plt.figure(figsize=(12, 6))
 
