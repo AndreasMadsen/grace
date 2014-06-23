@@ -3,7 +3,7 @@
 
 The main purpose of this report was to describe mass losses or gains at the West Coast of Greenland and Western Antarctica.
 Both locations were found to be losing mass.
-Both location had periodic trends, but while West Greenland had soft oscillating curves Western Antarctica's mass loss was more jagged this might suggests that ice is melting and breaking of in a more unstable pattern.
+Both location had periodic trends, but while West Greenland had soft oscillating curves Western Antarctica's mass loss was more jagged; this might suggests that ice is melting and breaking of in a more unstable pattern.
 However, overall it was found that ice at the two locations was melting with approximately the same speed and with a slight difference in acceleration.
 
 \begin{table}[H]
@@ -16,16 +16,16 @@ Acceleration $\left[\frac{m}{day^2}\right]$ &  $-1.24 \cdot 10^{-7}$ & $-8.27 \c
 \caption{Velocity and acceleration for the two analysed locations}
 \end{table}
 
-Of cause these estimates depends on the selected locations and by choosing some different locations, the estimates may not be approximately the same.
+Of course these estimates depend on the selected locations and by choosing a different pair of locations, the estimates may not be exactly the same.
 To get a better understanding of the patterns plots of the velocity (Figure \ref{fig:ols-world-parameter-vel}) and acceleration (Figure \ref{fig:ols-world-parameter-acc}) in a world view, was also made.
-From these it's seen that Greenland and Antarctica are generally very similar in maximum magnitude of both acceleration and velocity. The most surprising observation to is properly found at Greenland. Here the highest velocity is found on the east coast, but the highest acceleration is actually located on the west cost. This is not similar to Antarctica, where the highest acceleration and velocity is would at approximately the place.
+From these it is seen that Greenland and Antarctica are generally very similar in maximum magnitude of both acceleration and velocity. The most surprising observation is probably found in Greenland. Here the highest velocity is found on the east coast, but the highest acceleration is actually located on the west cost. This is not similar to Antarctica, where the highest acceleration and velocity is located at approximately the place.
 
-Similar results was gained when using clustering algorithms to find similar locations. Here GMM with a Kernel PCA \ref{section:result-gmm} seems to give a much less noisy result than K-means \ref{section:result-kmeans}.
+Similar results were gained when using clustering algorithms to find similar locations. Here GMM with a Kernel PCA \ref{section:result-gmm} seems to give a much less noisy result than K-means \ref{section:result-kmeans}.
 
-These results are of cause influenced by the post glacial rebound. Later the ICE-5G dataset was  used to correct for this (glacial isostatic adjustment), though this NASA \cite{nasa-gia-incomplete} suggest that this is not enough to get useful estimates.
+These results are of course influenced by the post glacial rebound. Later the ICE-5G dataset was  used to correct for this (glacial isostatic adjustment), though this NASA source \cite{nasa-gia-incomplete} suggest that this is not enough to get useful estimates.
 
-Attempts to improving the variance of these estimates was also made. First using by using GLS model instead of a OLS model \ref{section:result-ols-ar} and later by introducing basis expansion \ref{section:result-slines} to allow for more flexibility in the seasons. Both of these gave good results and its even possible to combine the methods. However one should look intro getting a continues result when using splines, otherwise the result will quite theoretical.
+Attempts to improving the variance of these estimates were also made. First by using a GLS model instead of a OLS model \ref{section:result-ols-ar} and later by introducing basis expansion \ref{section:result-splines} to allow for more flexibility in the seasons. Both of these gave good results and it is even possible to combine the methods. However, in the case of the splines, even though the obtained fit was theoretically good, several cusp and movements that to the human eye looked discontinuous existed. Thus it should not be recommended to use splines with cosine and sine, without doing something to improve the continuity.
 
-Another way to improve the variance is to reduce the amount of OLS parameters. Her the p-values and the LAR \ref{section:result-lar} model suggests that only OLS parameters down to $3 \cdot \omega$ is worth keeping. At least for those selected locations.
+Another way to improve the variance is to reduce the amount of OLS parameters. Here the p-values and the LAR \ref{section:result-lar} model suggests that only OLS parameters down to a period of $3 \cdot \omega$ is worth keeping. At least for those selected locations.
 
-Finally a time series model was used in form of a seasonal ARIMA \ref{section:result-ts}. The result here was disappointing in that the residuals is far from being white noise. This suggests that there are exogenous inputs there affects to system in a significant way. Finding and observing those variables would possibly also allow for a better OLS estimate. 
+Finally a time series model was used in form of a seasonal ARIMA \ref{section:result-ts}. The results here were disappointing in that the residuals were far from being white noise distributed. This suggests that there are exogenous inputs which affects the system in a significant way. Finding and observing those variables would possibly also allow for a better OLS estimate. 
