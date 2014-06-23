@@ -30,7 +30,7 @@ for index, name, unit, power in parameter_plots:
 	fig = plt.figure(figsize=(9, 3.5))
 
 	m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
-	m.drawcoastlines(linewidth=0.5,color="red")
+	m.drawcoastlines(linewidth=0.5,color="Tomato")
 	m.drawparallels(np.arange(-90.,120.,30.),labels=[1,0,0,0])
 	m.drawmeridians(np.arange(0.,420.,60.),labels=[0,0,0,1])
 	im = m.imshow(Theta[::-1,:,index] * (365.242)**power)
@@ -91,7 +91,7 @@ for index in [1,2,3,4]:
 	fig = plt.figure(figsize=(9, 3.5))
 
 	m = maps.Basemap(projection='cyl', lon_0=0, resolution='c')
-	m.drawcoastlines(linewidth=.5, color="red")
+	m.drawcoastlines(linewidth=.5, color="Tomato")
 	m.drawparallels(np.arange(-90.,120.,30.), labels=[1,0,0,0])
 	m.drawmeridians(np.arange(0.,420.,60.), labels=[0,0,0,1])
 	im = m.imshow(p_values[::-1,:,index], vmin=0, vmax=1)
