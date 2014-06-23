@@ -3,9 +3,9 @@
 \label{section:result-kmeans}
 
 \subsubsection{Indentifing the amount of clusters}
-Due to the size of the dataset (64800, 341), and the fact multiple simulated datasets of the same size would be needed to calculate the gap-statistic it was calculated in the HPC cluster that DTU offers for students and faculty.
-It should be noted that if such a setup haven't been available, one could have used smaller subsamples of the data.
-20 simulation samples of size (64800,341) was made using a multivariate uniform distribution. The following is the plot of the resulting gap statistic with its standard deviation.
+Due to the size of the dataset (64800, 341), and the fact multiple simulated datasets of the same size would be needed to calculate the gap-statistic it was calculated on the HPC cluster that DTU offers for students and faculty.
+It should be noted that if such a setup had not been available, one could have used smaller subsamples of the data.
+20 simulation samples of size (64800,341) were made using a multivariate uniform distribution. The following is the plot of the resulting gap statistic with its standard deviation.
 \begin{figure}[H]
 	\center
 	\includegraphics[width=\textwidth]{figures/kmeans-gap}
@@ -13,7 +13,7 @@ It should be noted that if such a setup haven't been available, one could have u
 	\label{fig:kmeans-gap}
 \end{figure}
 
-From Figure \ref{fig:kmeans-gap} its seen that according to the gap-statistics the optimal amount of cluster, is more than 20. Unfortunately such a high amount is not suitable for visualization. Instead 7 clusters have been chosen, this is based on the large slope change there can be observed in the gap-statistics graph. This is also seams like a suitable number of colors for visualization.
+From Figure \ref{fig:kmeans-gap} it is seen that according to the gap-statistics the optimal amount of cluster, is more than 20. Unfortunately such a high number of clusters are not suitable for visualization. Instead 7 clusters have been chosen; this is based on the large slope change which can be observed in the gap-statistics graph. This is also seems like a suitable number of colors for visualization.
 
 \begin{figure}[H]
 	\center
@@ -28,9 +28,9 @@ From Figure \ref{fig:kmeans-gap} its seen that according to the gap-statistics t
 	\label{fig:kmeans-centroids}
 \end{figure}
 
-Comparing the two plot above a few interesting insights are gained:
+Comparing the two plots above a few interesting insights are gained:
 \begin{itemize}
-	\item Orange areas have a slight mass increase. At the south pole it appears that some of the mass loss at the edge actually moves inward towards the South Pole. This may be caused by post glacial rebound as no GIA have been performed.
+	\item Orange areas have a slight mass increase. At the south pole it appears that some of the mass loss at the edge actually moves inward towards the South Pole. This may be caused by post glacial rebound as no GIA has been performed.
 	\item  Green and blue correlates with extreme and regular seasonality (i.e. rain season in Amazon Basin).
-	\item Light green and pink correspond with trending mass loss. The most significant locations appear to be located around the tip of the Western Antartica along with Greenland's east coast.
+	\item Light green and pink correspond with trending mass loss. The most significant locations appear to be located around the tip of the Western Antarctica along with Greenland's east coast.
 \end{itemize}
