@@ -41,7 +41,7 @@ fig = plt.figure(figsize=(9, 3.5))
 # Transform grids data
 shape = grace.grids.shape
 X = grace.grids.reshape(shape[0] * shape[1], shape[2])
-mask = grace.mask.mask_matrix()
+mask = grace.mask.world()
 X = X[mask.reshape(shape[0] * shape[1]), :]
 
 # Perform clustering

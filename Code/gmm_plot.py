@@ -21,7 +21,7 @@ colors_rgb = map(lambda hex: [ord(c) for c in hex.decode('hex')], colors_hex)
 # Transform grids data
 shape = grace.grids.shape
 X = grace.grids.reshape(shape[0] * shape[1], shape[2])
-mask = grace.mask.mask_matrix()
+mask = grace.mask.world()
 X = X[mask.reshape(shape[0] * shape[1]), :]
 
 pca = sklearn.decomposition.KernelPCA(n_components=10, kernel='rbf', fit_inverse_transform=True)

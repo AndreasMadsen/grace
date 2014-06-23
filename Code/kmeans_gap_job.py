@@ -11,7 +11,7 @@ parallel = int(sys.argv[1] if (len(sys.argv) > 1) else 1)
 if __name__=='__main__':
 	shape = grace.grids.shape
 	X = grace.grids.reshape(shape[0] * shape[1], shape[2])
-	mask = grace.mask.mask_matrix().reshape(shape[0] * shape[1])
+	mask = grace.mask.world().reshape(shape[0] * shape[1])
 	X = X[mask, :]
 
 	optimizer = GAP(verbose=True)
