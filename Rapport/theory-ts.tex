@@ -33,7 +33,7 @@ In the ARIMA case it is applied to model residuals; so in other words it tests w
 
 The Ljung-Box is a $\chi^2$ test with the statistical value:
 \begin{equation}
-Q = n \cdot (n + 2) \sum_{k=1}^h \frac{\hat{\rho}_k^2}{n - k}
+L = n \cdot (n + 2) \sum_{k=1}^h \frac{\hat{\rho}_k^2}{n - k}
 \end{equation}
 
 $n$ is the number of observations. The parameter $h$ is the highest lag in the ACF which should be considered. The $\chi^2$ statistics, have $h - (p + q + P + Q)$ degrees of freedom.
