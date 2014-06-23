@@ -5,28 +5,23 @@ import os.path as path
 import numpy as np
 import load
 import mpl_toolkits.basemap as maps
+import matplotlib.pyplot as plt
 
 thisdir = path.dirname(__file__)
 dataset = nc.Dataset(path.join(thisdir, 'gia.nc'))
 
-source_grid = np.asarray(dataset.variables['Dsea_250'])
-source_lat = np.asarray(dataset.variables['Lat'])
-source_lon = np.asarray(dataset.variables['Lon'])
+source_grid = np.asarray(dataset.variables['GIA_n100_mass_0km'])
+source_lat = np.asarray(dataset.variables['Latitude'])
+source_lon = np.asarray(dataset.variables['Longitude'])
 
-# Rotate map to match GRACE data
+## Rotate map to match GRACE data
 (source_grid, source_lon) = maps.shiftgrid(180, source_grid, source_lon)
 source_lon = source_lon - 360
-
-# Flip the grid to match maps.interp requirements
+#
+## Flip the grid to match maps.interp requirements
 source_lat = source_lat[::-1]
 source_grid = source_grid[::-1, :]
 
-#
-# Note the grid is stil half a degree of on the longitude.
-# This is to fix that, by using a simple two dimentional interpolation.
-#
 (lons, lats) = (load.positions[:, :, 1], load.positions[:, :, 0])
-grid = maps.interp(source_grid, source_lon, source_lat, lons, lats)
-
 # Unit convertion (from mm/yr to m/day)
-grid = (grid / 1000) / (365.242)
+grid = (source_grid / 1000) / (365.242)

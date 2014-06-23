@@ -12,7 +12,7 @@ import mpl_toolkits.basemap as maps
 #
 
 velocity = grace.ols.theta_matrix()[:, :, 1]
-data = (velocity + grace.gia.grid)
+data = (velocity - grace.gia.grid)
 minmax = {"vmin": np.min(data), "vmax": np.max(data)}
 
 
