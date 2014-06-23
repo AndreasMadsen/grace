@@ -3,10 +3,10 @@
 \label{section:result-gmm}
 
 Like with K-means clustering, a matrix $X$ with dimensions ($64800 \times 341$) is used. Due to the high number of variables in GMM, the dimensionality was reduced using PCA and only selecting the first 10 PCs.
-The result were not ideal, so instead a kernel version of PCA was used.
+The results were not ideal, so instead a kernel version of PCA was used.
 
 \begin{itemize}
-\item The first 10 principal components was used
+\item The first 10 principal components were used
 \item The ``Radial basis function'' was used as a kernel function
 \item The amount of degree is 3
 \item The gamma coefficient is set to $\sfrac{1}{341}$
@@ -15,7 +15,7 @@ The result were not ideal, so instead a kernel version of PCA was used.
 \begin{figure}[H]
 	\center
 	\includegraphics[width=\textwidth]{figures/gmm-pca-explaned}
-	\caption{Variance explaned for the first 25 PCs, calculated as eigenvalues in $K = H(X) H(X)^T$.}
+	\caption{Variance explained for the first 25 PCs, calculated as eigenvalues in $K = H(X) H(X)^T$.}
 	\label{fig:gmm-pca-explaned}
 \end{figure}
 
@@ -31,7 +31,7 @@ Next the GMM with 6 clusters was computed using the projected data.
 \begin{figure}[H]
 	\center
 	\includegraphics[width=\textwidth]{figures/gmm-centroids}
-	\caption{The mean vectors for each gaussian component, projected back in the original space, using the inverse kernel PCA transformation.}
+	\caption{The mean vectors for each Gaussian component, projected back in the original space, using the inverse kernel PCA transformation.}
 \end{figure}
 
 Comparing the two plots above:
