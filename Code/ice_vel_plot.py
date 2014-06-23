@@ -11,13 +11,11 @@ import mpl_toolkits.basemap as maps
 # Plot Theta parameter for all positions
 #
 
-data = grace.ols.theta_matrix()[:, :, 1]
-minmax = {"vmin": np.min(data), "vmax": np.max(data)}
+velocity = grace.ols.theta_matrix()[:, :, 1]
+data = velocity * (365.242)
+minmax = {"vmin": -0.26, "vmax": 0.10}
 
-
-fig = plt.figure(figsize=(12, 6))
-fig.suptitle('Pure velocity estimated from OLS')
-
+fig = plt.figure(figsize=(12, 4.5))
 #
 # Do the north pole
 #
@@ -52,6 +50,7 @@ im.set_cmap('binary_r')
 
 fig.subplots_adjust(right=0.8)
 cbar_ax = fig.add_axes([0.85, 0.20, 0.03, 0.6])
-fig.colorbar(im, cax=cbar_ax)
+cbar = fig.colorbar(im, cax=cbar_ax)
+cbar.set_label('$\\left[\\frac{m}{year}\\right]$', rotation=270, labelpad=20)
 
-plt.show()
+fig.savefig('../Rapport/figures/gia-just-vel.png', dpi=310)

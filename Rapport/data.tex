@@ -14,11 +14,11 @@ grid.water.10day_model_minus_RL02MF.19212_19221.txt
 \end{lstlisting}
 
 In the filename, the last two numbers (e.g. \texttt{19202\_19211}) are important.
-The first number denotes the start date and the second number the end date for the file content. 
+The first number denotes the start date and the second number the end date for the file content.
 Each number specifies the number of days since ``1950-01-01'' \cite{GRACE-data-format-dates}.
 
 The actual content of each text file should be read as a ``Space Separated Values'' format.
-When this is done one will have a $6480 \times 10$ matrix. 
+When this is done one will have a $6480 \times 10$ matrix.
 This matrix can then be \texttt{reshape}'ed row-wise into a $180 \times 360$ matrix.
 The result is a matrix with decreasing latitude on the rows and increasing longitude on the columns \cite{GRACE-data-format-grids}.
 
@@ -39,9 +39,9 @@ The result is a matrix with decreasing latitude on the rows and increasing longi
 \end{figure}
 
 From Figure \ref{fig:data-example-world} local mass losses at Greenland and the South Pole are seen.
-In Figure \ref{fig:data-example-scatter}, the mass loss at Greenland is seen with a yearly periodic trend. For both locations, the ice melting may be caused by ice melting. 
-However it is also possible that these changes are caused by post glacial rebound, in partially because no glacial isostatic adjustment (GIA) have been performed on this version of the GRACE dataset. 
-In fact it is quite complicated to do sufficient adjustments to conclusively say something about ice melting \cite{NASA-GIA}.
+In Figure \ref{fig:data-example-scatter}, the mass loss at Greenland is seen with a yearly periodic trend. For both locations, the ice melting may be caused by ice melting.
+However it is also possible that these changes are caused by post glacial rebound, in partially because no glacial isostatic adjustment (GIA) have been performed on this version of the GRACE dataset.
+In fact it is quite complicated to do sufficient adjustments to conclusively say something about ice melting \cite{NASA-GIA-incomplete}.
 When that is said, attempts to analyze the GRACE data with the prospect of saying something about the ice melting patterns, will still be made.
 
 From Figure \ref{fig:data-example-world} a mass increment in South America can also been seen, this is caused by the rain season.
