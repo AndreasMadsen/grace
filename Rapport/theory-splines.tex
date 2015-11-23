@@ -3,7 +3,7 @@
 
 Basis expansion is done by adding more columns to design matrix. Let us first motivate why this might be needed.
 
-\subsection{Motivation}
+\subsubsection{Motivation}
 It has previously been described how the design matrix $X$ was constructed such that we had 
 \begin{equation*}
 \resizebox{\textwidth}{!}{$
@@ -23,7 +23,7 @@ The problem with the above $X$ is that the periodic columns assumes the pattern 
 
 This leads to higher variance of the residuals which decreases the accuracy of the velocity and acceleration parameter of the model. By adding columns to the design matrix, such that the periodic pattern is only assumed extend over one period, the accuracy can be improved.
 
-\subsection{The Hinge-function}
+\subsubsection{The Hinge-function}
 
 One can achieve this basis expansion is by virtue of the hinge-function
 \begin{equation}
