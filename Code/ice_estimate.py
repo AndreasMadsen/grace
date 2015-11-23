@@ -49,7 +49,7 @@ years_str = years.astype('str')
 years_days = grace.times.date_to_days(years.astype('datetime64[D]'))
 
 for i in range(0, years.shape[0] - 1):
-	loss = -1 * scipy.integrate.quad(lambda t: ewh(t) - ewh(years_days[i]), years_days[i], years_days[i + 1])[0]
+	loss = ewh(years_days[i]) - ewh(years_days[i + 1])
 
 	print "From %s to %s, mass loss was %f giga ton" % (years_str[i], years_str[i + 1], loss / (10**12))
 
